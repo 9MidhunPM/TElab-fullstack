@@ -1,0 +1,18 @@
+# Simple Dockerfile using pre-built JAR
+FROM openjdk:17-jre-slim
+
+WORKDIR /app
+
+# Copy the pre-built JAR file
+COPY target/backend-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose port
+EXPOSE 8080
+
+# Set environment variables
+ENV JWT_SECRET=your-very-secure-secret-key-minimum-32-characters
+ENV JWT_EXPIRATION=86400000
+ENV SERVER_PORT=8080
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]

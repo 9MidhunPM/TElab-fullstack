@@ -1,0 +1,19 @@
+# Ignore target directory (except the jar)
+target/
+!target/*.jar
+
+# Ignore IDE files
+.idea/
+*.iml
+.vscode/
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore Maven wrapper
+.mvn/
+
+# Ignore temp files
+*.tmp
+*.log
