@@ -11,21 +11,60 @@ const homeScreenStyles = StyleSheet.create({
   },
   
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: Spacing.xxl,
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.md,
+    backgroundColor: Colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderLighter,
+  },
+  
+  welcomeSection: {
+    flex: 1,
+  },
+  
+  logoutIconButton: {
+    padding: Spacing.sm,
+    borderRadius: BorderRadius.md,
+    backgroundColor: Colors.backgroundLight,
+  },
+  
+  compactInfoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: Spacing.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderLighter,
+  },
+  
+  compactInfoLabel: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.semibold,
+    color: Colors.textLight,
+    flex: 1,
+  },
+  
+  compactInfoValue: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textPrimary,
+    flex: 1.2,
+    textAlign: 'right',
+    fontWeight: Typography.fontWeight.medium,
   },
   
   welcomeText: {
-    fontSize: Typography.fontSize.xxl,
+    fontSize: Typography.fontSize.xl,
     color: Colors.textSecondary,
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.xs,
   },
   
   nameText: {
-    fontSize: Typography.fontSize.huge,
+    fontSize: Typography.fontSize.xxl,
     fontWeight: Typography.fontWeight.bold,
     color: Colors.textPrimary,
-    textAlign: 'center',
   },
   
   profileCard: {

@@ -5,11 +5,13 @@ import {
   RefreshControl,
   ScrollView,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchAttendanceWithToken } from '../api';
 import Card from '../components/Card';
+import RefreshIcon from '../components/RefreshIcon';
 import { useAuth } from '../contexts/AuthContext';
 import styles from '../styles/attendanceScreenStyles';
 import commonStyles, { Colors } from '../styles/commonStyles';
@@ -119,14 +121,28 @@ export default function AttendanceScreen() {
 
   return (
     <SafeAreaView style={commonStyles.safeArea}>
-      <ScrollView 
-        style={commonStyles.container}
-        refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
-        }
-      >
+      <View style={commonStyles.container}>
+        <View style={styles.header}>
+          <Text style={commonStyles.headerTitle}>Attendance</Text>
+          <TouchableOpacity 
+            style={styles.refreshButton}
+            onPress={handleRefresh}
+            accessibilityLabel="Refresh attendance"
+          >
+            <RefreshIcon size={20} color="#4F46E5" />
+          </TouchableOpacity>
+        </View>
+        
+        <ScrollView 
+          refreshControl={
+            <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+          }
+        >
       {/* Summary Card */}
-      <Card variant="default" style={styles.summaryCard}>
+      <Card 
+        variant="default" 
+        style={styles.summaryCard}
+      >
         <Text style={styles.summaryTitle}>Attendance Summary</Text>
         
         <View style={styles.summaryRow}>
@@ -158,7 +174,13 @@ export default function AttendanceScreen() {
         <Text style={styles.subjectsTitle}>Subject-wise Attendance</Text>
         
         {subjects.map((subject, index) => (
-          <Card key={subject.code} variant="small" withMargin>
+          <Card 
+            key={subject.code} 
+            variant="small" 
+            withMargin
+            onPress={() => {
+            }}
+          >
             <View style={styles.subjectHeader}>
               <Text style={styles.subjectCode}>{subject.code}</Text>
               <Text style={[
@@ -180,13 +202,17 @@ export default function AttendanceScreen() {
 
       {/* Note */}
       {attendance.note && (
-        <Card variant="warning" style={styles.noteContainer}>
+        <Card 
+          variant="warning" 
+          style={styles.noteContainer}
+        >
           <Text style={styles.noteText}>{attendance.note}</Text>
         </Card>
       )}
       
       <View style={styles.bottomPadding} />
     </ScrollView>
+    </View>
     </SafeAreaView>
   );
 }

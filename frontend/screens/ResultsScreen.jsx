@@ -9,6 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchResultsWithToken } from '../api';
 import Card from '../components/Card';
+import RefreshIcon from '../components/RefreshIcon';
 import { useAuth } from '../contexts/AuthContext';
 import commonStyles from '../styles/commonStyles';
 import styles from '../styles/resultsScreenStyles';
@@ -23,7 +24,7 @@ export default function ResultsScreen() {
 
   // AbortController for request cancellation and timeout tracking
   const [abortController, setAbortController] = useState(null);
-  const timeoutRefs = useRef({ tenSecond: null, twentyFiveSecond: null });
+  const timeoutRefs = useRef({ fiveSecond: null, twentyFiveSecond: null });
 
   useEffect(() => {
     if (token) {
@@ -40,9 +41,9 @@ export default function ResultsScreen() {
   }, [token]);
 
   const clearTimeouts = () => {
-    if (timeoutRefs.current.tenSecond) {
-      clearTimeout(timeoutRefs.current.tenSecond);
-      timeoutRefs.current.tenSecond = null;
+    if (timeoutRefs.current.fiveSecond) {
+      clearTimeout(timeoutRefs.current.fiveSecond);
+      timeoutRefs.current.fiveSecond = null;
     }
     if (timeoutRefs.current.twentyFiveSecond) {
       clearTimeout(timeoutRefs.current.twentyFiveSecond);
@@ -220,7 +221,7 @@ export default function ResultsScreen() {
             onPress={handleRetry}
             accessibilityLabel="Refresh results"
           >
-            <Text style={styles.refreshButtonText}>Refresh</Text>
+            <RefreshIcon size={20} color="#4F46E5" />
           </TouchableOpacity>
         </View>
         

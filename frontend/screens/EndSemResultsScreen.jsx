@@ -9,6 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchEndSemResultsWithToken } from '../api';
 import Card from '../components/Card';
+import RefreshIcon from '../components/RefreshIcon';
 import { useAuth } from '../contexts/AuthContext';
 import commonStyles, { Colors } from '../styles/commonStyles';
 import styles from '../styles/endSemResultsScreenStyles';
@@ -216,7 +217,7 @@ export default function EndSemResultsScreen() {
             onPress={handleRetry}
             accessibilityLabel="Refresh end-semester results"
           >
-            <Text style={styles.refreshButtonText}>Refresh</Text>
+            <RefreshIcon size={20} color="#4F46E5" />
           </TouchableOpacity>
         </View>
         

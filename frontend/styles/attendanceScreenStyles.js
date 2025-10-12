@@ -5,6 +5,30 @@ import { BorderRadius, Colors, Shadows, Spacing, Typography } from './commonStyl
  * Styles specific to AttendanceScreen component
  */
 const attendanceScreenStyles = StyleSheet.create({
+  // Custom header without bottom border
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: Spacing.base,
+    paddingVertical: Spacing.md,
+    backgroundColor: Colors.white,
+    // Remove borderBottomWidth and borderBottomColor to eliminate the bar
+  },
+  
+  refreshButton: {
+    paddingHorizontal: Spacing.base,
+    paddingVertical: Spacing.sm,
+    backgroundColor: 'transparent',
+    borderRadius: BorderRadius.base,
+    borderWidth: 2,
+    borderColor: Colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    minWidth: 40,
+    minHeight: 40,
+  },
+  
   summaryCard: {
     backgroundColor: Colors.white,
     margin: Spacing.base,

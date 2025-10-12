@@ -8,8 +8,14 @@ const timetableScreenStyles = StyleSheet.create({
   refreshButton: {
     paddingHorizontal: Spacing.base,
     paddingVertical: Spacing.sm,
-    backgroundColor: Colors.primary,
+    backgroundColor: 'transparent',
     borderRadius: BorderRadius.base,
+    borderWidth: 2,
+    borderColor: Colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    minWidth: 40,
+    minHeight: 40,
   },
   
   refreshButtonText: {

@@ -56,56 +56,51 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={commonStyles.safeArea}>
-      <ScrollView style={commonStyles.container} contentContainerStyle={styles.contentContainer}>
-      
-      <Card variant="secondary" withMargin marginSize="large">
-        <Card.Header>
+      {/* Header with Welcome text and Logout button */}
+      <View style={styles.header}>
+        <View style={styles.welcomeSection}>
           <Text style={styles.welcomeText}>Welcome!</Text>
           <Text style={styles.nameText}>{user.name}</Text>
-        </Card.Header>
-      </Card>
-
-      <Card variant="large" withMargin marginSize="large">
-        <Card.Header>
-          <Text style={commonStyles.cardTitle}>Profile Information</Text>
-        </Card.Header>
+        </View>
         
-        <Card.Body>
-          <Text style={styles.infoLabel}>SR Number:</Text>
-          <Text style={styles.infoValue}>{user.srNumber}</Text>
+        <TouchableOpacity 
+          style={styles.logoutIconButton}
+          onPress={handleLogout}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <ActivityIndicator color="#EF4444" size="small" />
+          ) : (
+            <LogoutIcon size={24} color="#EF4444" />
+          )}
+        </TouchableOpacity>
+      </View>
 
-          <Text style={[styles.infoLabel, { marginTop: 16 }]}>Name:</Text>
-          <Text style={styles.infoValue}>{user.name}</Text>
+      <ScrollView style={commonStyles.container} contentContainerStyle={styles.contentContainer}>
+        {/* Compact Profile Information */}
+        <Card variant="default" withMargin marginSize="medium">
+          <Card.Header>
+            <Text style={commonStyles.cardTitle}>Profile Information</Text>
+          </Card.Header>
+          
+          <Card.Body>
+            <View style={styles.compactInfoRow}>
+              <Text style={styles.compactInfoLabel}>SR Number:</Text>
+              <Text style={styles.compactInfoValue}>{user.srNumber}</Text>
+            </View>
 
-          <Text style={[styles.infoLabel, { marginTop: 16 }]}>Mobile Number:</Text>
-          <Text style={styles.infoValue}>{user.mobileNumber}</Text>
+            <View style={styles.compactInfoRow}>
+              <Text style={styles.compactInfoLabel}>Mobile:</Text>
+              <Text style={styles.compactInfoValue}>{user.mobileNumber}</Text>
+            </View>
 
-          <Text style={[styles.infoLabel, { marginTop: 16 }]}>University Reg No:</Text>
-          <Text style={styles.infoValue}>{user.universityRegNo}</Text>
-        </Card.Body>
-      </Card>
-
-      <TouchableOpacity 
-        style={[commonStyles.button, commonStyles.buttonDanger, { marginHorizontal: 20 }]}
-        onPress={handleLogout}
-        disabled={isLoading}
-      >
-        {isLoading ? (
-          <ActivityIndicator color="#fff" size="small" />
-        ) : (
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-            <LogoutIcon size={20} color="#fff" />
-            <Text style={commonStyles.buttonText}>Logout</Text>
-          </View>
-        )}
-      </TouchableOpacity>
-
-      <Card variant="primary" withMargin marginSize="large" style={{ marginTop: 20 }}>
-        <Text style={commonStyles.infoText}>
-          This profile data was fetched using your current session token.
-        </Text>
-      </Card>
-    </ScrollView>
+            <View style={styles.compactInfoRow}>
+              <Text style={styles.compactInfoLabel}>University Reg No:</Text>
+              <Text style={styles.compactInfoValue}>{user.universityRegNo}</Text>
+            </View>
+          </Card.Body>
+        </Card>
+      </ScrollView>
     </SafeAreaView>
   );
 }

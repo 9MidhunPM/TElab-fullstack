@@ -9,6 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchTimetableWithToken } from '../api';
 import Card from '../components/Card';
+import RefreshIcon from '../components/RefreshIcon';
 import { useAuth } from '../contexts/AuthContext';
 import commonStyles from '../styles/commonStyles';
 import styles from '../styles/timetableScreenStyles';
@@ -139,7 +140,7 @@ export default function TimetableScreen() {
   const renderDayCard = (dayName, dayData) => {
     const periods = getPeriodsForDay(dayData);
     const isFree = isDayFree(dayData);
-    const variant = isFree ? 'success' : 'default';
+    const variant = 'default';
     
     return (
       <Card key={dayName} variant={variant} withMargin marginSize="large" onPress={() => {}}>
@@ -224,7 +225,7 @@ export default function TimetableScreen() {
             onPress={handleRetry}
             accessibilityLabel="Refresh timetable"
           >
-            <Text style={styles.refreshButtonText}>Refresh</Text>
+            <RefreshIcon size={20} color="#4F46E5" />
           </TouchableOpacity>
         </View>
         
