@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator,
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchResultsWithToken } from '../api';
@@ -64,15 +64,22 @@ export default function ResultsScreen() {
     try {
       setIsLoading(true);
       setError(null);
-      setLoadingMessage('Loading results...');
+      setLoadingMessage('Fetching results from ETLab...');
       setShowRetryOption(false);
 
-      // Set timeout for 10 seconds to change message
-      timeoutRefs.current.tenSecond = setTimeout(() => {
+
+      // CRITICAL: Use the fresh token from AuthContext, never read from SecureStore
+      // This ensures we always use the current session token returned by login
+      console.log('Fetching results...');
+      const resultsData = await fetchResultsWithToken(token, newAbortController.signal);
+      // Set timeout for 5 seconds to change message
+      console.log(`Results loaded: ${resultsData.length} Exams found`);
+
+      timeoutRefs.current.fiveSecond = setTimeout(() => {
         if (!newAbortController.signal.aborted) {
-          setLoadingMessage('This report is taking longer than usual — still loading (may take up to 30s).');
+          setLoadingMessage('This report is taking longer than usual (may take up to 30s).');
         }
-      }, 10000);
+      }, 5000);
 
       // Set timeout for 25 seconds to show retry option
       timeoutRefs.current.twentyFiveSecond = setTimeout(() => {
@@ -80,10 +87,6 @@ export default function ResultsScreen() {
           setShowRetryOption(true);
         }
       }, 25000);
-
-      // CRITICAL: Use the fresh token from AuthContext, never read from SecureStore
-      // This ensures we always use the current session token returned by login
-      const resultsData = await fetchResultsWithToken(token, newAbortController.signal);
       
       // Only update state if request wasn't cancelled
       if (!newAbortController.signal.aborted) {

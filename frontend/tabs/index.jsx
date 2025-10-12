@@ -36,14 +36,14 @@ export const tabsConfig = [
     component: AttendanceScreen,
   },
   {
-    key: 'results',
-    title: 'Results',
-    component: ResultsScreen,
-  },
-  {
     key: 'end-sem',
     title: 'End Sem',
     component: EndSemResultsScreen,
+  },
+  {
+    key: 'results',
+    title: 'Results',
+    component: ResultsScreen,
   },
   {
     key: 'timetable',
