@@ -1,61 +1,68 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { ActivityIndicator, AppRegistry, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
+import TabIcon from './components/TabIcon';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginScreen from './screens/LoginScreen';
 import { tabsConfig } from './tabs';
 
 const Stack = createNativeStackNavigator();
-const Tab = createMaterialTopTabNavigator();
+const Tab = createBottomTabNavigator();
 
 // TabsNavigator component that renders all tabs dynamically
 function TabsNavigator() {
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <Tab.Navigator
-        screenOptions={{
-          tabBarActiveTintColor: '#007AFF',
-          tabBarInactiveTintColor: '#666',
-          tabBarIndicatorStyle: {
-            backgroundColor: '#007AFF',
-            height: 3,
-          },
-          tabBarLabelStyle: {
-            fontSize: 14,
-            fontWeight: '600',
-            textTransform: 'none',
-          },
-          tabBarStyle: {
-            backgroundColor: '#fff',
-            elevation: 4,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-          },
-          swipeEnabled: true, // Enable swipe gestures
-          animationEnabled: true,
-        }}
-        initialRouteName={tabsConfig[0]?.key || 'home'}
-      >
-        {/* Dynamically render tabs from configuration */}
-        {tabsConfig.map((tab) => (
-          <Tab.Screen
-            key={tab.key}
-            name={tab.key}
-            component={tab.component}
-            options={{
-              title: tab.title,
-              tabBarAccessibilityLabel: `${tab.title} tab`,
-            }}
-          />
-        ))}
-      </Tab.Navigator>
-    </SafeAreaView>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: true,
+        tabBarActiveTintColor: '#4F46E5',
+        tabBarInactiveTintColor: '#64748B',
+        tabBarLabelStyle: {
+          fontSize: 14,
+          fontWeight: '600',
+          textTransform: 'none',
+        },
+        tabBarStyle: {
+          backgroundColor: '#fff',
+          borderTopWidth: 1,
+          borderTopColor: '#E2E8F0',
+          elevation: 4,
+          shadowColor: '#4F46E5',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.15,
+          shadowRadius: 4,
+          height: 60,
+          paddingBottom: 8,
+          paddingTop: 8,
+        },
+      }}
+      initialRouteName={tabsConfig[0]?.key || 'home'}
+    >
+      {/* Dynamically render tabs from configuration */}
+      {tabsConfig.map((tab) => (
+        <Tab.Screen
+          key={tab.key}
+          name={tab.key}
+          component={tab.component}
+          options={{
+            title: tab.title,
+            tabBarAccessibilityLabel: `${tab.title} tab`,
+            tabBarIcon: ({ color, focused, size }) => (
+              <TabIcon 
+                name={tab.key} 
+                size={size || 24} 
+                color={color} 
+                focused={focused} 
+              />
+            ),
+          }}
+        />
+      ))}
+    </Tab.Navigator>
   );
 }
 
@@ -68,7 +75,7 @@ function AuthNavigator() {
     return (
       <SafeAreaView style={styles.safeAreaFull}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
+          <ActivityIndicator size="large" color="#4F46E5" />
         </View>
       </SafeAreaView>
     );
@@ -92,7 +99,7 @@ function App() {
   return (
     <SafeAreaProvider>
       <AuthProvider>
-        <NavigationContainer>
+        <NavigationContainer independent={true}>
           <AuthNavigator />
           <StatusBar style="auto" />
         </NavigationContainer>
@@ -102,13 +109,9 @@ function App() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
   safeAreaFull: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#F8FAFC',
   },
   loadingContainer: {
     flex: 1,

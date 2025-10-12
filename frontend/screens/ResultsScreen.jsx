@@ -2,14 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchResultsWithToken } from '../api';
+import Card from '../components/Card';
 import { useAuth } from '../contexts/AuthContext';
+import commonStyles from '../styles/commonStyles';
+import styles from '../styles/resultsScreenStyles';
 
 export default function ResultsScreen() {
   const [results, setResults] = useState(null);
@@ -111,36 +113,40 @@ export default function ResultsScreen() {
     fetchResults();
   };
 
-  const renderResultItem = ({ item }) => (
-    <View style={styles.resultCard}>
-      <View style={styles.resultHeader}>
-        <View style={styles.subjectInfo}>
-          <Text style={styles.subjectCode}>{item.subjectCode}</Text>
-          <Text style={styles.subjectName}>{item.subjectName}</Text>
+  const renderResultItem = ({ item }) => {
+    const percentage = ((parseFloat(item.marksObtained) / parseFloat(item.maximumMarks)) * 100);
+    
+    return (
+      <Card variant="small" withMargin onPress={() => {}}>
+        <View style={styles.resultHeader}>
+          <View style={styles.subjectInfo}>
+            <Text style={styles.subjectCode}>{item.subjectCode}</Text>
+            <Text style={styles.subjectName}>{item.subjectName}</Text>
+          </View>
+          <View style={styles.marksInfo}>
+            <Text style={styles.marks}>
+              {item.marksObtained}/{item.maximumMarks}
+            </Text>
+            <Text style={styles.percentage}>
+              {percentage.toFixed(1)}%
+            </Text>
+          </View>
         </View>
-        <View style={styles.marksInfo}>
-          <Text style={styles.marks}>
-            {item.marksObtained}/{item.maximumMarks}
-          </Text>
-          <Text style={styles.percentage}>
-            {((parseFloat(item.marksObtained) / parseFloat(item.maximumMarks)) * 100).toFixed(1)}%
-          </Text>
+        <View style={styles.resultFooter}>
+          <Text style={styles.semester}>{item.semester}</Text>
+          <Text style={styles.exam}>Exam {item.exam}</Text>
         </View>
-      </View>
-      <View style={styles.resultFooter}>
-        <Text style={styles.semester}>{item.semester}</Text>
-        <Text style={styles.exam}>Exam {item.exam}</Text>
-      </View>
-    </View>
-  );
+      </Card>
+    );
+  };
 
   // Loading state with progressive messages
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
-          <Text style={styles.loadingText}>{loadingMessage}</Text>
+      <SafeAreaView style={commonStyles.safeArea}>
+        <View style={commonStyles.loadingContainer}>
+          <ActivityIndicator size="large" color="#4F46E5" />
+          <Text style={commonStyles.loadingText}>{loadingMessage}</Text>
           
           {showRetryOption && (
             <View style={styles.retryContainer}>
@@ -168,10 +174,10 @@ export default function ResultsScreen() {
   // Error state
   if (error && !results) {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorTitle}>Failed to Load Results</Text>
-          <Text style={styles.errorText}>{error}</Text>
+      <SafeAreaView style={commonStyles.safeArea}>
+        <View style={commonStyles.errorContainer}>
+          <Text style={commonStyles.errorTitle}>Failed to Load Results</Text>
+          <Text style={commonStyles.errorText}>{error}</Text>
           <TouchableOpacity 
             style={styles.retryButton}
             onPress={handleRetry}
@@ -187,10 +193,10 @@ export default function ResultsScreen() {
   // No data state
   if (!results || results.length === 0) {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorTitle}>No Results Available</Text>
-          <Text style={styles.errorText}>No academic results found for your account.</Text>
+      <SafeAreaView style={commonStyles.safeArea}>
+        <View style={commonStyles.errorContainer}>
+          <Text style={commonStyles.errorTitle}>No Results Available</Text>
+          <Text style={commonStyles.errorText}>No academic results found for your account.</Text>
           <TouchableOpacity 
             style={styles.retryButton}
             onPress={handleRetry}
@@ -205,10 +211,10 @@ export default function ResultsScreen() {
 
   // Success state - show results
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Academic Results</Text>
+    <SafeAreaView style={commonStyles.safeArea}>
+      <View style={commonStyles.container}>
+        <View style={commonStyles.header}>
+          <Text style={commonStyles.headerTitle}>Academic Results</Text>
           <TouchableOpacity 
             style={styles.refreshButton}
             onPress={handleRetry}
@@ -229,167 +235,3 @@ export default function ResultsScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  refreshButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: '#007AFF',
-    borderRadius: 6,
-  },
-  refreshButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  loadingText: {
-    marginTop: 16,
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    lineHeight: 22,
-  },
-  retryContainer: {
-    marginTop: 24,
-    alignItems: 'center',
-  },
-  retryButton: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  retryButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  continueButton: {
-    backgroundColor: 'transparent',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderWidth: 1,
-    borderColor: '#007AFF',
-    borderRadius: 8,
-  },
-  continueButtonText: {
-    color: '#007AFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  errorTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#e74c3c',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  errorText: {
-    fontSize: 14,
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 20,
-    lineHeight: 20,
-  },
-  listContainer: {
-    padding: 16,
-  },
-  resultCard: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 12,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  resultHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 8,
-  },
-  subjectInfo: {
-    flex: 1,
-    marginRight: 12,
-  },
-  subjectCode: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#007AFF',
-    marginBottom: 4,
-  },
-  subjectName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    lineHeight: 20,
-  },
-  marksInfo: {
-    alignItems: 'flex-end',
-  },
-  marks: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 2,
-  },
-  percentage: {
-    fontSize: 14,
-    color: '#666',
-  },
-  resultFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 8,
-    borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
-  },
-  semester: {
-    fontSize: 14,
-    color: '#666',
-  },
-  exam: {
-    fontSize: 14,
-    color: '#666',
-    fontStyle: 'italic',
-  },
-});

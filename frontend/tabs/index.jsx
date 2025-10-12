@@ -22,36 +22,41 @@ import TimetableScreen from '../screens/TimetableScreen';
 
 /**
  * Tabs configuration array
- * Each tab must have: key (unique), title (display name), component
+ * Each tab must have: key (unique), title (display name), component, iconName
  */
 export const tabsConfig = [
   {
     key: 'home',
     title: 'Home',
     component: HomeScreen,
+    iconName: 'home',
   },
   {
     key: 'attendance',
     title: 'Attendance',
     component: AttendanceScreen,
+    iconName: 'calendar',
   },
   {
     key: 'end-sem',
     title: 'End Sem',
     component: EndSemResultsScreen,
+    iconName: 'school',
   },
   {
     key: 'results',
     title: 'Results',
     component: ResultsScreen,
+    iconName: 'trophy',
   },
   {
     key: 'timetable',
     title: 'Timetable',
     component: TimetableScreen,
+    iconName: 'time',
   },
   // TO ADD A NEW TAB: Add a line like this:
-  // { key: 'your-key', title: 'Your Title', component: YourComponent },
+  // { key: 'your-key', title: 'Your Title', component: YourComponent, iconName: 'icon-name' },
 ];
 
 export default tabsConfig;

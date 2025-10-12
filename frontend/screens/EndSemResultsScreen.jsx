@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchEndSemResultsWithToken } from '../api';
+import Card from '../components/Card';
 import { useAuth } from '../contexts/AuthContext';
+import commonStyles, { Colors } from '../styles/commonStyles';
+import styles from '../styles/endSemResultsScreenStyles';
 
 export default function EndSemResultsScreen() {
   const [endSemResults, setEndSemResults] = useState(null);
@@ -89,41 +91,45 @@ export default function EndSemResultsScreen() {
     fetchEndSemResults();
   };
 
-  const renderCourseItem = ({ item: course }) => (
-    <View style={styles.courseCard}>
-      <View style={styles.courseHeader}>
-        <View style={styles.courseInfo}>
-          <Text style={styles.courseCode}>{course["Course Code"]}</Text>
-          <Text style={styles.courseName}>{course["Course Name"]}</Text>
-          <Text style={styles.courseDetails}>
-            Slot: {course.Slot} • Credit: {course.Credit}
-          </Text>
+  const renderCourseItem = ({ item: course }) => {
+    return (
+      <Card variant="small" withMargin onPress={() => {}}>
+        <View style={styles.courseHeader}>
+          <View style={styles.courseInfo}>
+            <Text style={styles.courseCode}>{course["Course Code"]}</Text>
+            <Text style={styles.courseName}>{course["Course Name"]}</Text>
+            <Text style={styles.courseDetails}>
+              Slot: {course.Slot} • Credit: {course.Credit}
+            </Text>
+          </View>
+          <View style={styles.gradeInfo}>
+            <Text style={[styles.grade, getGradeColor(course.Grade)]}>{course.Grade}</Text>
+            <Text style={[styles.passStatus, getPassStatusColor(course["Pass Status"])]}>
+              {course["Pass Status"] || "N/A"}
+            </Text>
+          </View>
         </View>
-        <View style={styles.gradeInfo}>
-          <Text style={[styles.grade, getGradeColor(course.Grade)]}>{course.Grade}</Text>
-          <Text style={[styles.passStatus, getPassStatusColor(course["Pass Status"])]}>
-            {course["Pass Status"] || "N/A"}
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
+      </Card>
+    );
+  };
 
   const renderSemesterSection = ({ item: semester }) => (
     <View style={styles.semesterSection}>
-      <View style={styles.semesterHeader}>
-        <Text style={styles.examTitle}>{semester.exam_title}</Text>
-        <View style={styles.semesterInfo}>
-          <View style={styles.semesterBadge}>
-            <Text style={styles.semesterText}>
-              Semester {semester.semester} • {semester.year}
-            </Text>
+      <Card variant="secondary" withMargin marginSize="large" onPress={() => {}}>
+        <Card.Header>
+          <Text style={styles.examTitle}>{semester.exam_title}</Text>
+          <View style={styles.semesterInfo}>
+            <View style={[commonStyles.badge, commonStyles.badgeSuccess]}>
+              <Text style={[commonStyles.badgeText, commonStyles.badgeSuccessText]}>
+                Semester {semester.semester} • {semester.year}
+              </Text>
+            </View>
+            <View style={[commonStyles.badge, { backgroundColor: Colors.accentLight, marginLeft: 8 }]}>
+              <Text style={[commonStyles.badgeText, { color: Colors.accent }]}>{semester.exam_type}</Text>
+            </View>
           </View>
-          <View style={styles.examTypeBadge}>
-            <Text style={styles.examTypeText}>{semester.exam_type}</Text>
-          </View>
-        </View>
-      </View>
+        </Card.Header>
+      </Card>
       
       <FlatList
         data={semester.grades.results}
@@ -152,10 +158,10 @@ export default function EndSemResultsScreen() {
   // Loading state
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
-          <Text style={styles.loadingText}>Loading end-semester results...</Text>
+      <SafeAreaView style={commonStyles.safeArea}>
+        <View style={commonStyles.loadingContainer}>
+          <ActivityIndicator size="large" color="#4F46E5" />
+          <Text style={commonStyles.loadingText}>Loading end-semester results...</Text>
         </View>
       </SafeAreaView>
     );
@@ -164,10 +170,10 @@ export default function EndSemResultsScreen() {
   // Error state
   if (error) {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorTitle}>Failed to Load Results</Text>
-          <Text style={styles.errorText}>{error}</Text>
+      <SafeAreaView style={commonStyles.safeArea}>
+        <View style={commonStyles.errorContainer}>
+          <Text style={commonStyles.errorTitle}>Failed to Load Results</Text>
+          <Text style={commonStyles.errorText}>{error}</Text>
           <TouchableOpacity 
             style={styles.retryButton}
             onPress={handleRetry}
@@ -183,10 +189,10 @@ export default function EndSemResultsScreen() {
   // No data state - no end-semester results found
   if (endSemResults && filteredSemesters.length === 0) {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.errorContainer}>
+      <SafeAreaView style={commonStyles.safeArea}>
+        <View style={commonStyles.errorContainer}>
           <Text style={styles.noResultsTitle}>No end-semester results available</Text>
-          <Text style={styles.errorText}>No end-semester exam results found for your account.</Text>
+          <Text style={commonStyles.errorText}>No end-semester exam results found for your account.</Text>
           <TouchableOpacity 
             style={styles.retryButton}
             onPress={handleRetry}
@@ -201,10 +207,10 @@ export default function EndSemResultsScreen() {
 
   // Success state - show filtered end-semester results
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>End-Semester Results</Text>
+    <SafeAreaView style={commonStyles.safeArea}>
+      <View style={commonStyles.container}>
+        <View style={commonStyles.header}>
+          <Text style={commonStyles.headerTitle}>End-Semester Results</Text>
           <TouchableOpacity 
             style={styles.refreshButton}
             onPress={handleRetry}
@@ -225,192 +231,3 @@ export default function EndSemResultsScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  refreshButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: '#007AFF',
-    borderRadius: 6,
-  },
-  refreshButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  loadingText: {
-    marginTop: 16,
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  errorTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#e74c3c',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  errorText: {
-    fontSize: 14,
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 20,
-    lineHeight: 20,
-  },
-  noResultsTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#666',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  retryButton: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  retryButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  listContainer: {
-    padding: 16,
-  },
-  semesterSection: {
-    marginBottom: 24,
-  },
-  semesterHeader: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 12,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  examTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 12,
-    lineHeight: 22,
-  },
-  semesterInfo: {
-    flexDirection: 'row',
-    gap: 8,
-    flexWrap: 'wrap',
-  },
-  semesterBadge: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  semesterText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  examTypeBadge: {
-    backgroundColor: '#27ae60',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  examTypeText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  courseCard: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 8,
-    elevation: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
-  },
-  courseHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 8,
-  },
-  courseInfo: {
-    flex: 1,
-    marginRight: 12,
-  },
-  courseCode: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#007AFF',
-    marginBottom: 4,
-  },
-  courseName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    lineHeight: 20,
-    marginBottom: 4,
-  },
-  courseDetails: {
-    fontSize: 12,
-    color: '#666',
-    fontStyle: 'italic',
-  },
-  gradeInfo: {
-    alignItems: 'flex-end',
-  },
-  grade: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 2,
-  },
-  passStatus: {
-    fontSize: 12,
-    fontWeight: '600',
-    textTransform: 'uppercase',
-  },
-});

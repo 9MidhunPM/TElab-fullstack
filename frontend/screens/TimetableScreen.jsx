@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchTimetableWithToken } from '../api';
+import Card from '../components/Card';
 import { useAuth } from '../contexts/AuthContext';
+import commonStyles from '../styles/commonStyles';
+import styles from '../styles/timetableScreenStyles';
 
 export default function TimetableScreen() {
   const [timetable, setTimetable] = useState(null);
@@ -137,30 +139,35 @@ export default function TimetableScreen() {
   const renderDayCard = (dayName, dayData) => {
     const periods = getPeriodsForDay(dayData);
     const isFree = isDayFree(dayData);
+    const variant = isFree ? 'success' : 'default';
     
     return (
-      <View key={dayName} style={styles.dayCard}>
-        <View style={styles.dayHeader}>
-          <Text style={styles.dayTitle}>{dayName.charAt(0).toUpperCase() + dayName.slice(1)}</Text>
-          {isFree && <View style={styles.freeDayBadge}>
-            <Text style={styles.freeDayText}>Free Day</Text>
-          </View>}
-        </View>
+      <Card key={dayName} variant={variant} withMargin marginSize="large" onPress={() => {}}>
+        <Card.Header>
+          <View style={commonStyles.rowBetween}>
+            <Text style={styles.dayTitle}>{dayName.charAt(0).toUpperCase() + dayName.slice(1)}</Text>
+            {isFree && (
+              <View style={commonStyles.badge}>
+                <Text style={[commonStyles.badgeText, commonStyles.badgeSuccessText]}>Free Day</Text>
+              </View>
+            )}
+          </View>
+        </Card.Header>
         
-        <View style={styles.periodsContainer}>
+        <Card.Body>
           {periods.map(renderPeriod)}
-        </View>
-      </View>
+        </Card.Body>
+      </Card>
     );
   };
 
   // Loading state
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
-          <Text style={styles.loadingText}>Loading timetable...</Text>
+      <SafeAreaView style={commonStyles.safeArea}>
+        <View style={commonStyles.loadingContainer}>
+          <ActivityIndicator size="large" color="#4F46E5" />
+          <Text style={commonStyles.loadingText}>Loading timetable...</Text>
         </View>
       </SafeAreaView>
     );
@@ -169,10 +176,10 @@ export default function TimetableScreen() {
   // Error state
   if (error) {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorTitle}>Failed to Load Timetable</Text>
-          <Text style={styles.errorText}>{error}</Text>
+      <SafeAreaView style={commonStyles.safeArea}>
+        <View style={commonStyles.errorContainer}>
+          <Text style={commonStyles.errorTitle}>Failed to Load Timetable</Text>
+          <Text style={commonStyles.errorText}>{error}</Text>
           <TouchableOpacity 
             style={styles.retryButton}
             onPress={handleRetry}
@@ -188,10 +195,10 @@ export default function TimetableScreen() {
   // No data state
   if (!timetable || isTimetableEmpty()) {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.errorContainer}>
+      <SafeAreaView style={commonStyles.safeArea}>
+        <View style={commonStyles.errorContainer}>
           <Text style={styles.noDataTitle}>No timetable available</Text>
-          <Text style={styles.errorText}>No schedule found for your account.</Text>
+          <Text style={commonStyles.errorText}>No schedule found for your account.</Text>
           <TouchableOpacity 
             style={styles.retryButton}
             onPress={handleRetry}
@@ -208,10 +215,10 @@ export default function TimetableScreen() {
   const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
   
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Weekly Timetable</Text>
+    <SafeAreaView style={commonStyles.safeArea}>
+      <View style={commonStyles.container}>
+        <View style={commonStyles.header}>
+          <Text style={commonStyles.headerTitle}>Weekly Timetable</Text>
           <TouchableOpacity 
             style={styles.refreshButton}
             onPress={handleRetry}
@@ -232,167 +239,3 @@ export default function TimetableScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  refreshButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: '#007AFF',
-    borderRadius: 6,
-  },
-  refreshButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  loadingText: {
-    marginTop: 16,
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  errorTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#e74c3c',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  errorText: {
-    fontSize: 14,
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 20,
-    lineHeight: 20,
-  },
-  noDataTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#666',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  retryButton: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  retryButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContainer: {
-    padding: 16,
-  },
-  dayCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    marginBottom: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  dayHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  dayTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  freeDayBadge: {
-    backgroundColor: '#e8f5e8',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  freeDayText: {
-    fontSize: 12,
-    color: '#27ae60',
-    fontWeight: '600',
-  },
-  periodsContainer: {
-    padding: 16,
-  },
-  periodRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f8f8f8',
-  },
-  periodLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#666',
-    width: 80,
-    marginTop: 2,
-  },
-  periodContent: {
-    flex: 1,
-    marginLeft: 12,
-  },
-  subjectName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-    lineHeight: 20,
-    marginBottom: 4,
-  },
-  freeSubject: {
-    color: '#999',
-    fontStyle: 'italic',
-    fontWeight: 'normal',
-  },
-  teacherName: {
-    fontSize: 14,
-    color: '#666',
-    lineHeight: 18,
-  },
-});
