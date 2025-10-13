@@ -288,6 +288,102 @@ const homeScreenStyles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: Spacing.md,
   },
+
+  // Attendance Summary Styles
+  attendanceSummaryContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+
+  attendanceTotalSection: {
+    flex: 1,
+    alignItems: 'center',
+    paddingRight: Spacing.lg,
+    borderRightWidth: 1,
+    borderRightColor: Colors.borderLighter,
+  },
+
+  attendanceTotalLabel: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textLight,
+    marginBottom: Spacing.xs,
+    textAlign: 'center',
+  },
+
+  attendanceTotalPercentage: {
+    fontSize: Typography.fontSize.massive,
+    fontWeight: Typography.fontWeight.bold,
+    color: Colors.primary,
+    marginBottom: Spacing.xs,
+  },
+
+  attendanceTotalHours: {
+    fontSize: Typography.fontSize.xs,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+  },
+
+  attendanceDetailsSection: {
+    flex: 1,
+    paddingLeft: Spacing.lg,
+  },
+
+  fullAttendanceContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 80,
+  },
+
+  fullAttendanceText: {
+    fontSize: Typography.fontSize.lg,
+    fontWeight: Typography.fontWeight.bold,
+    color: Colors.success,
+    marginBottom: Spacing.xs,
+    textAlign: 'center',
+  },
+
+  fullAttendanceSubtext: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+    lineHeight: Typography.lineHeight.base,
+  },
+
+  lowestAttendanceContainer: {
+    flex: 1,
+  },
+
+  lowestAttendanceTitle: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.semibold,
+    color: Colors.textLight,
+    marginBottom: Spacing.sm,
+    textAlign: 'center',
+  },
+
+  lowestAttendanceItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: Spacing.xs,
+    paddingHorizontal: Spacing.sm,
+    backgroundColor: Colors.backgroundLight,
+    borderRadius: BorderRadius.sm,
+    marginBottom: Spacing.xs,
+  },
+
+  lowestAttendanceCode: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.medium,
+    color: Colors.textPrimary,
+    flex: 1,
+  },
+
+  lowestAttendancePercentage: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.bold,
+  },
 });
 
 export default homeScreenStyles;

@@ -115,6 +115,52 @@ export default function HomeScreen() {
     loadAllDataSequentially();
   };
 
+  // Helper function to process attendance data
+  const getAttendanceSummary = () => {
+    if (!isDataAvailable('attendance')) return null;
+    
+    const attendance = appData.attendance;
+    if (!attendance) return null;
+    
+    const excludeKeys = ['roll_no', 'total_hours', 'total_present_hours', 'total_percentage', 'university_reg_no', 'name', 'note'];
+    
+    // Extract subjects from attendance data
+    const subjects = Object.entries(attendance)
+      .filter(([key]) => !excludeKeys.includes(key))
+      .map(([code, data]) => { 
+        const percentage = data.attendance_percentage 
+          ? parseFloat(data.attendance_percentage.replace('%', ''))
+          : 0;
+        return {
+          code, 
+          ...data,
+          percentage
+        };
+      })
+      .sort((a, b) => a.percentage - b.percentage); // Sort by attendance percentage (lowest first)
+    
+    const totalPercentage = attendance.total_percentage || '0%';
+    const totalPresentHours = attendance.total_present_hours || '0';
+    const totalHours = attendance.total_hours || '0';
+    
+    // Get 3 classes with lowest attendance
+    const lowestAttendance = subjects.slice(0, 3);
+    
+    // Check if all attendance is 100% (or very close to 100%)
+    const hasFullAttendance = subjects.length > 0 && subjects.every(subject => subject.percentage >= 100);
+    
+    return {
+      totalPercentage,
+      totalPresentHours,
+      totalHours,
+      lowestAttendance,
+      hasFullAttendance,
+      totalSubjects: subjects.length
+    };
+  };
+
+  const attendanceSummary = getAttendanceSummary();
+
   const handleLogout = () => {
     Alert.alert(
       'Logout',
@@ -246,6 +292,65 @@ export default function HomeScreen() {
             </View>
           </Card.Body>
         </Card>
+
+        {/* Attendance Summary Card */}
+        {attendanceSummary && !isLoadingData && (
+          <Card variant="default" withMargin marginSize="medium">
+            <Card.Header>
+              <Text style={commonStyles.cardTitle}>Attendance Overview</Text>
+            </Card.Header>
+            
+            <Card.Body>
+              <View style={styles.attendanceSummaryContainer}>
+                {/* Left side - Total attendance */}
+                <View style={styles.attendanceTotalSection}>
+                  <Text style={styles.attendanceTotalLabel}>Overall Attendance</Text>
+                  <Text style={styles.attendanceTotalPercentage}>
+                    {attendanceSummary.totalPercentage}
+                  </Text>
+                  <Text style={styles.attendanceTotalHours}>
+                    {attendanceSummary.totalPresentHours} / {attendanceSummary.totalHours} hours
+                  </Text>
+                </View>
+
+                {/* Right side - Lowest attendance or full attendance message */}
+                <View style={styles.attendanceDetailsSection}>
+                  {attendanceSummary.hasFullAttendance ? (
+                    <View style={styles.fullAttendanceContainer}>
+                      <Text style={styles.fullAttendanceText}>🎉 Perfect Attendance!</Text>
+                      <Text style={styles.fullAttendanceSubtext}>
+                        You have 100% attendance in all {attendanceSummary.totalSubjects} subjects. Great job!
+                      </Text>
+                    </View>
+                  ) : (
+                    <View style={styles.lowestAttendanceContainer}>
+                      <Text style={styles.lowestAttendanceTitle}>
+                        {attendanceSummary.lowestAttendance.length > 0 ? 'Needs Attention' : 'Attendance Status'}
+                      </Text>
+                      {attendanceSummary.lowestAttendance.length > 0 ? (
+                        attendanceSummary.lowestAttendance.map((subject, index) => (
+                          <View key={subject.code} style={styles.lowestAttendanceItem}>
+                            <Text style={styles.lowestAttendanceCode}>{subject.code}</Text>
+                            <Text style={[
+                              styles.lowestAttendancePercentage,
+                              { color: subject.percentage >= 75 ? '#10B981' : '#EF4444' }
+                            ]}>
+                              {subject.attendance_percentage}
+                            </Text>
+                          </View>
+                        ))
+                      ) : (
+                        <Text style={styles.fullAttendanceSubtext}>
+                          No attendance data available
+                        </Text>
+                      )}
+                    </View>
+                  )}
+                </View>
+              </View>
+            </Card.Body>
+          </Card>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
