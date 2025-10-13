@@ -1,43 +1,43 @@
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  RefreshControl,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Alert,
+    RefreshControl,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchAttendanceWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
 import { useAuth } from '../contexts/AuthContext';
+import { useAppData } from '../contexts/DataContext';
 import styles from '../styles/attendanceScreenStyles';
 import commonStyles, { Colors } from '../styles/commonStyles';
 
 export default function AttendanceScreen() {
-  const [attendance, setAttendance] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState(null);
   const { token } = useAuth();
+  const { appData, dataLoadingStatus, updateData, isDataAvailable, hasDataError, getDataError } = useAppData();
+
+  // Get attendance data from context
+  const attendance = appData.attendance;
+  const isLoading = dataLoadingStatus.attendance === 'pending';
 
   // AbortController for request cancellation
   const [abortController, setAbortController] = useState(null);
 
   useEffect(() => {
-    if (token) {
-      fetchAttendance();
+    // Set error state based on context data
+    if (hasDataError('attendance')) {
+      setError(getDataError('attendance'));
+    } else {
+      setError(null);
     }
-    
-    // Cleanup: abort any pending requests when component unmounts
-    return () => {
-      if (abortController) {
-        abortController.abort();
-      }
-    };
-  }, [token]);
+  }, [hasDataError, getDataError]);
 
   const fetchAttendance = async (isRefresh = false) => {
     if (!token) return;
@@ -54,23 +54,27 @@ export default function AttendanceScreen() {
     try {
       if (isRefresh) {
         setIsRefreshing(true);
-      } else {
-        setIsLoading(true);
       }
       setError(null);
 
       // Use the fresh token to fetch attendance
       // IMPORTANT: This ensures we never use stale attendance data
       const attendanceData = await fetchAttendanceWithToken(token, newAbortController.signal);
-      setAttendance(attendanceData);
+      
+      // Update centralized data store
+      updateData('attendance', attendanceData, 'success');
     } catch (error) {
       if (error.name !== 'AbortError') {
         console.error('Attendance fetch error:', error);
-        setError(error.message || 'Failed to fetch attendance data');
+        const errorMessage = error.message || 'Failed to fetch attendance data';
+        setError(errorMessage);
+        
+        // Update centralized data store with error
+        updateData('attendance', { error: errorMessage }, 'error');
+        
         Alert.alert('Error', 'Failed to fetch attendance data. Please try again.');
       }
     } finally {
-      setIsLoading(false);
       setIsRefreshing(false);
       setAbortController(null);
     }

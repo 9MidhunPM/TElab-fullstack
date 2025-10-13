@@ -1,44 +1,43 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    FlatList,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchResultsWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
 import { useAuth } from '../contexts/AuthContext';
+import { useAppData } from '../contexts/DataContext';
 import commonStyles from '../styles/commonStyles';
 import styles from '../styles/resultsScreenStyles';
 
 export default function ResultsScreen() {
-  const [results, setResults] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [loadingMessage, setLoadingMessage] = useState('Loading results...');
   const [showRetryOption, setShowRetryOption] = useState(false);
   const { token } = useAuth();
+  const { appData, dataLoadingStatus, updateData, isDataAvailable, hasDataError, getDataError } = useAppData();
+
+  // Get results data from context
+  const results = appData.results;
+  const isLoading = dataLoadingStatus.results === 'pending';
 
   // AbortController for request cancellation and timeout tracking
   const [abortController, setAbortController] = useState(null);
   const timeoutRefs = useRef({ fiveSecond: null, twentyFiveSecond: null });
 
   useEffect(() => {
-    if (token) {
-      fetchResults();
+    // Set error state based on context data
+    if (hasDataError('results')) {
+      setError(getDataError('results'));
+    } else {
+      setError(null);
     }
-    
-    // Cleanup: abort any pending requests and clear timeouts when component unmounts
-    return () => {
-      if (abortController) {
-        abortController.abort();
-      }
-      clearTimeouts();
-    };
-  }, [token]);
+  }, [hasDataError, getDataError]);
 
   const clearTimeouts = () => {
     if (timeoutRefs.current.fiveSecond) {
@@ -65,19 +64,11 @@ export default function ResultsScreen() {
     setAbortController(newAbortController);
 
     try {
-      setIsLoading(true);
       setError(null);
       setLoadingMessage('Fetching results from ETLab...');
       setShowRetryOption(false);
 
-
-      // CRITICAL: Use the fresh token from AuthContext, never read from SecureStore
-      // This ensures we always use the current session token returned by login
-      console.log('Fetching results...');
-      const resultsData = await fetchResultsWithToken(token, newAbortController.signal);
       // Set timeout for 5 seconds to change message
-      console.log(`Results loaded: ${resultsData.length} Exams found`);
-
       timeoutRefs.current.fiveSecond = setTimeout(() => {
         if (!newAbortController.signal.aborted) {
           setLoadingMessage('This report is taking longer than usual (may take up to 30s).');
@@ -90,21 +81,31 @@ export default function ResultsScreen() {
           setShowRetryOption(true);
         }
       }, 25000);
+
+      // CRITICAL: Use the fresh token from AuthContext, never read from SecureStore
+      // This ensures we always use the current session token returned by login
+      console.log('Fetching results...');
+      const resultsData = await fetchResultsWithToken(token, newAbortController.signal);
+      console.log(`Results loaded: ${resultsData.length} Exams found`);
       
       // Only update state if request wasn't cancelled
       if (!newAbortController.signal.aborted) {
-        setResults(resultsData);
+        // Update centralized data store
+        updateData('results', resultsData, 'success');
         clearTimeouts();
       }
     } catch (error) {
       if (error.name !== 'AbortError' && !newAbortController.signal.aborted) {
         console.error('Results fetch error:', error);
-        setError(error.message || 'Failed to fetch results data');
+        const errorMessage = error.message || 'Failed to fetch results data';
+        setError(errorMessage);
+        
+        // Update centralized data store with error
+        updateData('results', { error: errorMessage }, 'error');
         clearTimeouts();
       }
     } finally {
       if (!newAbortController.signal.aborted) {
-        setIsLoading(false);
         setAbortController(null);
       }
     }

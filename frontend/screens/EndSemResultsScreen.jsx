@@ -11,31 +11,38 @@ import { fetchEndSemResultsWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
 import { useAuth } from '../contexts/AuthContext';
+import { useAppData } from '../contexts/DataContext';
 import commonStyles, { Colors } from '../styles/commonStyles';
 import styles from '../styles/endSemResultsScreenStyles';
 
 export default function EndSemResultsScreen() {
-  const [endSemResults, setEndSemResults] = useState(null);
   const [filteredSemesters, setFilteredSemesters] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { token } = useAuth();
+  const { appData, dataLoadingStatus, updateData, isDataAvailable, hasDataError, getDataError } = useAppData();
+
+  // Get end sem results data from context
+  const endSemResults = appData.endSemResults;
+  const isLoading = dataLoadingStatus.endSemResults === 'pending';
 
   // AbortController for request cancellation
   const [abortController, setAbortController] = useState(null);
 
   useEffect(() => {
-    if (token) {
-      fetchEndSemResults();
+    // Set error state based on context data
+    if (hasDataError('endSemResults')) {
+      setError(getDataError('endSemResults'));
+    } else {
+      setError(null);
     }
-    
-    // Cleanup: abort any pending requests when component unmounts
-    return () => {
-      if (abortController) {
-        abortController.abort();
-      }
-    };
-  }, [token]);
+  }, [hasDataError, getDataError]);
+
+  // Update filtered semesters when endSemResults changes
+  useEffect(() => {
+    if (endSemResults && !hasDataError('endSemResults')) {
+      processEndSemResults(endSemResults);
+    }
+  }, [endSemResults, hasDataError]);
 
   const fetchEndSemResults = async () => {
     if (!token) return;
@@ -50,7 +57,6 @@ export default function EndSemResultsScreen() {
     setAbortController(newAbortController);
 
     try {
-      setIsLoading(true);
       setError(null);
 
       // IMPORTANT: use freshToken returned by /app/login here — do NOT read SecureStore for this first fetch. 
@@ -60,32 +66,41 @@ export default function EndSemResultsScreen() {
       
       console.log(`End-semester results loaded: ${endSemResultsData.length} semesters found`);
       
-      // Filter out semesters with empty results arrays
-      const nonEmptySemesters = endSemResultsData.filter(semester => 
-        semester.grades && 
-        semester.grades.results && 
-        Array.isArray(semester.grades.results) && 
-        semester.grades.results.length > 0
-      );
-      
-      console.log(`Filtered to ${nonEmptySemesters.length} semesters with results`);
-
       // Only update state if request wasn't cancelled
       if (!newAbortController.signal.aborted) {
-        setEndSemResults(endSemResultsData);
-        setFilteredSemesters(nonEmptySemesters);
+        // Update centralized data store
+        updateData('endSemResults', endSemResultsData, 'success');
       }
     } catch (error) {
       if (error.name !== 'AbortError' && !newAbortController.signal.aborted) {
         console.error('End-sem results fetch error:', error);
-        setError(error.message || 'Failed to fetch end-semester results');
+        const errorMessage = error.message || 'Failed to fetch end-semester results';
+        setError(errorMessage);
+        
+        // Update centralized data store with error
+        updateData('endSemResults', { error: errorMessage }, 'error');
       }
     } finally {
       if (!newAbortController.signal.aborted) {
-        setIsLoading(false);
         setAbortController(null);
       }
     }
+  };
+
+  // Process end sem results to filter out empty semesters
+  const processEndSemResults = (data) => {
+    if (!data || !Array.isArray(data)) return;
+    
+    // Filter out semesters with empty results arrays
+    const nonEmptySemesters = data.filter(semester => 
+      semester.grades && 
+      semester.grades.results && 
+      Array.isArray(semester.grades.results) && 
+      semester.grades.results.length > 0
+    );
+    
+    console.log(`Filtered to ${nonEmptySemesters.length} semesters with results`);
+    setFilteredSemesters(nonEmptySemesters);
   };
 
   const handleRetry = () => {

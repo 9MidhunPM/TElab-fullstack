@@ -141,6 +141,153 @@ const homeScreenStyles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: Typography.lineHeight.base,
   },
+
+  // Data Loading Progress Styles
+  loadingProgressContainer: {
+    alignItems: 'center',
+    paddingVertical: Spacing.lg,
+  },
+
+  loadingSpinner: {
+    marginBottom: Spacing.md,
+  },
+
+  loadingProgressText: {
+    fontSize: Typography.fontSize.base,
+    fontWeight: Typography.fontWeight.semibold,
+    color: Colors.textPrimary,
+    textAlign: 'center',
+    marginBottom: Spacing.xs,
+  },
+
+  loadingProgressSubtext: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textLight,
+    textAlign: 'center',
+    marginBottom: Spacing.lg,
+  },
+
+  progressBarContainer: {
+    width: '100%',
+    height: 8,
+    backgroundColor: Colors.backgroundLight,
+    borderRadius: BorderRadius.sm,
+    overflow: 'hidden',
+  },
+
+  progressBar: {
+    height: '100%',
+    backgroundColor: Colors.primary,
+    borderRadius: BorderRadius.sm,
+  },
+
+  // Data Status Styles
+  dataStatusRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: Spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderLighter,
+  },
+
+  dataStatusLabel: {
+    fontSize: Typography.fontSize.base,
+    fontWeight: Typography.fontWeight.medium,
+    color: Colors.textPrimary,
+    flex: 1,
+  },
+
+  dataStatusIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    flex: 1,
+  },
+
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginRight: Spacing.sm,
+  },
+
+  statusPending: {
+    backgroundColor: Colors.textLight,
+  },
+
+  statusSuccess: {
+    backgroundColor: Colors.success,
+  },
+
+  statusError: {
+    backgroundColor: Colors.danger,
+  },
+
+  dataStatusText: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textLight,
+    fontWeight: Typography.fontWeight.medium,
+  },
+
+  dataStatusSuccess: {
+    color: Colors.success,
+  },
+
+  dataStatusError: {
+    color: Colors.danger,
+  },
+
+  // Button Styles
+  refreshButton: {
+    backgroundColor: Colors.primary,
+    borderRadius: BorderRadius.md,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    alignItems: 'center',
+    marginTop: Spacing.lg,
+  },
+
+  refreshButtonText: {
+    color: Colors.white,
+    fontSize: Typography.fontSize.base,
+    fontWeight: Typography.fontWeight.semibold,
+  },
+
+  retryButton: {
+    backgroundColor: Colors.warning,
+    borderRadius: BorderRadius.md,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    alignItems: 'center',
+    marginTop: Spacing.md,
+  },
+
+  retryButtonText: {
+    color: Colors.white,
+    fontSize: Typography.fontSize.base,
+    fontWeight: Typography.fontWeight.semibold,
+  },
+
+  // Summary Styles
+  summaryText: {
+    fontSize: Typography.fontSize.base,
+    fontWeight: Typography.fontWeight.semibold,
+    color: Colors.textPrimary,
+    marginBottom: Spacing.xs,
+  },
+
+  summarySubtext: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textLight,
+  },
+
+  errorText: {
+    fontSize: Typography.fontSize.base,
+    color: Colors.danger,
+    textAlign: 'center',
+    marginBottom: Spacing.md,
+  },
 });
 
 export default homeScreenStyles;

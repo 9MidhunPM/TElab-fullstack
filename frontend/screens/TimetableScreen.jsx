@@ -1,40 +1,40 @@
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchTimetableWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
 import { useAuth } from '../contexts/AuthContext';
+import { useAppData } from '../contexts/DataContext';
 import commonStyles from '../styles/commonStyles';
 import styles from '../styles/timetableScreenStyles';
 
 export default function TimetableScreen() {
-  const [timetable, setTimetable] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { token } = useAuth();
+  const { appData, dataLoadingStatus, updateData, isDataAvailable, hasDataError, getDataError } = useAppData();
+
+  // Get timetable data from context
+  const timetable = appData.timetable;
+  const isLoading = dataLoadingStatus.timetable === 'pending';
 
   // AbortController for request cancellation to prevent race conditions
   const [abortController, setAbortController] = useState(null);
 
   useEffect(() => {
-    if (token) {
-      fetchTimetable();
+    // Set error state based on context data
+    if (hasDataError('timetable')) {
+      setError(getDataError('timetable'));
+    } else {
+      setError(null);
     }
-    
-    // Cleanup: abort any pending requests when component unmounts
-    return () => {
-      if (abortController) {
-        abortController.abort();
-      }
-    };
-  }, [token]);
+  }, [hasDataError, getDataError]);
 
   const fetchTimetable = async () => {
     if (!token) return;
@@ -49,7 +49,6 @@ export default function TimetableScreen() {
     setAbortController(newAbortController);
 
     try {
-      setIsLoading(true);
       setError(null);
 
       // IMPORTANT: use freshToken returned by /app/login here — do NOT read SecureStore for this first fetch.
@@ -58,16 +57,20 @@ export default function TimetableScreen() {
       
       // Only update state if request wasn't cancelled
       if (!newAbortController.signal.aborted) {
-        setTimetable(timetableData);
+        // Update centralized data store
+        updateData('timetable', timetableData, 'success');
       }
     } catch (error) {
       if (error.name !== 'AbortError' && !newAbortController.signal.aborted) {
         console.error('Timetable fetch error:', error);
-        setError(error.message || 'Failed to fetch timetable');
+        const errorMessage = error.message || 'Failed to fetch timetable';
+        setError(errorMessage);
+        
+        // Update centralized data store with error
+        updateData('timetable', { error: errorMessage }, 'error');
       }
     } finally {
       if (!newAbortController.signal.aborted) {
-        setIsLoading(false);
         setAbortController(null);
       }
     }

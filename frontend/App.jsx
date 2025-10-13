@@ -7,6 +7,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import TabIcon from './components/TabIcon';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { DataProvider } from './contexts/DataContext';
 import LoginScreen from './screens/LoginScreen';
 import { tabsConfig } from './tabs';
 
@@ -99,10 +100,12 @@ function App() {
   return (
     <SafeAreaProvider>
       <AuthProvider>
-        <NavigationContainer independent={true}>
-          <AuthNavigator />
-          <StatusBar style="auto" />
-        </NavigationContainer>
+        <DataProvider>
+          <NavigationContainer independent={true}>
+            <AuthNavigator />
+            <StatusBar style="auto" />
+          </NavigationContainer>
+        </DataProvider>
       </AuthProvider>
     </SafeAreaProvider>
   );
