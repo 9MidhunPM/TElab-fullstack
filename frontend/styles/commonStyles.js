@@ -34,6 +34,7 @@ export const Colors = {
   // Neutral colors
   background: '#F8FAFC',     // Slate-50
   backgroundDark: '#F1F5F9', // Slate-100
+  backgroundLight: '#F1F5F9', // Slate-100
   white: '#fff',
   black: '#000',
   

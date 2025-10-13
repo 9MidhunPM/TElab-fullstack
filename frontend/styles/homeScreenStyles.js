@@ -384,6 +384,140 @@ const homeScreenStyles = StyleSheet.create({
     fontSize: Typography.fontSize.sm,
     fontWeight: Typography.fontWeight.bold,
   },
+
+  // Recent Results Styles
+  recentResultsContainer: {
+    flex: 1,
+  },
+
+  recentResultItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.sm,
+    backgroundColor: Colors.backgroundLight,
+    borderRadius: BorderRadius.sm,
+    marginBottom: Spacing.sm,
+  },
+
+  recentResultSubject: {
+    flex: 1,
+    paddingRight: Spacing.sm,
+  },
+
+  recentResultCode: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.bold,
+    color: Colors.textPrimary,
+    marginBottom: Spacing.xs,
+  },
+
+  recentResultName: {
+    fontSize: Typography.fontSize.xs,
+    color: Colors.textSecondary,
+  },
+
+  recentResultScore: {
+    alignItems: 'flex-end',
+  },
+
+  recentResultMarks: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.medium,
+    color: Colors.textPrimary,
+    marginBottom: Spacing.xs,
+  },
+
+  recentResultPercentage: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.bold,
+  },
+
+  // Results Overview Styles
+  resultsOverviewContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+
+  totalPerformanceSection: {
+    flex: 1,
+    alignItems: 'center',
+    paddingRight: Spacing.lg,
+    borderRightWidth: 1,
+    borderRightColor: Colors.borderLighter,
+  },
+
+  totalPerformanceLabel: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textLight,
+    marginBottom: Spacing.xs,
+    textAlign: 'center',
+  },
+
+  totalPerformancePercentage: {
+    fontSize: Typography.fontSize.massive,
+    fontWeight: Typography.fontWeight.bold,
+    marginBottom: Spacing.xs,
+  },
+
+  totalPerformanceMessage: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.semibold,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+    marginBottom: Spacing.xs,
+  },
+
+  totalExamsText: {
+    fontSize: Typography.fontSize.xs,
+    color: Colors.textLight,
+    textAlign: 'center',
+  },
+
+  worstResultsSection: {
+    flex: 1,
+    paddingLeft: Spacing.lg,
+  },
+
+  worstResultsTitle: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.semibold,
+    color: Colors.textLight,
+    marginBottom: Spacing.sm,
+    textAlign: 'center',
+  },
+
+  worstResultItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: Spacing.xs,
+    paddingHorizontal: Spacing.sm,
+    backgroundColor: Colors.backgroundLight,
+    borderRadius: BorderRadius.sm,
+    marginBottom: Spacing.xs,
+  },
+
+  worstResultCode: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.medium,
+    color: Colors.textPrimary,
+    flex: 1,
+  },
+
+  worstResultPercentage: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.bold,
+  },
+
+  noResultsText: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
 });
 
 export default homeScreenStyles;

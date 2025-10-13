@@ -8,8 +8,11 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AttendanceCard from '../components/AttendanceCard';
 import Card from '../components/Card';
 import LogoutIcon from '../components/LogoutIcon';
+import RecentResultsCard from '../components/RecentResultsCard';
+import ResultsOverviewCard from '../components/ResultsOverviewCard';
 import { getLoadOrderByPreset, LOADING_CONFIG } from '../config/dataLoadingConfig';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
@@ -295,61 +298,17 @@ export default function HomeScreen() {
 
         {/* Attendance Summary Card */}
         {attendanceSummary && !isLoadingData && (
-          <Card variant="default" withMargin marginSize="medium">
-            <Card.Header>
-              <Text style={commonStyles.cardTitle}>Attendance Overview</Text>
-            </Card.Header>
-            
-            <Card.Body>
-              <View style={styles.attendanceSummaryContainer}>
-                {/* Left side - Total attendance */}
-                <View style={styles.attendanceTotalSection}>
-                  <Text style={styles.attendanceTotalLabel}>Overall Attendance</Text>
-                  <Text style={styles.attendanceTotalPercentage}>
-                    {attendanceSummary.totalPercentage}
-                  </Text>
-                  <Text style={styles.attendanceTotalHours}>
-                    {attendanceSummary.totalPresentHours} / {attendanceSummary.totalHours} hours
-                  </Text>
-                </View>
+          <AttendanceCard attendanceSummary={attendanceSummary} />
+        )}
 
-                {/* Right side - Lowest attendance or full attendance message */}
-                <View style={styles.attendanceDetailsSection}>
-                  {attendanceSummary.hasFullAttendance ? (
-                    <View style={styles.fullAttendanceContainer}>
-                      <Text style={styles.fullAttendanceText}>🎉 Perfect Attendance!</Text>
-                      <Text style={styles.fullAttendanceSubtext}>
-                        You have 100% attendance in all {attendanceSummary.totalSubjects} subjects. Great job!
-                      </Text>
-                    </View>
-                  ) : (
-                    <View style={styles.lowestAttendanceContainer}>
-                      <Text style={styles.lowestAttendanceTitle}>
-                        {attendanceSummary.lowestAttendance.length > 0 ? 'Needs Attention' : 'Attendance Status'}
-                      </Text>
-                      {attendanceSummary.lowestAttendance.length > 0 ? (
-                        attendanceSummary.lowestAttendance.map((subject, index) => (
-                          <View key={subject.code} style={styles.lowestAttendanceItem}>
-                            <Text style={styles.lowestAttendanceCode}>{subject.code}</Text>
-                            <Text style={[
-                              styles.lowestAttendancePercentage,
-                              { color: subject.percentage >= 75 ? '#10B981' : '#EF4444' }
-                            ]}>
-                              {subject.attendance_percentage}
-                            </Text>
-                          </View>
-                        ))
-                      ) : (
-                        <Text style={styles.fullAttendanceSubtext}>
-                          No attendance data available
-                        </Text>
-                      )}
-                    </View>
-                  )}
-                </View>
-              </View>
-            </Card.Body>
-          </Card>
+        {/* Results Overview Card */}
+        {isDataAvailable('results') && !isLoadingData && (
+          <ResultsOverviewCard resultsData={appData.results} />
+        )}
+
+        {/* Recent Results Card */}
+        {isDataAvailable('results') && !isLoadingData && (
+          <RecentResultsCard resultsData={appData.results} />
         )}
       </ScrollView>
     </SafeAreaView>
