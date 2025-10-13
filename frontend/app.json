@@ -8,10 +8,7 @@
     "scheme": "etlab-plus",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.telab.etlabplus"
-    },
+    
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
@@ -21,35 +18,11 @@
       "predictiveBackGestureEnabled": false,
       "package": "com.telab.etlabplus"
     },
-    "web": {
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
-    "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#4F46E5",
-          "dark": {
-            "image": "./assets/images/splash-icon.png",
-            "backgroundColor": "#1E293B"
-          }
-        }
-      ]
-    ],
-    "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
-    },
     "extra": {
-      "router": {},
       "eas": {
-        "projectId": "a0c92294-0e62-4a78-a4a0-959751ee5767"
+        "projectId": "e35a302f-8e30-429d-8377-f2df462514ca"
       }
-    }
+    },
+    "owner": "9titan"
   }
 }

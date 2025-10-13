@@ -132,6 +132,277 @@ const timetableScreenStyles = StyleSheet.create({
     color: Colors.textSecondary,
     lineHeight: Typography.lineHeight.tight,
   },
+
+  // Analysis section styles
+  analysisContainer: {
+    paddingVertical: Spacing.sm,
+  },
+  
+  analysisTitle: {
+    fontSize: Typography.fontSize.base,
+    fontWeight: Typography.fontWeight.bold,
+    color: Colors.textPrimary,
+    marginBottom: Spacing.sm,
+  },
+  
+  analysisRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: Spacing.xs,
+  },
+  
+  analysisSubject: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textPrimary,
+    flex: 1,
+  },
+  
+  analysisCount: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.semibold,
+    color: Colors.primary,
+  },
+  
+  analysisSummary: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
+
+  // Tab styles
+  tabContainer: {
+    flexDirection: 'row',
+    backgroundColor: Colors.backgroundSecondary || '#E5E7EB',
+    marginHorizontal: Spacing.base,
+    borderRadius: BorderRadius.md,
+    padding: Spacing.xs,
+    marginBottom: Spacing.sm,
+    marginTop: Spacing.lg,
+  },
+
+  tabButton: {
+    flex: 1,
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.md,
+    borderRadius: BorderRadius.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  activeTabButton: {
+    backgroundColor: Colors.white,
+    ...Shadows.small,
+  },
+
+  tabButtonText: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.medium,
+    color: Colors.textSecondary,
+  },
+
+  activeTabButtonText: {
+    color: Colors.primary,
+    fontWeight: Typography.fontWeight.semibold,
+  },
+
+  // Analysis table styles
+  summaryContainer: {
+    backgroundColor: Colors.backgroundLight,
+    padding: Spacing.md,
+    borderRadius: BorderRadius.sm,
+    marginBottom: Spacing.base,
+  },
+
+  summaryText: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+    fontWeight: Typography.fontWeight.medium,
+  },
+
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: Colors.primary,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.sm,
+    borderTopLeftRadius: BorderRadius.sm,
+    borderTopRightRadius: BorderRadius.sm,
+  },
+
+  tableHeaderText: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.bold,
+    color: Colors.white,
+    textAlign: 'center',
+  },
+
+  tableRow: {
+    flexDirection: 'row',
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderLightest,
+    minHeight: 50,
+    alignItems: 'center',
+  },
+
+  evenRow: {
+    backgroundColor: Colors.backgroundLightest,
+  },
+
+  tableCellText: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textPrimary,
+    textAlign: 'left',
+  },
+
+  numberText: {
+    textAlign: 'center',
+    fontWeight: Typography.fontWeight.medium,
+  },
+
+  tableFooter: {
+    flexDirection: 'row',
+    backgroundColor: Colors.backgroundLight,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.sm,
+    borderBottomLeftRadius: BorderRadius.sm,
+    borderBottomRightRadius: BorderRadius.sm,
+    borderTopWidth: 2,
+    borderTopColor: Colors.primary,
+  },
+
+  tableFooterText: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.bold,
+    color: Colors.textPrimary,
+    textAlign: 'center',
+  },
+
+  // Column widths
+  subjectColumn: {
+    flex: 2,
+    paddingRight: Spacing.sm,
+  },
+
+  weeklyColumn: {
+    flex: 1,
+    textAlign: 'center',
+  },
+
+  totalColumn: {
+    flex: 1,
+    textAlign: 'center',
+  },
+
+  // New timetable styles for swipeable days
+  timetableContainer: {
+    flex: 1,
+  },
+
+  dayScrollView: {
+    flex: 1,
+  },
+
+  dayScrollContainer: {
+    paddingTop: Spacing.sm,
+    paddingBottom: Spacing.xl,
+  },
+
+  // Day tab styles
+  dayTabBar: {
+    backgroundColor: Colors.white,
+    elevation: 2,
+    shadowColor: Colors.shadowColor || '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+
+  dayTabIndicator: {
+    backgroundColor: Colors.primary || '#4F46E5',
+    height: 3,
+    borderRadius: 1.5,
+  },
+
+  dayTabLabel: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.semibold,
+    textTransform: 'capitalize',
+  },
+
+  dayTab: {
+    width: 'auto',
+    minWidth: 80,
+  },
+
+  // Period card styles
+  periodCard: {
+    marginHorizontal: Spacing.base,
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.md,
+    ...Shadows.small,
+  },
+
+  periodCardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: Spacing.sm,
+  },
+
+  periodLabel: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.bold,
+    color: Colors.primary,
+  },
+
+  periodCardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: Spacing.sm,
+  },
+
+  periodTiming: {
+    fontSize: Typography.fontSize.xs,
+    fontWeight: Typography.fontWeight.bold,
+    color: Colors.primary || '#4F46E5',
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: Spacing.xs,
+    borderRadius: BorderRadius.sm,
+    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+  },
+
+  periodStatus: {
+    fontSize: Typography.fontSize.xs,
+    fontWeight: Typography.fontWeight.semibold,
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: Spacing.xs,
+    borderRadius: BorderRadius.sm,
+    backgroundColor: Colors.successLight,
+    color: Colors.success,
+  },
+
+  freeStatus: {
+    backgroundColor: Colors.backgroundLight,
+    color: Colors.textSecondary,
+  },
+
+  periodSubject: {
+    fontSize: Typography.fontSize.base,
+    fontWeight: Typography.fontWeight.bold,
+    color: Colors.textPrimary,
+    marginBottom: Spacing.xs,
+  },
+
+  periodTeacher: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textSecondary,
+    fontStyle: 'italic',
+  },
 });
 
 export default timetableScreenStyles;

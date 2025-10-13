@@ -11,11 +11,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import AttendanceCard from '../components/AttendanceCard';
 import Card from '../components/Card';
 import LogoutIcon from '../components/LogoutIcon';
+import NextClassCard from '../components/NextClassCard';
 import RecentResultsCard from '../components/RecentResultsCard';
 import ResultsOverviewCard from '../components/ResultsOverviewCard';
 import { getLoadOrderByPreset, LOADING_CONFIG } from '../config/dataLoadingConfig';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
+import { getNextClassInfo } from '../utils/nextClassAnalysis';
 import commonStyles from '../styles/commonStyles';
 import styles from '../styles/homeScreenStyles';
 
@@ -164,6 +166,9 @@ export default function HomeScreen() {
 
   const attendanceSummary = getAttendanceSummary();
 
+  // Get next class information
+  const nextClassInfo = isDataAvailable('timetable') ? getNextClassInfo(appData.timetable) : null;
+
   const handleLogout = () => {
     Alert.alert(
       'Logout',
@@ -295,6 +300,11 @@ export default function HomeScreen() {
             </View>
           </Card.Body>
         </Card>
+
+        {/* Next Class Card */}
+        {nextClassInfo && !isLoadingData && (
+          <NextClassCard nextClassInfo={nextClassInfo} />
+        )}
 
         {/* Attendance Summary Card */}
         {attendanceSummary && !isLoadingData && (
