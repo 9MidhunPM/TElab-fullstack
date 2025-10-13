@@ -36,7 +36,7 @@ function TabsNavigator() {
           shadowOffset: { width: 0, height: -2 },
           shadowOpacity: 0.15,
           shadowRadius: 4,
-          height: 60,
+          height: 75,
           paddingBottom: 8,
           paddingTop: 8,
         },
