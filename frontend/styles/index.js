@@ -10,6 +10,7 @@ export { BorderRadius, Colors, default as commonStyles, Shadows, Spacing, Typogr
 export { default as cardStyles } from './cardStyles';
 
 // Export screen-specific styles
+export { default as aiScreenStyles } from './aiScreenStyles';
 export { default as attendanceScreenStyles } from './attendanceScreenStyles';
 export { default as endSemResultsScreenStyles } from './endSemResultsScreenStyles';
 export { default as homeScreenStyles } from './homeScreenStyles';

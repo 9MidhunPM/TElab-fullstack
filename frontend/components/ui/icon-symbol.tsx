@@ -1,29 +1,19 @@
-// Fallback for using MaterialIcons on Android and web.
+// SVG icon implementation to replace MaterialIcons dependency
 
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SymbolWeight, SymbolViewProps } from 'expo-symbols';
-import { ComponentProps } from 'react';
-import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
+import React from 'react';
+import Svg, { Path } from 'react-native-svg';
+import { StyleProp, TextStyle } from 'react-native';
 
-type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>;
-type IconSymbolName = keyof typeof MAPPING;
-
-/**
- * Add your SF Symbols to Material Icons mappings here.
- * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
- * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
- */
-const MAPPING = {
-  'house.fill': 'home',
-  'paperplane.fill': 'send',
-  'chevron.left.forwardslash.chevron.right': 'code',
-  'chevron.right': 'chevron-right',
-} as IconMapping;
+// Define the available icon names
+type IconSymbolName = 
+  | 'house.fill' 
+  | 'paperplane.fill' 
+  | 'chevron.left.forwardslash.chevron.right' 
+  | 'chevron.right';
 
 /**
- * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
- * This ensures a consistent look across platforms, and optimal resource usage.
- * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
+ * An icon component that uses SVG icons instead of Material Icons or SF Symbols.
+ * This ensures a consistent look across platforms without external dependencies.
  */
 export function IconSymbol({
   name,
@@ -33,9 +23,62 @@ export function IconSymbol({
 }: {
   name: IconSymbolName;
   size?: number;
-  color: string | OpaqueColorValue;
+  color: string;
   style?: StyleProp<TextStyle>;
-  weight?: SymbolWeight;
 }) {
-  return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
+  const renderIcon = () => {
+    switch (name) {
+      case 'house.fill':
+        return (
+          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+            <Path
+              d="M12 3L2 12H5V20H19V12H22L12 3Z"
+              fill={color}
+            />
+          </Svg>
+        );
+      
+      case 'paperplane.fill':
+        return (
+          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+            <Path
+              d="M2.01 21L23 12 2.01 3 2 10L17 12 2 14L2.01 21Z"
+              fill={color}
+            />
+          </Svg>
+        );
+      
+      case 'chevron.left.forwardslash.chevron.right':
+        return (
+          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+            <Path
+              d="M9.4 16.6L4.8 12L9.4 7.4L8 6L2 12L8 18L9.4 16.6ZM14.6 16.6L19.2 12L14.6 7.4L16 6L22 12L16 18L14.6 16.6ZM11.5 8.5L12.5 8.5L12.5 15.5L11.5 15.5L11.5 8.5Z"
+              fill={color}
+            />
+          </Svg>
+        );
+      
+      case 'chevron.right':
+        return (
+          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+            <Path
+              d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"
+              fill={color}
+            />
+          </Svg>
+        );
+      
+      default:
+        return (
+          <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+            <Path
+              d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"
+              fill={color}
+            />
+          </Svg>
+        );
+    }
+  };
+
+  return renderIcon();
 }

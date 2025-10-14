@@ -6,64 +6,73 @@ import { ActivityIndicator, AppRegistry, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import TabIcon from './components/TabIcon';
+import AIFloatingButton from './components/AIFloatingButton';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { DataProvider } from './contexts/DataContext';
 import LoginScreen from './screens/LoginScreen';
+import AIScreen from './screens/AIScreen';
 import { tabsConfig } from './tabs';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 // TabsNavigator component that renders all tabs dynamically
-function TabsNavigator() {
+function TabsNavigator({ navigation }) {
   return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: '#4F46E5',
-        tabBarInactiveTintColor: '#64748B',
-        tabBarLabelStyle: {
-          fontSize: 14,
-          fontWeight: '600',
-          textTransform: 'none',
-        },
-        tabBarStyle: {
-          backgroundColor: '#fff',
-          borderTopWidth: 1,
-          borderTopColor: '#E2E8F0',
-          elevation: 4,
-          shadowColor: '#4F46E5',
-          shadowOffset: { width: 0, height: -2 },
-          shadowOpacity: 0.15,
-          shadowRadius: 4,
-          height: 75,
-          paddingBottom: 8,
-          paddingTop: 8,
-        },
-      }}
-      initialRouteName={tabsConfig[0]?.key || 'home'}
-    >
-      {/* Dynamically render tabs from configuration */}
-      {tabsConfig.map((tab) => (
-        <Tab.Screen
-          key={tab.key}
-          name={tab.key}
-          component={tab.component}
-          options={{
-            title: tab.title,
-            tabBarAccessibilityLabel: `${tab.title} tab`,
-            tabBarIcon: ({ color, focused, size }) => (
-              <TabIcon 
-                name={tab.key} 
-                size={size || 24} 
-                color={color} 
-                focused={focused} 
-              />
-            ),
-          }}
-        />
-      ))}
-    </Tab.Navigator>
+    <View style={{ flex: 1 }}>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: '#4F46E5',
+          tabBarInactiveTintColor: '#64748B',
+          tabBarLabelStyle: {
+            fontSize: 14,
+            fontWeight: '600',
+            textTransform: 'none',
+          },
+          tabBarStyle: {
+            backgroundColor: '#fff',
+            borderTopWidth: 1,
+            borderTopColor: '#E2E8F0',
+            elevation: 4,
+            shadowColor: '#4F46E5',
+            shadowOffset: { width: 0, height: -2 },
+            shadowOpacity: 0.15,
+            shadowRadius: 4,
+            height: 75,
+            paddingBottom: 8,
+            paddingTop: 8,
+          },
+        }}
+        initialRouteName={tabsConfig[0]?.key || 'home'}
+      >
+        {/* Dynamically render tabs from configuration */}
+        {tabsConfig.map((tab) => (
+          <Tab.Screen
+            key={tab.key}
+            name={tab.key}
+            component={tab.component}
+            options={{
+              title: tab.title,
+              tabBarAccessibilityLabel: `${tab.title} tab`,
+              tabBarIcon: ({ color, focused, size }) => (
+                <TabIcon 
+                  name={tab.key} 
+                  size={size || 24} 
+                  color={color} 
+                  focused={focused} 
+                />
+              ),
+            }}
+          />
+        ))}
+      </Tab.Navigator>
+      
+      {/* Floating AI Button */}
+      <AIFloatingButton 
+        onPress={() => navigation.navigate('AIScreen')} 
+      />
+    </View>
   );
 }
 
@@ -85,8 +94,18 @@ function AuthNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isAuthenticated ? (
-        // User is authenticated - show tabs interface
-        <Stack.Screen name="MainTabs" component={TabsNavigator} />
+        // User is authenticated - show tabs interface and AI screen
+        <>
+          <Stack.Screen name="MainTabs" component={TabsNavigator} />
+          <Stack.Screen 
+            name="AIScreen" 
+            component={AIScreen}
+            options={{
+              presentation: 'modal',
+              gestureEnabled: true,
+            }}
+          />
+        </>
       ) : (
         // User is not authenticated - show login screen
         <Stack.Screen name="Login" component={LoginScreen} />

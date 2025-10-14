@@ -1,26 +1,26 @@
-import { Ionicons } from '@expo/vector-icons';
+import { HomeIcon, CalendarIcon, SchoolIcon, TrophyIcon, TimeIcon } from './icons/SvgIcons';
 
 // Static icon mapping - no dynamic string concatenation
 export const TabIcons = {
   home: {
-    focused: (props) => <Ionicons name="home" {...props} />,
-    unfocused: (props) => <Ionicons name="home-outline" {...props} />,
+    focused: (props) => <HomeIcon {...props} outline={false} />,
+    unfocused: (props) => <HomeIcon {...props} outline={true} />,
   },
   attendance: {
-    focused: (props) => <Ionicons name="calendar" {...props} />,
-    unfocused: (props) => <Ionicons name="calendar-outline" {...props} />,
+    focused: (props) => <CalendarIcon {...props} outline={false} />,
+    unfocused: (props) => <CalendarIcon {...props} outline={true} />,
   },
   'end-sem': {
-    focused: (props) => <Ionicons name="school" {...props} />,
-    unfocused: (props) => <Ionicons name="school-outline" {...props} />,
+    focused: (props) => <SchoolIcon {...props} outline={false} />,
+    unfocused: (props) => <SchoolIcon {...props} outline={true} />,
   },
   results: {
-    focused: (props) => <Ionicons name="trophy" {...props} />,
-    unfocused: (props) => <Ionicons name="trophy-outline" {...props} />,
+    focused: (props) => <TrophyIcon {...props} outline={false} />,
+    unfocused: (props) => <TrophyIcon {...props} outline={true} />,
   },
   timetable: {
-    focused: (props) => <Ionicons name="time" {...props} />,
-    unfocused: (props) => <Ionicons name="time-outline" {...props} />,
+    focused: (props) => <TimeIcon {...props} outline={false} />,
+    unfocused: (props) => <TimeIcon {...props} outline={true} />,
   },
 };
 
