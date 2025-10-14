@@ -17,9 +17,9 @@ import ResultsOverviewCard from '../components/ResultsOverviewCard';
 import { getLoadOrderByPreset, LOADING_CONFIG } from '../config/dataLoadingConfig';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
-import { getNextClassInfo } from '../utils/nextClassAnalysis';
 import commonStyles from '../styles/commonStyles';
 import styles from '../styles/homeScreenStyles';
+import { getNextClassInfo } from '../utils/nextClassAnalysis';
 
 export default function HomeScreen() {
   const { user, logout, isLoading, token } = useAuth();

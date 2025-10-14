@@ -125,10 +125,20 @@ public class AppController {
             StudentProfile profile = etlabApiService.getStudentProfile();
 
             Map<String, String> result = new HashMap<>();
-            result.put("name", profile.getPersonalInfo().getName());
-            result.put("mobileNumber", profile.getContactInfo().getMobileNumber());
-            result.put("srNumber", profile.getAcademicInfo().getSrNumber());
-            result.put("universityRegNo", profile.getAcademicInfo().getUniversityRegNo());
+            
+            // Add null safety checks
+            if (profile.getPersonalInfo() != null) {
+                result.put("name", profile.getPersonalInfo().getName());
+            }
+            
+            if (profile.getAdditionalInfo() != null) {
+                result.put("mobileNumber", profile.getAdditionalInfo().getStudentMobileNo());
+            }
+            
+            if (profile.getAcademicInfo() != null) {
+                result.put("srNumber", profile.getAcademicInfo().getSrNumber());
+                result.put("universityRegNo", profile.getAcademicInfo().getUniversityRegNo());
+            }
 
             return ResponseEntity.ok(result);
         } catch (Exception e) {

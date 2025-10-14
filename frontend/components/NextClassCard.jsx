@@ -1,7 +1,6 @@
-import React from 'react';
 import { Text, View } from 'react-native';
-import Card from './Card';
 import commonStyles from '../styles/commonStyles';
+import Card from './Card';
 
 /**
  * NextClassCard Component

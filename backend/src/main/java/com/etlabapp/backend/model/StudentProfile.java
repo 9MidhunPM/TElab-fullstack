@@ -10,6 +10,9 @@ public class StudentProfile {
     @JsonProperty("contact_info")
     private ContactInfo contactInfo;
 
+    @JsonProperty("additional_info")
+    private AdditionalInfo additionalInfo;
+
     @JsonProperty("academic_info")
     private AcademicInfo academicInfo;
 
@@ -23,11 +26,31 @@ public class StudentProfile {
     }
 
     public static class ContactInfo {
-        @JsonProperty("Mobile No")
-        private String mobileNumber;
+        @JsonProperty("Email")
+        private String email;
 
-        public String getMobileNumber() { return mobileNumber; }
-        public void setMobileNumber(String mobileNumber) { this.mobileNumber = mobileNumber; }
+        @JsonProperty("Father's Mobile No")
+        private String fatherMobileNo;
+
+        @JsonProperty("Mother's Mobile No")
+        private String motherMobileNo;
+
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+
+        public String getFatherMobileNo() { return fatherMobileNo; }
+        public void setFatherMobileNo(String fatherMobileNo) { this.fatherMobileNo = fatherMobileNo; }
+
+        public String getMotherMobileNo() { return motherMobileNo; }
+        public void setMotherMobileNo(String motherMobileNo) { this.motherMobileNo = motherMobileNo; }
+    }
+
+    public static class AdditionalInfo {
+        @JsonProperty("Student Mobile No")
+        private String studentMobileNo;
+
+        public String getStudentMobileNo() { return studentMobileNo; }
+        public void setStudentMobileNo(String studentMobileNo) { this.studentMobileNo = studentMobileNo; }
     }
 
     public static class AcademicInfo {
@@ -47,5 +70,6 @@ public class StudentProfile {
     // Getters for outer class
     public PersonalInfo getPersonalInfo() { return personalInfo; }
     public ContactInfo getContactInfo() { return contactInfo; }
+    public AdditionalInfo getAdditionalInfo() { return additionalInfo; }
     public AcademicInfo getAcademicInfo() { return academicInfo; }
 }
