@@ -2,6 +2,9 @@ import { StyleSheet } from 'react-native';
 import { Colors } from './commonStyles';
 
 const styles = StyleSheet.create({
+  animatedContainer: {
+    flex: 1,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -30,90 +33,75 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   headerSpacer: {
-    width: 40, // Same width as back button to center title
+    width: 40,
   },
-  container: {
+  
+  // Toggle Slider
+  toggleContainer: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    marginHorizontal: 16,
+    marginVertical: 12,
+    padding: 4,
+    borderRadius: 12,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  toggleButton: {
     flex: 1,
-    padding: 16,
-  },
-  sectionContainer: {
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text,
-    marginBottom: 12,
-  },
-  pickerContainer: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  picker: {
-    height: 50,
-    color: Colors.text,
-  },
-  textInput: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    padding: 16,
-    fontSize: 16,
-    color: Colors.text,
-    minHeight: 120,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  buttonsContainer: {
-    gap: 12,
-    marginBottom: 24,
-  },
-  actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
     gap: 8,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
   },
-  primaryButton: {
+  toggleButtonActive: {
     backgroundColor: Colors.primary,
   },
-  secondaryButton: {
-    backgroundColor: 'white',
-    borderWidth: 2,
-    borderColor: Colors.primary,
-  },
-  primaryButtonText: {
-    color: 'white',
-    fontSize: 16,
+  toggleButtonText: {
+    fontSize: 15,
     fontWeight: '600',
-  },
-  secondaryButtonText: {
     color: Colors.primary,
-    fontSize: 16,
+  },
+  toggleButtonTextActive: {
+    color: 'white',
+  },
+
+  // Response Scroll Area
+  responseScrollContainer: {
+    flex: 1,
+  },
+  responseScrollContent: {
+    padding: 16,
+    paddingBottom: 24,
+  },
+  emptyStateContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 60,
+    paddingHorizontal: 32,
+  },
+  emptyStateText: {
+    fontSize: 18,
     fontWeight: '600',
+    color: Colors.text,
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  emptyStateSubtext: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    textAlign: 'center',
   },
   loadingContainer: {
     alignItems: 'center',
-    paddingVertical: 32,
+    paddingVertical: 40,
     gap: 12,
   },
   loadingText: {
@@ -121,12 +109,12 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
   },
   responseContainer: {
-    marginBottom: 24,
+    marginBottom: 16,
   },
   responseTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text,
+    fontSize: 18,
+    fontWeight: '700',
+    color: Colors.primary,
     marginBottom: 12,
   },
   responseBox: {
@@ -134,17 +122,71 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: Colors.border,
-    padding: 16,
-    elevation: 2,
+    padding: 20,
+    elevation: 3,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
   },
-  responseText: {
-    fontSize: 14,
+
+  // Fixed Bottom Input Area
+  bottomInputContainer: {
+    backgroundColor: 'white',
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 16,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  inputRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: 8,
+  },
+  iconButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: Colors.cardBackground,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  textInput: {
+    flex: 1,
+    backgroundColor: Colors.cardBackground,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 15,
     color: Colors.text,
-    lineHeight: 20,
+    maxHeight: 100,
+  },
+  sendButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: Colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+  sendButtonDisabled: {
+    backgroundColor: Colors.textSecondary,
+    opacity: 0.5,
   },
 });
 

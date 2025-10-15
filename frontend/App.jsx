@@ -5,12 +5,12 @@ import { StatusBar } from 'expo-status-bar';
 import { ActivityIndicator, AppRegistry, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import TabIcon from './components/TabIcon';
 import AIFloatingButton from './components/AIFloatingButton';
+import TabIcon from './components/TabIcon';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { DataProvider } from './contexts/DataContext';
-import LoginScreen from './screens/LoginScreen';
 import AIScreen from './screens/AIScreen';
+import LoginScreen from './screens/LoginScreen';
 import { tabsConfig } from './tabs';
 
 const Stack = createNativeStackNavigator();

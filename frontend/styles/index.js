@@ -4,7 +4,7 @@
  */
 
 // Export common styles and design tokens
-export { BorderRadius, Colors, default as commonStyles, Shadows, Spacing, Typography } from './commonStyles';
+export { BorderRadius, Colors, Shadows, Spacing, Typography, default as commonStyles } from './commonStyles';
 
 // Export component-specific styles
 export { default as cardStyles } from './cardStyles';

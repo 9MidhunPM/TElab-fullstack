@@ -1,9 +1,15 @@
 /**
  * API module for authentication, profile management, attendance, and results
- * Base URL configured via environment variable
+ * Base URL configured via environment variable - NO HARDCODED VALUES
  */
 
-const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL || 'https://etlabapp-backendv1.onrender.com';
+const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
+
+// Validate that BASE_URL is configured
+if (!BASE_URL) {
+  console.error('ERROR: EXPO_PUBLIC_API_BASE_URL is not configured in .env file!');
+  throw new Error('Backend API URL not configured. Please set EXPO_PUBLIC_API_BASE_URL in your .env file.');
+}
 
 /**
  * Login API function

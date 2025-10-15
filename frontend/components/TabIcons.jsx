@@ -1,4 +1,4 @@
-import { HomeIcon, CalendarIcon, SchoolIcon, TrophyIcon, TimeIcon } from './icons/SvgIcons';
+import { CalendarIcon, HomeIcon, SchoolIcon, TimeIcon, TrophyIcon } from './icons/SvgIcons';
 
 // Static icon mapping - no dynamic string concatenation
 export const TabIcons = {

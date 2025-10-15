@@ -1,8 +1,8 @@
 // SVG icon implementation to replace MaterialIcons dependency
 
 import React from 'react';
-import Svg, { Path } from 'react-native-svg';
 import { StyleProp, TextStyle } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 
 // Define the available icon names
 type IconSymbolName = 

@@ -1,23 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  Animated,
   ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
   View
 } from 'react-native';
+import Markdown from 'react-native-markdown-display';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Picker } from '@react-native-picker/picker';
-import Constants from 'expo-constants';
+import { ArrowBackIcon, CalendarIcon, SendIcon, TrophyIcon } from '../components/icons/SvgIcons';
 import { useAppData } from '../contexts/DataContext';
-import { ArrowBackIcon, SendIcon, CalendarIcon, TrophyIcon } from '../components/icons/SvgIcons';
-import commonStyles, { Colors } from '../styles/commonStyles';
 import styles from '../styles/aiScreenStyles';
+import commonStyles, { Colors } from '../styles/commonStyles';
+import { markdownStyles } from '../styles/markdownStyles';
+import { sendAIRequest } from '../utils/aiApi';
 
-const AI_BASE_URL = Constants.expoConfig?.extra?.AI_BASE_URL || process.env.EXPO_PUBLIC_AI_BASE_URL || 'https://your-ai-api-endpoint.com';
-
+/**
+ * AI Assistant Screen
+ * Provides an interface for users to query AI about their attendance or results data
+ */
 export default function AIScreen({ navigation }) {
   const [query, setQuery] = useState('');
   const [queryType, setQueryType] = useState('attendance');
@@ -26,57 +30,53 @@ export default function AIScreen({ navigation }) {
   
   const { appData } = useAppData();
 
+  // Animation values
+  const slideAnim = useRef(new Animated.Value(300)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  // Entry animation
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
+  // Navigation handlers with exit animation
   const handleGoBack = () => {
-    navigation.goBack();
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: 300,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      navigation.goBack();
+    });
   };
 
-  const prepareData = (type) => {
-    if (type === 'attendance') {
-      return appData.attendance || {};
-    } else if (type === 'results') {
-      return appData.results || {};
-    }
-    return {};
-  };
-
-  const sendAIRequest = async (requestQuery) => {
+  // AI request handler
+  const handleAIRequest = async (requestQuery) => {
     setIsLoading(true);
     setResponse('');
     
     try {
-      const data = prepareData(queryType);
-      
-      const requestBody = {
-        data: data,
-        query: requestQuery
-      };
-
-      console.log('AI Request - URL:', `${AI_BASE_URL}/api/ai-query`);
-      console.log('AI Request - Body:', JSON.stringify(requestBody, null, 2));
-      console.log('AI Request - Query Type:', queryType);
-      console.log('AI Request - Data Keys:', Object.keys(data));
-
-      const response = await fetch(`${AI_BASE_URL}/api/ai-query`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody)
-      });
-
-      console.log('AI Response - Status:', response.status);
-      console.log('AI Response - Status Text:', response.statusText);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log('AI Response - Result:', result);
-      setResponse(result.response || 'No response received');
-      
+      const responseText = await sendAIRequest(requestQuery, queryType, appData);
+      setResponse(responseText);
     } catch (error) {
-      console.error('AI Request Error:', error);
       Alert.alert(
         'Error',
         'Failed to get AI response. Please check your connection and try again.',
@@ -87,12 +87,43 @@ export default function AIScreen({ navigation }) {
     }
   };
 
-  const handleAttendanceSummary = () => {
-    sendAIRequest('Attendance summary');
+  // Button action handlers
+  const handleAttendanceSummary = async () => {
+    setIsLoading(true);
+    setResponse('');
+    
+    try {
+      // Force attendance data type for this request
+      const responseText = await sendAIRequest('Attendance summary', 'attendance', appData);
+      setResponse(responseText);
+    } catch (error) {
+      Alert.alert(
+        'Error',
+        'Failed to get AI response. Please check your connection and try again.',
+        [{ text: 'OK' }]
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleResultsSummary = () => {
-    sendAIRequest('Results summary');
+  const handleResultsSummary = async () => {
+    setIsLoading(true);
+    setResponse('');
+    
+    try {
+      // Force results data type for this request
+      const responseText = await sendAIRequest('Results summary', 'results', appData);
+      setResponse(responseText);
+    } catch (error) {
+      Alert.alert(
+        'Error',
+        'Failed to get AI response. Please check your connection and try again.',
+        [{ text: 'OK' }]
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCustomQuery = () => {
@@ -100,13 +131,22 @@ export default function AIScreen({ navigation }) {
       Alert.alert('Error', 'Please enter a query first.');
       return;
     }
-    sendAIRequest(query);
+    handleAIRequest(query);
   };
 
   return (
     <SafeAreaView style={[commonStyles.safeArea, { backgroundColor: Colors.background }]}>
-      {/* Header with Back Button */}
-      <View style={styles.header}>
+      <Animated.View 
+        style={[
+          styles.animatedContainer,
+          {
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          }
+        ]}
+      >
+        {/* Header with Back Button */}
+        <View style={styles.header}>
         <TouchableOpacity 
           style={styles.backButton} 
           onPress={handleGoBack}
@@ -118,70 +158,37 @@ export default function AIScreen({ navigation }) {
         <View style={styles.headerSpacer} />
       </View>
 
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        {/* Query Type Selector */}
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Query Type</Text>
-          <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={queryType}
-              onValueChange={(itemValue) => setQueryType(itemValue)}
-              style={styles.picker}
-            >
-              <Picker.Item label="Attendance Related Queries" value="attendance" />
-              <Picker.Item label="Results Based Queries" value="results" />
-            </Picker>
-          </View>
-        </View>
+      {/* Query Type Toggle Slider */}
+      <View style={styles.toggleContainer}>
+        <TouchableOpacity 
+          style={[styles.toggleButton, queryType === 'attendance' && styles.toggleButtonActive]}
+          onPress={() => setQueryType('attendance')}
+          activeOpacity={0.8}
+        >
+          <CalendarIcon size={20} color={queryType === 'attendance' ? 'white' : Colors.primary} />
+          <Text style={[styles.toggleButtonText, queryType === 'attendance' && styles.toggleButtonTextActive]}>
+            Attendance
+          </Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={[styles.toggleButton, queryType === 'results' && styles.toggleButtonActive]}
+          onPress={() => setQueryType('results')}
+          activeOpacity={0.8}
+        >
+          <TrophyIcon size={20} color={queryType === 'results' ? 'white' : Colors.primary} />
+          <Text style={[styles.toggleButtonText, queryType === 'results' && styles.toggleButtonTextActive]}>
+            Results
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-        {/* Text Input Area */}
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Enter Your Query</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Type your question here..."
-            placeholderTextColor={Colors.textSecondary}
-            value={query}
-            onChangeText={setQuery}
-            multiline
-            numberOfLines={4}
-            textAlignVertical="top"
-          />
-        </View>
-
-        {/* Action Buttons */}
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity
-            style={[styles.actionButton, styles.primaryButton]}
-            onPress={handleCustomQuery}
-            disabled={isLoading}
-            activeOpacity={0.7}
-          >
-            <SendIcon size={20} color="white" />
-            <Text style={styles.primaryButtonText}>Send Query</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.actionButton, styles.secondaryButton]}
-            onPress={handleAttendanceSummary}
-            disabled={isLoading}
-            activeOpacity={0.7}
-          >
-            <CalendarIcon size={20} color={Colors.primary} />
-            <Text style={styles.secondaryButtonText}>Attendance Summary</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.actionButton, styles.secondaryButton]}
-            onPress={handleResultsSummary}
-            disabled={isLoading}
-            activeOpacity={0.7}
-          >
-            <TrophyIcon size={20} color={Colors.primary} />
-            <Text style={styles.secondaryButtonText}>Results Summary</Text>
-          </TouchableOpacity>
-        </View>
-
+      {/* Scrollable Response Area */}
+      <ScrollView 
+        style={styles.responseScrollContainer} 
+        contentContainerStyle={styles.responseScrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Loading Indicator */}
         {isLoading && (
           <View style={styles.loadingContainer}>
@@ -195,11 +202,68 @@ export default function AIScreen({ navigation }) {
           <View style={styles.responseContainer}>
             <Text style={styles.responseTitle}>AI Response:</Text>
             <View style={styles.responseBox}>
-              <Text style={styles.responseText}>{response}</Text>
+              <Markdown style={markdownStyles}>
+                {response}
+              </Markdown>
             </View>
+          </View>
+        ) : !isLoading ? (
+          <View style={styles.emptyStateContainer}>
+            <Text style={styles.emptyStateText}>
+              Ask me anything about your {queryType === 'attendance' ? 'attendance' : 'results'}!
+            </Text>
+            <Text style={styles.emptyStateSubtext}>
+              Type a question or use the quick action buttons below
+            </Text>
           </View>
         ) : null}
       </ScrollView>
+
+      {/* Fixed Bottom Input Area */}
+      <View style={styles.bottomInputContainer}>
+        {/* Text Input with Action Buttons */}
+        <View style={styles.inputRow}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Type your question here..."
+            placeholderTextColor={Colors.textSecondary}
+            value={query}
+            onChangeText={setQuery}
+            multiline
+            maxLength={500}
+            editable={!isLoading}
+          />
+          
+          {/* Quick Action Buttons */}
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={handleAttendanceSummary}
+            disabled={isLoading}
+            activeOpacity={0.7}
+          >
+            <CalendarIcon size={22} color={Colors.primary} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={handleResultsSummary}
+            disabled={isLoading}
+            activeOpacity={0.7}
+          >
+            <TrophyIcon size={22} color={Colors.primary} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.sendButton, isLoading && styles.sendButtonDisabled]}
+            onPress={handleCustomQuery}
+            disabled={isLoading}
+            activeOpacity={0.7}
+          >
+            <SendIcon size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      </View>
+      </Animated.View>
     </SafeAreaView>
   );
 }

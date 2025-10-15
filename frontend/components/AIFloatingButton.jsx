@@ -1,6 +1,6 @@
 import { TouchableOpacity, View } from 'react-native';
-import { ChatIcon } from './icons/SvgIcons';
 import { Colors } from '../styles/commonStyles';
+import { ChatIcon } from './icons/SvgIcons';
 
 export default function AIFloatingButton({ onPress }) {
   return (
