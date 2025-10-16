@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '../components/Card';
+import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
-import commonStyles, { Colors } from '../styles/commonStyles';
+import commonStyles from '../styles/commonStyles';
 import styles from '../styles/loginScreenStyles';
 
 export default function LoginScreen() {
@@ -84,7 +85,7 @@ export default function LoginScreen() {
               disabled={isLoading}
             >
               {isLoading ? (
-                <ActivityIndicator color="#fff" size="small" />
+                <ActivityIndicator color={Colors.white} size="small" />
               ) : (
                 <Text style={commonStyles.buttonText}>Login</Text>
               )}

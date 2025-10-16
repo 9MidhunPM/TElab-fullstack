@@ -1,62 +1,16 @@
 import { StyleSheet } from 'react-native';
+import { Colors } from '../constants/colors';
 
 /**
  * Common styles used across the entire application
  * This file contains reusable style components for consistent UI
+ * 
+ * NOTE: All colors are now imported from '../constants/colors'
+ * Use that file as the single source of truth for all colors
  */
 
-// Color palette - Blue & Purple Theme
-export const Colors = {
-  // Primary colors - Blue
-  primary: '#4F46E5',        // Indigo-600
-  primaryDark: '#4338CA',    // Indigo-700
-  primaryLight: '#EEF2FF',   // Indigo-50
-  
-  // Secondary colors - Purple
-  secondary: '#9333EA',      // Purple-600
-  secondaryDark: '#7E22CE',  // Purple-700
-  secondaryLight: '#FAF5FF', // Purple-50
-  
-  // Accent colors - Cyan/Blue
-  accent: '#0EA5E9',         // Sky-500
-  accentDark: '#0284C7',     // Sky-600
-  accentLight: '#E0F2FE',    // Sky-100
-  
-  // Status colors
-  success: '#10B981',        // Green-500
-  successLight: '#D1FAE5',   // Green-100
-  warning: '#F59E0B',        // Amber-500
-  warningLight: '#FEF3C7',   // Amber-100
-  warningText: '#92400E',    // Amber-800
-  danger: '#EF4444',         // Red-500
-  dangerLight: '#FEE2E2',    // Red-100
-  
-  // Neutral colors
-  background: '#F8FAFC',     // Slate-50
-  backgroundDark: '#F1F5F9', // Slate-100
-  backgroundLight: '#F1F5F9', // Slate-100
-  white: '#fff',
-  black: '#000',
-  
-  // Text colors
-  textPrimary: '#1E293B',    // Slate-800
-  textSecondary: '#64748B',  // Slate-500
-  textTertiary: '#94A3B8',   // Slate-400
-  textLight: '#475569',      // Slate-600
-  
-  // Border colors
-  border: '#CBD5E1',         // Slate-300
-  borderLight: '#E2E8F0',    // Slate-200
-  borderLighter: '#F1F5F9',  // Slate-100
-  borderLightest: '#F8FAFC', // Slate-50
-  
-  // Input colors
-  inputBackground: '#F8FAFC',
-  placeholderText: '#94A3B8',
-  
-  // Shadow color
-  shadow: '#4F46E5',
-};
+// Re-export Colors for convenience
+export { Colors };
 
 // Typography
 export const Typography = {
@@ -166,14 +120,14 @@ const commonStyles = StyleSheet.create({
   
   // Card styles
   card: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.xl,
     padding: Spacing.xl,
     ...Shadows.medium,
   },
   
   cardSmall: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.md,
     padding: Spacing.base,
     ...Shadows.small,
@@ -405,7 +359,7 @@ const commonStyles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: Spacing.base,
     paddingVertical: Spacing.md,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderBottomWidth: 1,
     borderBottomColor: Colors.borderLight,
   },

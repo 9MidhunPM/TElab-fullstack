@@ -54,7 +54,7 @@ const endSemResultsScreenStyles = StyleSheet.create({
   },
   
   semesterHeader: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.md,
     padding: Spacing.base,
     marginBottom: Spacing.md,
@@ -102,7 +102,7 @@ const endSemResultsScreenStyles = StyleSheet.create({
   },
   
   courseCard: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.md,
     padding: Spacing.base,
     marginBottom: Spacing.sm,

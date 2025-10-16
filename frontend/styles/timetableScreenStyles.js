@@ -54,7 +54,7 @@ const timetableScreenStyles = StyleSheet.create({
   },
   
   dayCard: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.xl,
     marginBottom: Spacing.base,
     ...Shadows.small,
@@ -174,7 +174,7 @@ const timetableScreenStyles = StyleSheet.create({
   // Tab styles
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: Colors.backgroundSecondary || '#E5E7EB',
+    backgroundColor: Colors.backgroundLight,
     marginHorizontal: Spacing.base,
     borderRadius: BorderRadius.md,
     padding: Spacing.xs,
@@ -192,8 +192,8 @@ const timetableScreenStyles = StyleSheet.create({
   },
 
   activeTabButton: {
-    backgroundColor: Colors.white,
-    ...Shadows.small,
+    backgroundColor: Colors.primary,
+    ...Shadows.medium,
   },
 
   tabButtonText: {
@@ -203,8 +203,8 @@ const timetableScreenStyles = StyleSheet.create({
   },
 
   activeTabButtonText: {
-    color: Colors.primary,
-    fontWeight: Typography.fontWeight.semibold,
+    color: Colors.white,
+    fontWeight: Typography.fontWeight.bold,
   },
 
   // Analysis table styles
@@ -313,7 +313,7 @@ const timetableScreenStyles = StyleSheet.create({
 
   // Day tab styles
   dayTabBar: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     elevation: 2,
     shadowColor: Colors.shadowColor || '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -341,7 +341,7 @@ const timetableScreenStyles = StyleSheet.create({
   // Period card styles
   periodCard: {
     marginHorizontal: Spacing.base,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.md,
     ...Shadows.small,
   },

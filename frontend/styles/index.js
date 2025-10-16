@@ -3,8 +3,11 @@
  * This allows for cleaner imports across the application
  */
 
+// Export colors from centralized location
+export { Colors } from '../constants/colors';
+
 // Export common styles and design tokens
-export { BorderRadius, Colors, Shadows, Spacing, Typography, default as commonStyles } from './commonStyles';
+export { BorderRadius, default as commonStyles, Shadows, Spacing, Typography } from './commonStyles';
 
 // Export component-specific styles
 export { default as cardStyles } from './cardStyles';

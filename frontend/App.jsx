@@ -7,6 +7,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import AIFloatingButton from './components/AIFloatingButton';
 import TabIcon from './components/TabIcon';
+import { Colors } from './constants/colors';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { DataProvider } from './contexts/DataContext';
 import AIScreen from './screens/AIScreen';
@@ -19,23 +20,23 @@ const Tab = createBottomTabNavigator();
 // TabsNavigator component that renders all tabs dynamically
 function TabsNavigator({ navigation }) {
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }} edges={['bottom']}>
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
-          tabBarActiveTintColor: '#4F46E5',
-          tabBarInactiveTintColor: '#64748B',
+          tabBarActiveTintColor: Colors.primary,
+          tabBarInactiveTintColor: Colors.tabInactive,
           tabBarLabelStyle: {
             fontSize: 14,
             fontWeight: '600',
             textTransform: 'none',
           },
           tabBarStyle: {
-            backgroundColor: '#fff',
+            backgroundColor: Colors.cardBackground,
             borderTopWidth: 1,
-            borderTopColor: '#E2E8F0',
+            borderTopColor: Colors.border,
             elevation: 4,
-            shadowColor: '#4F46E5',
+            shadowColor: Colors.shadow,
             shadowOffset: { width: 0, height: -2 },
             shadowOpacity: 0.15,
             shadowRadius: 4,
@@ -72,7 +73,7 @@ function TabsNavigator({ navigation }) {
       <AIFloatingButton 
         onPress={() => navigation.navigate('AIScreen')} 
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -85,7 +86,7 @@ function AuthNavigator() {
     return (
       <SafeAreaView style={styles.safeAreaFull} edges={['top']}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#4F46E5" />
+          <ActivityIndicator size="large" color={Colors.spinner} />
         </View>
       </SafeAreaView>
     );
@@ -133,7 +134,7 @@ function App() {
 const styles = StyleSheet.create({
   safeAreaFull: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: Colors.background,
   },
   loadingContainer: {
     flex: 1,

@@ -1,4 +1,5 @@
 import { Text, View } from 'react-native';
+import { Colors } from '../constants/colors';
 import commonStyles from '../styles/commonStyles';
 import Card from './Card';
 
@@ -112,7 +113,7 @@ const styles = {
 
   currentTime: {
     fontSize: 14,
-    color: '#6B7280',
+    color: Colors.textSecondary,
     fontWeight: '600',
     marginTop: 2,
   },
@@ -129,7 +130,7 @@ const styles = {
     flex: 1,
     paddingRight: 16,
     borderRightWidth: 1,
-    borderRightColor: '#E5E7EB',
+    borderRightColor: Colors.border,
     position: 'relative',
   },
 
@@ -153,7 +154,7 @@ const styles = {
 
   classLabel: {
     fontSize: 12,
-    color: '#6B7280',
+    color: Colors.textSecondary,
     fontWeight: '600',
     marginBottom: 4,
     textTransform: 'uppercase',
@@ -163,25 +164,25 @@ const styles = {
   className: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111827',
+    color: Colors.textPrimary,
     marginBottom: 2,
   },
 
   freeClass: {
-    color: '#9CA3AF',
+    color: Colors.textTertiary,
     fontStyle: 'italic',
   },
 
   classTime: {
     fontSize: 13,
-    color: '#4F46E5',
+    color: Colors.primary,
     fontWeight: '600',
     marginBottom: 2,
   },
 
   classTeacher: {
     fontSize: 12,
-    color: '#6B7280',
+    color: Colors.textSecondary,
     fontStyle: 'italic',
   },
 
@@ -189,17 +190,22 @@ const styles = {
     position: 'absolute',
     top: 0,
     right: 8,
-    backgroundColor: '#10B981',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
+    backgroundColor: Colors.timetablePrimary,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    elevation: 2,
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
 
   ongoingText: {
     fontSize: 10,
-    color: 'white',
+    color: Colors.white,
     fontWeight: '700',
-    letterSpacing: 0.5,
+    letterSpacing: 0.8,
   },
 
   noClassContainer: {
@@ -210,7 +216,7 @@ const styles = {
 
   noClassText: {
     fontSize: 16,
-    color: '#6B7280',
+    color: Colors.textSecondary,
     fontStyle: 'italic',
   },
 
@@ -221,14 +227,14 @@ const styles = {
 
   tomorrowText: {
     fontSize: 16,
-    color: '#111827',
+    color: Colors.textPrimary,
     fontWeight: '600',
     marginBottom: 4,
   },
 
   tomorrowSubtext: {
     fontSize: 14,
-    color: '#6B7280',
+    color: Colors.textSecondary,
     textAlign: 'center',
   },
 

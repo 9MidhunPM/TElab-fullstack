@@ -12,7 +12,7 @@ const attendanceScreenStyles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: Spacing.base,
     paddingVertical: Spacing.md,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     // Remove borderBottomWidth and borderBottomColor to eliminate the bar
   },
   
@@ -30,7 +30,7 @@ const attendanceScreenStyles = StyleSheet.create({
   },
   
   summaryCard: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     margin: Spacing.base,
     borderRadius: BorderRadius.xl,
     padding: Spacing.lg,
@@ -106,7 +106,7 @@ const attendanceScreenStyles = StyleSheet.create({
   },
   
   subjectCard: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.md,
     padding: Spacing.base,
     marginBottom: Spacing.sm,
@@ -164,7 +164,7 @@ const attendanceScreenStyles = StyleSheet.create({
   // Tab styles
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: Colors.backgroundSecondary || '#E5E7EB',
+    backgroundColor: Colors.backgroundLight,
     marginHorizontal: Spacing.base,
     borderRadius: BorderRadius.md,
     padding: Spacing.xs,
@@ -182,8 +182,8 @@ const attendanceScreenStyles = StyleSheet.create({
   },
 
   activeTabButton: {
-    backgroundColor: Colors.white,
-    ...Shadows.small,
+    backgroundColor: Colors.primary,
+    ...Shadows.medium,
   },
 
   tabButtonText: {
@@ -193,8 +193,8 @@ const attendanceScreenStyles = StyleSheet.create({
   },
 
   activeTabButtonText: {
-    color: Colors.primary,
-    fontWeight: Typography.fontWeight.semibold,
+    color: Colors.white,
+    fontWeight: Typography.fontWeight.bold,
   },
 
   // Analysis styles
@@ -217,7 +217,7 @@ const attendanceScreenStyles = StyleSheet.create({
     borderRadius: BorderRadius.sm,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.sm,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     marginBottom: Spacing.md,
     justifyContent: 'center',
     minHeight: 44,

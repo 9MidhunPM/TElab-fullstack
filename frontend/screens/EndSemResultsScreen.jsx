@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    FlatList,
-    Text,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchEndSemResultsWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
+import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
-import commonStyles, { Colors } from '../styles/commonStyles';
+import commonStyles from '../styles/commonStyles';
 import styles from '../styles/endSemResultsScreenStyles';
 
 export default function EndSemResultsScreen() {
@@ -159,16 +160,16 @@ export default function EndSemResultsScreen() {
 
   const getGradeColor = (grade) => {
     const gradeValue = grade?.toUpperCase();
-    if (['S', 'A+', 'A'].includes(gradeValue)) return { color: '#27ae60' };
-    if (['B+', 'B', 'B-'].includes(gradeValue)) return { color: '#3498db' };
-    if (['C+', 'C', 'C-'].includes(gradeValue)) return { color: '#f39c12' };
-    if (['D+', 'D', 'F'].includes(gradeValue)) return { color: '#e74c3c' };
-    if (gradeValue === 'P') return { color: '#9b59b6' };
-    return { color: '#666' };
+    if (['S', 'A+', 'A'].includes(gradeValue)) return { color: Colors.gradeExcellent };
+    if (['B+', 'B', 'B-'].includes(gradeValue)) return { color: Colors.gradeGood };
+    if (['C+', 'C', 'C-'].includes(gradeValue)) return { color: Colors.gradeAverage };
+    if (['D+', 'D', 'F'].includes(gradeValue)) return { color: Colors.gradePoor };
+    if (gradeValue === 'P') return { color: Colors.gradePass };
+    return { color: Colors.gradeNeutral };
   };
 
   const getPassStatusColor = (status) => {
-    return status?.toLowerCase() === 'passed' ? { color: '#27ae60' } : { color: '#e74c3c' };
+    return status?.toLowerCase() === 'passed' ? { color: Colors.successGrade } : { color: Colors.dangerGrade };
   };
 
   // Loading state
@@ -176,7 +177,7 @@ export default function EndSemResultsScreen() {
     return (
       <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
         <View style={commonStyles.loadingContainer}>
-          <ActivityIndicator size="large" color="#4F46E5" />
+          <ActivityIndicator size="large" color={Colors.spinner} />
           <Text style={commonStyles.loadingText}>Loading end-semester results...</Text>
         </View>
       </SafeAreaView>
@@ -232,7 +233,7 @@ export default function EndSemResultsScreen() {
             onPress={handleRetry}
             accessibilityLabel="Refresh end-semester results"
           >
-            <RefreshIcon size={20} color="#4F46E5" />
+            <RefreshIcon size={20} color={Colors.primary} />
           </TouchableOpacity>
         </View>
         

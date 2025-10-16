@@ -1,23 +1,24 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    Platform,
-    RefreshControl,
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Alert,
+  Platform,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchAttendanceWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
+import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
 import styles from '../styles/attendanceScreenStyles';
-import commonStyles, { Colors } from '../styles/commonStyles';
+import commonStyles from '../styles/commonStyles';
 import { formatDateToDDMMYY, getComprehensiveAnalysis } from '../utils/attendanceAnalysis';
 
 export default function AttendanceScreen() {
@@ -229,7 +230,7 @@ export default function AttendanceScreen() {
                   
                   <View style={styles.skip75Column}>
                     <Text style={[styles.missText, { 
-                      color: skip75.canMaintainTarget ? '#FF6B35' : Colors.danger 
+                      color: skip75.canMaintainTarget ? Colors.warningOrange : Colors.danger 
                     }]}>
                       {skip75.canMaintainTarget ? `Can Miss Upto ${skip75.canSkip}` : 'N/A'}
                     </Text>
@@ -240,7 +241,7 @@ export default function AttendanceScreen() {
                   
                   <View style={styles.skip85Column}>
                     <Text style={[styles.missText, { 
-                      color: skip85.canMaintainTarget ? '#FF6B35' : Colors.danger 
+                      color: skip85.canMaintainTarget ? Colors.warningOrange : Colors.danger 
                     }]}>
                       {skip85.canMaintainTarget ? `Can Miss Upto ${skip85.canSkip}` : 'N/A'}
                     </Text>
@@ -330,7 +331,7 @@ export default function AttendanceScreen() {
   if (isLoading && !attendance) {
     return (
       <SafeAreaView style={commonStyles.loadingContainer} edges={['top']}>
-        <ActivityIndicator size="large" color="#4F46E5" />
+        <ActivityIndicator size="large" color={Colors.spinner} />
         <Text style={commonStyles.loadingText}>Loading attendance...</Text>
       </SafeAreaView>
     );
@@ -363,7 +364,7 @@ export default function AttendanceScreen() {
             onPress={handleRefresh}
             accessibilityLabel="Refresh attendance"
           >
-            <RefreshIcon size={20} color="#4F46E5" />
+            <RefreshIcon size={20} color={Colors.primary} />
           </TouchableOpacity>
         </View>
         

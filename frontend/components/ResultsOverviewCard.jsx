@@ -1,4 +1,5 @@
 import { Text, View } from 'react-native';
+import { Colors } from '../constants/colors';
 import commonStyles from '../styles/commonStyles';
 import styles from '../styles/homeScreenStyles';
 import Card from './Card';
@@ -28,10 +29,10 @@ const ResultsOverviewCard = ({ resultsData }) => {
 
   const getTotalPerformanceColor = () => {
     const percentage = parseFloat(totalPercentage);
-    if (percentage >= 80) return '#10B981'; // Green
-    if (percentage >= 70) return '#F59E0B'; // Yellow
-    if (percentage >= 60) return '#F97316'; // Orange
-    return '#EF4444'; // Red
+    if (percentage >= 80) return Colors.success; // Green
+    if (percentage >= 70) return Colors.warning; // Yellow
+    if (percentage >= 60) return Colors.warningOrange; // Orange
+    return Colors.danger; // Red
   };
 
   const getTotalPerformanceMessage = () => {
@@ -77,7 +78,7 @@ const ResultsOverviewCard = ({ resultsData }) => {
                   </Text>
                   <Text style={[
                     styles.worstResultPercentage,
-                    { color: result.percentage >= 50 ? '#F59E0B' : '#EF4444' }
+                    { color: result.percentage >= 50 ? Colors.warning : Colors.danger }
                   ]}>
                     {result.percentage.toFixed(1)}%
                   </Text>

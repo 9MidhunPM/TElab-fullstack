@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: 'white',
+    backgroundColor: Colors.cardBackground,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
     elevation: 2,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   // Toggle Slider
   toggleContainer: {
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: Colors.cardBackground,
     marginHorizontal: 16,
     marginVertical: 12,
     padding: 4,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
   },
   toggleButtonTextActive: {
-    color: 'white',
+    color: Colors.white,
   },
 
   // Response Scroll Area
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   responseBox: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.cardBackground,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: Colors.border,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
 
   // Fixed Bottom Input Area
   bottomInputContainer: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.cardBackground,
     borderTopWidth: 1,
     borderTopColor: Colors.border,
     paddingHorizontal: 16,

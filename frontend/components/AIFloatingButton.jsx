@@ -10,7 +10,7 @@ export default function AIFloatingButton({ onPress }) {
         onPress={onPress}
         activeOpacity={0.8}
       >
-        <ChatIcon size={28} color="white" />
+        <ChatIcon size={28} color={Colors.aiIconOnButton} />
       </TouchableOpacity>
     </View>
   );
@@ -31,7 +31,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 8,
-    shadowColor: '#000',
+    shadowColor: Colors.shadowBlack,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4,

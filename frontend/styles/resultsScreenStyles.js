@@ -63,7 +63,7 @@ const resultsScreenStyles = StyleSheet.create({
   },
   
   resultCard: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.md,
     padding: Spacing.base,
     marginBottom: Spacing.md,
@@ -135,7 +135,7 @@ const resultsScreenStyles = StyleSheet.create({
   // Tab styles
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: Colors.backgroundSecondary || '#E5E7EB',
+    backgroundColor: Colors.backgroundLight,
     marginHorizontal: Spacing.base,
     borderRadius: BorderRadius.md,
     padding: Spacing.xs,
@@ -153,8 +153,8 @@ const resultsScreenStyles = StyleSheet.create({
   },
 
   activeTabButton: {
-    backgroundColor: Colors.white,
-    ...Shadows.small,
+    backgroundColor: Colors.primary,
+    ...Shadows.medium,
   },
 
   tabButtonText: {
@@ -164,8 +164,8 @@ const resultsScreenStyles = StyleSheet.create({
   },
 
   activeTabButtonText: {
-    color: Colors.primary,
-    fontWeight: Typography.fontWeight.semibold,
+    color: Colors.white,
+    fontWeight: Typography.fontWeight.bold,
   },
 
   // Analysis styles
@@ -262,7 +262,7 @@ const resultsScreenStyles = StyleSheet.create({
   tableSection: {
     marginHorizontal: -10,
     marginVertical: Spacing.base,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.md,
     ...Shadows.medium,
   },
@@ -331,7 +331,7 @@ const resultsScreenStyles = StyleSheet.create({
     paddingVertical: 2,
     fontSize: Typography.fontSize.xs,
     color: Colors.textPrimary,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     width: 30,
     textAlign: 'center',
   },

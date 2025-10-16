@@ -1,22 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    Animated,
-    Keyboard,
-    Platform,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Alert,
+  Animated,
+  Keyboard,
+  Platform,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowBackIcon, CalendarIcon, SendIcon, TrophyIcon } from '../components/icons/SvgIcons';
+import { Colors } from '../constants/colors';
 import { useAppData } from '../contexts/DataContext';
 import styles from '../styles/aiScreenStyles';
-import commonStyles, { Colors } from '../styles/commonStyles';
+import commonStyles from '../styles/commonStyles';
 import { markdownStyles } from '../styles/markdownStyles';
 import { sendAIRequest } from '../utils/aiApi';
 
@@ -297,7 +298,7 @@ export default function AIScreen({ navigation }) {
             disabled={isLoading}
             activeOpacity={0.7}
           >
-            <SendIcon size={24} color="white" />
+            <SendIcon size={24} color={Colors.white} />
           </TouchableOpacity>
         </View>
       </Animated.View>

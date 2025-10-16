@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View,
-    useWindowDimensions,
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { fetchTimetableWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
+import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
 import commonStyles from '../styles/commonStyles';
 import styles from '../styles/timetableScreenStyles';
 import { getSubjectClassesFromAttendance, getSubjectClassesPerWeek, getSubjectClassesUpToDate, getTimetableSummary } from '../utils/timetableAnalysis';
+
 
 export default function TimetableScreen() {
   const [error, setError] = useState(null);
@@ -196,7 +198,7 @@ export default function TimetableScreen() {
     return (
       <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
         <View style={commonStyles.loadingContainer}>
-          <ActivityIndicator size="large" color="#4F46E5" />
+          <ActivityIndicator size="large" color={Colors.spinner} />
           <Text style={commonStyles.loadingText}>Loading timetable...</Text>
         </View>
       </SafeAreaView>
@@ -296,11 +298,11 @@ export default function TimetableScreen() {
       indicatorStyle={styles.dayTabIndicator}
       style={styles.dayTabBar}
       labelStyle={styles.dayTabLabel}
-      activeColor="#4F46E5"
-      inactiveColor="#64748B"
+      activeColor={Colors.timetablePrimary}
+      inactiveColor={Colors.timetableInactive}
       scrollEnabled={true}
       tabStyle={styles.dayTab}
-      pressColor="rgba(79, 70, 229, 0.1)"
+      pressColor={Colors.timetablePressOverlay}
       bounces={false}
     />
   );
@@ -395,7 +397,7 @@ export default function TimetableScreen() {
             onPress={handleRetry}
             accessibilityLabel="Refresh timetable"
           >
-            <RefreshIcon size={20} color="#4F46E5" />
+            <RefreshIcon size={20} color={Colors.primary} />
           </TouchableOpacity>
         </View>
         

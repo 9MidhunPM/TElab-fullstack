@@ -1,20 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator,
-    FlatList,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchResultsWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
+import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
-import commonStyles, { Colors } from '../styles/commonStyles';
+import commonStyles from '../styles/commonStyles';
 import styles from '../styles/resultsScreenStyles';
 import { getResultsAnalysis } from '../utils/resultsAnalysis';
 
@@ -264,7 +265,7 @@ export default function ResultsScreen() {
             onPress={refreshTable}
             accessibilityLabel="Refresh table"
           >
-            <RefreshIcon size={16} color="#4F46E5" />
+            <RefreshIcon size={16} color={Colors.primary} />
           </TouchableOpacity>
         </View>
         
@@ -397,7 +398,7 @@ export default function ResultsScreen() {
     return (
       <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
         <View style={commonStyles.loadingContainer}>
-          <ActivityIndicator size="large" color="#4F46E5" />
+          <ActivityIndicator size="large" color={Colors.spinner} />
           <Text style={commonStyles.loadingText}>{loadingMessage}</Text>
           
           {showRetryOption && (
@@ -472,7 +473,7 @@ export default function ResultsScreen() {
             onPress={handleRetry}
             accessibilityLabel="Refresh results"
           >
-            <RefreshIcon size={20} color="#4F46E5" />
+            <RefreshIcon size={20} color={Colors.primary} />
           </TouchableOpacity>
         </View>
         

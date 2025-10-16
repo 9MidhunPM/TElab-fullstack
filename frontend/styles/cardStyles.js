@@ -8,7 +8,7 @@ import { BorderRadius, Colors, Shadows, Spacing } from './commonStyles';
 const cardStyles = StyleSheet.create({
   // Base card style
   card: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.xl,
     padding: Spacing.lg,
     ...Shadows.medium,
@@ -16,21 +16,21 @@ const cardStyles = StyleSheet.create({
   
   // Card variants
   cardSmall: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.md,
     padding: Spacing.base,
     ...Shadows.small,
   },
   
   cardLarge: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.xl,
     padding: Spacing.xl,
     ...Shadows.large,
   },
   
   cardFlat: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.md,
     padding: Spacing.base,
     elevation: 0,
@@ -39,7 +39,7 @@ const cardStyles = StyleSheet.create({
   
   // Card with border (instead of shadow)
   cardOutlined: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.md,
     padding: Spacing.base,
     borderWidth: 1,
@@ -136,7 +136,7 @@ const cardStyles = StyleSheet.create({
   
   // Pressable card (for touchable cards)
   cardPressable: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.md,
     padding: Spacing.base,
     ...Shadows.small,

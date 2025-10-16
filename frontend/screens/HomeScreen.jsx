@@ -15,6 +15,7 @@ import NextClassCard from '../components/NextClassCard';
 import RecentResultsCard from '../components/RecentResultsCard';
 import ResultsOverviewCard from '../components/ResultsOverviewCard';
 import { getLoadOrderByPreset, LOADING_CONFIG } from '../config/dataLoadingConfig';
+import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
 import commonStyles from '../styles/commonStyles';
@@ -185,7 +186,7 @@ export default function HomeScreen() {
   if (isLoading) {
     return (
       <SafeAreaView style={commonStyles.loadingContainer} edges={['top']}>
-        <ActivityIndicator size="large" color="#4F46E5" />
+        <ActivityIndicator size="large" color={Colors.primary} />
         <Text style={commonStyles.loadingText}>Loading profile...</Text>
       </SafeAreaView>
     );
@@ -217,9 +218,9 @@ export default function HomeScreen() {
           disabled={isLoading}
         >
           {isLoading ? (
-            <ActivityIndicator color="#EF4444" size="small" />
+            <ActivityIndicator color={Colors.danger} size="small" />
           ) : (
-            <LogoutIcon size={24} color="#EF4444" />
+            <LogoutIcon size={24} color={Colors.danger} />
           )}
         </TouchableOpacity>
       </View>
@@ -234,7 +235,7 @@ export default function HomeScreen() {
             
             <Card.Body>
               <View style={styles.loadingProgressContainer}>
-                <ActivityIndicator size="large" color="#4F46E5" style={styles.loadingSpinner} />
+                <ActivityIndicator size="large" color={Colors.primary} style={styles.loadingSpinner} />
                 <Text style={styles.loadingProgressText}>
                   {loadingProgress.currentTask}
                 </Text>
