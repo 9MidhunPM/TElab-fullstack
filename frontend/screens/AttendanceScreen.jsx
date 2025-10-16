@@ -1,14 +1,14 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  Platform,
-  RefreshControl,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    Alert,
+    Platform,
+    RefreshControl,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchAttendanceWithToken } from '../api';
@@ -329,7 +329,7 @@ export default function AttendanceScreen() {
 
   if (isLoading && !attendance) {
     return (
-      <SafeAreaView style={commonStyles.loadingContainer}>
+      <SafeAreaView style={commonStyles.loadingContainer} edges={['top']}>
         <ActivityIndicator size="large" color="#4F46E5" />
         <Text style={commonStyles.loadingText}>Loading attendance...</Text>
       </SafeAreaView>
@@ -338,7 +338,7 @@ export default function AttendanceScreen() {
 
   if (error && !attendance) {
     return (
-      <SafeAreaView style={commonStyles.errorContainer}>
+      <SafeAreaView style={commonStyles.errorContainer} edges={['top']}>
         <Text style={commonStyles.errorText}>Failed to load attendance</Text>
         <Text style={commonStyles.errorText}>{error}</Text>
       </SafeAreaView>
@@ -347,14 +347,14 @@ export default function AttendanceScreen() {
 
   if (!attendance) {
     return (
-      <SafeAreaView style={commonStyles.errorContainer}>
+      <SafeAreaView style={commonStyles.errorContainer} edges={['top']}>
         <Text style={commonStyles.errorText}>No attendance data available</Text>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={commonStyles.safeArea}>
+    <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
       <View style={commonStyles.container}>
         <View style={styles.header}>
           <Text style={commonStyles.headerTitle}>Attendance</Text>

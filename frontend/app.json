@@ -11,9 +11,8 @@
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#4F46E5"
+      "backgroundColor": "#FFFFFF"
     },
-    
     "android": {
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -21,9 +20,11 @@
     },
     "extra": {
       "eas": {
-        "projectId": "e35a302f-8e30-429d-8377-f2df462514ca"
-      }
+        "projectId": "4a7a245c-5a1e-4564-bb15-a2499f0d4724"
+      },
+      "apiBaseUrl": "https://etlabapp-backendv1.onrender.com",
+      "aiBaseUrl": "https://etlab-plus-ai-api.onrender.com"
     },
-    "owner": "9titan"
+    "owner": "9midhunpm"
   }
 }

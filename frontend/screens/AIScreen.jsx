@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  Animated,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    Alert,
+    Animated,
+    Keyboard,
+    Platform,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -33,6 +35,7 @@ export default function AIScreen({ navigation }) {
   // Animation values
   const slideAnim = useRef(new Animated.Value(300)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const keyboardOffset = useRef(new Animated.Value(0)).current;
 
   // Entry animation
   useEffect(() => {
@@ -48,6 +51,36 @@ export default function AIScreen({ navigation }) {
         useNativeDriver: true,
       }),
     ]).start();
+  }, []);
+
+  // Keyboard handling
+  useEffect(() => {
+    const keyboardWillShow = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      (e) => {
+        Animated.timing(keyboardOffset, {
+          toValue: -e.endCoordinates.height,
+          duration: Platform.OS === 'ios' ? 250 : 200,
+          useNativeDriver: true,
+        }).start();
+      }
+    );
+
+    const keyboardWillHide = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      () => {
+        Animated.timing(keyboardOffset, {
+          toValue: 0,
+          duration: Platform.OS === 'ios' ? 250 : 200,
+          useNativeDriver: true,
+        }).start();
+      }
+    );
+
+    return () => {
+      keyboardWillShow.remove();
+      keyboardWillHide.remove();
+    };
   }, []);
 
   // Navigation handlers with exit animation
@@ -135,7 +168,7 @@ export default function AIScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={[commonStyles.safeArea, { backgroundColor: Colors.background }]}>
+    <SafeAreaView style={[commonStyles.safeArea, { backgroundColor: Colors.background }]} edges={['top']}>
       <Animated.View 
         style={[
           styles.animatedContainer,
@@ -145,8 +178,8 @@ export default function AIScreen({ navigation }) {
           }
         ]}
       >
-        {/* Header with Back Button */}
-        <View style={styles.header}>
+          {/* Header with Back Button */}
+          <View style={styles.header}>
         <TouchableOpacity 
           style={styles.backButton} 
           onPress={handleGoBack}
@@ -220,7 +253,12 @@ export default function AIScreen({ navigation }) {
       </ScrollView>
 
       {/* Fixed Bottom Input Area */}
-      <View style={styles.bottomInputContainer}>
+      <Animated.View 
+        style={[
+          styles.bottomInputContainer,
+          { transform: [{ translateY: keyboardOffset }] }
+        ]}
+      >
         {/* Text Input with Action Buttons */}
         <View style={styles.inputRow}>
           <TextInput
@@ -262,7 +300,7 @@ export default function AIScreen({ navigation }) {
             <SendIcon size={24} color="white" />
           </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
       </Animated.View>
     </SafeAreaView>
   );

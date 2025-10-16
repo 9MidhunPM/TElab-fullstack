@@ -78,15 +78,12 @@ export default function HomeScreen() {
         });
         
         try {
-          console.log(`Loading ${apiConfig.displayName}...`);
           const data = await apiConfig.apiFunction(token);
           
           // Only update state if component is still mounted
           if (isMountedRef.current) {
             updateData(apiConfig.name, data, 'success');
           }
-          
-          console.log(`✓ Successfully loaded ${apiConfig.displayName}`);
           
           // Small delay between requests to avoid overwhelming the server
           await new Promise(resolve => setTimeout(resolve, LOADING_CONFIG.delayBetweenCalls));
@@ -100,8 +97,6 @@ export default function HomeScreen() {
           }
         }
       }
-      
-      console.log('All data loading completed');
       
     } catch (error) {
       console.error('Critical error during data loading:', error);
@@ -189,7 +184,7 @@ export default function HomeScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={commonStyles.loadingContainer}>
+      <SafeAreaView style={commonStyles.loadingContainer} edges={['top']}>
         <ActivityIndicator size="large" color="#4F46E5" />
         <Text style={commonStyles.loadingText}>Loading profile...</Text>
       </SafeAreaView>
@@ -198,7 +193,7 @@ export default function HomeScreen() {
 
   if (!user) {
     return (
-      <SafeAreaView style={commonStyles.errorContainer}>
+      <SafeAreaView style={commonStyles.errorContainer} edges={['top']}>
         <Text style={commonStyles.errorText}>No user data available</Text>
         <TouchableOpacity style={styles.logoutButton} onPress={logout}>
           <Text style={styles.logoutButtonText}>Back to Login</Text>
@@ -208,7 +203,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <SafeAreaView style={commonStyles.safeArea}>
+    <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
       {/* Header with Welcome text and Logout button */}
       <View style={styles.header}>
         <View style={styles.welcomeSection}>

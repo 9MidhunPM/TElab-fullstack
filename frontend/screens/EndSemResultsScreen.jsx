@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    FlatList,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchEndSemResultsWithToken } from '../api';
@@ -174,7 +174,7 @@ export default function EndSemResultsScreen() {
   // Loading state
   if (isLoading) {
     return (
-      <SafeAreaView style={commonStyles.safeArea}>
+      <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
         <View style={commonStyles.loadingContainer}>
           <ActivityIndicator size="large" color="#4F46E5" />
           <Text style={commonStyles.loadingText}>Loading end-semester results...</Text>
@@ -186,7 +186,7 @@ export default function EndSemResultsScreen() {
   // Error state
   if (error) {
     return (
-      <SafeAreaView style={commonStyles.safeArea}>
+      <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
         <View style={commonStyles.errorContainer}>
           <Text style={commonStyles.errorTitle}>Failed to Load Results</Text>
           <Text style={commonStyles.errorText}>{error}</Text>
@@ -205,7 +205,7 @@ export default function EndSemResultsScreen() {
   // No data state - no end-semester results found
   if (endSemResults && filteredSemesters.length === 0) {
     return (
-      <SafeAreaView style={commonStyles.safeArea}>
+      <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
         <View style={commonStyles.errorContainer}>
           <Text style={styles.noResultsTitle}>No end-semester results available</Text>
           <Text style={commonStyles.errorText}>No end-semester exam results found for your account.</Text>
@@ -223,7 +223,7 @@ export default function EndSemResultsScreen() {
 
   // Success state - show filtered end-semester results
   return (
-    <SafeAreaView style={commonStyles.safeArea}>
+    <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
       <View style={commonStyles.container}>
         <View style={commonStyles.header}>
           <Text style={commonStyles.headerTitle}>End-Semester Results</Text>

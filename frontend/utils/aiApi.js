@@ -5,14 +5,13 @@
 
 import Constants from 'expo-constants';
 
-// Get AI API base URL from environment - NO HARDCODED VALUES
-const AI_BASE_URL = Constants.expoConfig?.extra?.AI_BASE_URL || 
-                    process.env.EXPO_PUBLIC_AI_BASE_URL;
+// Get AI API base URL from app.json extra config
+const AI_BASE_URL = Constants.expoConfig?.extra?.aiBaseUrl || 'https://etlab-plus-ai-api.onrender.com';
 
 // Validate that AI_BASE_URL is configured
 if (!AI_BASE_URL) {
-  console.error('ERROR: EXPO_PUBLIC_AI_BASE_URL is not configured in .env file!');
-  throw new Error('AI API URL not configured. Please set EXPO_PUBLIC_AI_BASE_URL in your .env file.');
+  console.error('ERROR: AI Base URL is not configured!');
+  throw new Error('AI API URL not configured. Please set aiBaseUrl in app.json extra config.');
 }
 
 /**
@@ -110,10 +109,8 @@ export const sendAIRequest = async (query, queryType, appData) => {
     };
 
     // Log request details for debugging
-    console.log('AI Request - URL:', `${AI_BASE_URL}/api/ai-query`);
-    console.log('AI Request - Body:', JSON.stringify(requestBody, null, 2));
-    console.log('AI Request - Query Type:', queryType);
-    console.log('AI Request - Data Count:', data.length);
+    // Uncomment for debugging:
+    // console.log('AI Request:', { url: `${AI_BASE_URL}/api/ai-query`, queryType, dataCount: data.length });
 
     // Make API request
     const response = await fetch(`${AI_BASE_URL}/api/ai-query`, {
@@ -124,8 +121,7 @@ export const sendAIRequest = async (query, queryType, appData) => {
       body: JSON.stringify(requestBody)
     });
 
-    console.log('AI Response - Status:', response.status);
-    console.log('AI Response - Status Text:', response.statusText);
+    // Response received successfully
 
     // Check if response is ok
     if (!response.ok) {
@@ -134,7 +130,7 @@ export const sendAIRequest = async (query, queryType, appData) => {
 
     // Parse response
     const result = await response.json();
-    console.log('AI Response - Result:', result);
+    // Uncomment for debugging: console.log('AI Response:', result);
     
     // Extract text from response
     const responseText = parseAIResponse(result);

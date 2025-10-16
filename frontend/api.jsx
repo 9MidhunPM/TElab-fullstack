@@ -1,14 +1,16 @@
 /**
  * API module for authentication, profile management, attendance, and results
- * Base URL configured via environment variable - NO HARDCODED VALUES
+ * Base URL configured via app.json extra config
  */
 
-const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
+import Constants from 'expo-constants';
+
+const BASE_URL = Constants.expoConfig?.extra?.apiBaseUrl || 'https://etlabapp-backendv1.onrender.com';
 
 // Validate that BASE_URL is configured
 if (!BASE_URL) {
-  console.error('ERROR: EXPO_PUBLIC_API_BASE_URL is not configured in .env file!');
-  throw new Error('Backend API URL not configured. Please set EXPO_PUBLIC_API_BASE_URL in your .env file.');
+  console.error('ERROR: API Base URL is not configured!');
+  throw new Error('Backend API URL not configured. Please set apiBaseUrl in app.json extra config.');
 }
 
 /**
@@ -41,7 +43,6 @@ export const loginApi = async (username, password, signal) => {
     return data;
   } catch (error) {
     if (error.name === 'AbortError') {
-      console.log('Login request was cancelled');
       throw new Error('Login request was cancelled');
     }
     console.error('Login API error:', error);
@@ -76,7 +77,6 @@ export const fetchProfileWithToken = async (token, signal) => {
     return profileData;
   } catch (error) {
     if (error.name === 'AbortError') {
-      console.log('Profile fetch request was cancelled');
       throw new Error('Profile fetch request was cancelled');
     }
     console.error('Profile fetch error:', error);
@@ -111,7 +111,6 @@ export const fetchAttendanceWithToken = async (token, signal) => {
     return attendanceData;
   } catch (error) {
     if (error.name === 'AbortError') {
-      console.log('Attendance fetch request was cancelled');
       throw new Error('Attendance fetch request was cancelled');
     }
     console.error('Attendance fetch error:', error);
@@ -147,7 +146,6 @@ export const fetchResultsWithToken = async (token, signal) => {
     return resultsData;
   } catch (error) {
     if (error.name === 'AbortError') {
-      console.log('Results fetch request was cancelled');
       throw new Error('Results fetch request was cancelled');
     }
     console.error('Results fetch error:', error);
@@ -183,7 +181,6 @@ export const fetchEndSemResultsWithToken = async (token, signal) => {
     return endSemResultsData;
   } catch (error) {
     if (error.name === 'AbortError') {
-      console.log('End-sem results fetch request was cancelled');
       throw new Error('End-sem results fetch request was cancelled');
     }
     console.error('End-sem results fetch error:', error);
@@ -218,7 +215,6 @@ export const fetchTimetableWithToken = async (token, signal) => {
     return timetableData;
   } catch (error) {
     if (error.name === 'AbortError') {
-      console.log('Timetable fetch request was cancelled');
       throw new Error('Timetable fetch request was cancelled');
     }
     console.error('Timetable fetch error:', error);

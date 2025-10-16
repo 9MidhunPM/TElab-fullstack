@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
-  FlatList,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    FlatList,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchResultsWithToken } from '../api';
@@ -395,7 +395,7 @@ export default function ResultsScreen() {
   // Loading state with progressive messages
   if (isLoading) {
     return (
-      <SafeAreaView style={commonStyles.safeArea}>
+      <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
         <View style={commonStyles.loadingContainer}>
           <ActivityIndicator size="large" color="#4F46E5" />
           <Text style={commonStyles.loadingText}>{loadingMessage}</Text>
@@ -426,7 +426,7 @@ export default function ResultsScreen() {
   // Error state
   if (error && !results) {
     return (
-      <SafeAreaView style={commonStyles.safeArea}>
+      <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
         <View style={commonStyles.errorContainer}>
           <Text style={commonStyles.errorTitle}>Failed to Load Results</Text>
           <Text style={commonStyles.errorText}>{error}</Text>
@@ -445,7 +445,7 @@ export default function ResultsScreen() {
   // No data state
   if (!results || results.length === 0) {
     return (
-      <SafeAreaView style={commonStyles.safeArea}>
+      <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
         <View style={commonStyles.errorContainer}>
           <Text style={commonStyles.errorTitle}>No Results Available</Text>
           <Text style={commonStyles.errorText}>No academic results found for your account.</Text>
@@ -463,7 +463,7 @@ export default function ResultsScreen() {
 
   // Success state - show results
   return (
-    <SafeAreaView style={commonStyles.safeArea}>
+    <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
       <View style={commonStyles.container}>
         <View style={commonStyles.header}>
           <Text style={commonStyles.headerTitle}>Academic Results</Text>

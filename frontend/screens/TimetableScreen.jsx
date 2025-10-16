@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-  useWindowDimensions,
+    ActivityIndicator,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+    useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabBar, TabView } from 'react-native-tab-view';
@@ -194,7 +194,7 @@ export default function TimetableScreen() {
   // Loading state
   if (isLoading) {
     return (
-      <SafeAreaView style={commonStyles.safeArea}>
+      <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
         <View style={commonStyles.loadingContainer}>
           <ActivityIndicator size="large" color="#4F46E5" />
           <Text style={commonStyles.loadingText}>Loading timetable...</Text>
@@ -206,7 +206,7 @@ export default function TimetableScreen() {
   // Error state
   if (error) {
     return (
-      <SafeAreaView style={commonStyles.safeArea}>
+      <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
         <View style={commonStyles.errorContainer}>
           <Text style={commonStyles.errorTitle}>Failed to Load Timetable</Text>
           <Text style={commonStyles.errorText}>{error}</Text>
@@ -225,7 +225,7 @@ export default function TimetableScreen() {
   // No data state
   if (!timetable || isTimetableEmpty()) {
     return (
-      <SafeAreaView style={commonStyles.safeArea}>
+      <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
         <View style={commonStyles.errorContainer}>
           <Text style={styles.noDataTitle}>No timetable available</Text>
           <Text style={commonStyles.errorText}>No schedule found for your account.</Text>
@@ -386,7 +386,7 @@ export default function TimetableScreen() {
   };
   
   return (
-    <SafeAreaView style={commonStyles.safeArea}>
+    <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
       <View style={commonStyles.container}>
         <View style={commonStyles.header}>
           <Text style={commonStyles.headerTitle}>Timetable</Text>

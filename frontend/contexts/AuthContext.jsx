@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
           }
         } catch (error) {
           if (error.name !== 'AbortError') {
-            console.log('Stored token is invalid, clearing storage');
+            // Token invalid, clearing storage
             await clearStorage();
           }
         }

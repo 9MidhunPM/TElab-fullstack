@@ -83,7 +83,7 @@ function AuthNavigator() {
   // Show loading spinner while checking authentication state
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.safeAreaFull}>
+      <SafeAreaView style={styles.safeAreaFull} edges={['top']}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#4F46E5" />
         </View>
