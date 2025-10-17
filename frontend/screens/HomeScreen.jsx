@@ -15,6 +15,7 @@ import NextClassCard from '../components/NextClassCard';
 import RecentResultsCard from '../components/RecentResultsCard';
 import ResultsOverviewCard from '../components/ResultsOverviewCard';
 import ThemeToggleButton from '../components/ThemeToggleButton';
+import { CardIcon, PhoneIcon, SchoolIcon, UserIcon } from '../components/icons/SvgIcons';
 import { getLoadOrderByPreset, LOADING_CONFIG } from '../config/dataLoadingConfig';
 import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
@@ -280,30 +281,6 @@ export default function HomeScreen() {
           </Card>
         )}
 
-        {/* Compact Profile Information */}
-        <Card variant="default" withMargin marginSize="medium">
-          <Card.Header>
-            <Text style={commonStyles.cardTitle}>Profile Information</Text>
-          </Card.Header>
-          
-          <Card.Body>
-            <View style={styles.compactInfoRow}>
-              <Text style={styles.compactInfoLabel}>SR Number:</Text>
-              <Text style={styles.compactInfoValue}>{user.srNumber}</Text>
-            </View>
-
-            <View style={styles.compactInfoRow}>
-              <Text style={styles.compactInfoLabel}>Mobile:</Text>
-              <Text style={styles.compactInfoValue}>{user.mobileNumber}</Text>
-            </View>
-
-            <View style={styles.compactInfoRow}>
-              <Text style={styles.compactInfoLabel}>University Reg No:</Text>
-              <Text style={styles.compactInfoValue}>{user.universityRegNo}</Text>
-            </View>
-          </Card.Body>
-        </Card>
-
         {/* Next Class Card */}
         {nextClassInfo && !isLoadingData && (
           <NextClassCard nextClassInfo={nextClassInfo} />
@@ -323,6 +300,38 @@ export default function HomeScreen() {
         {isDataAvailable('results') && !isLoadingData && (
           <RecentResultsCard resultsData={appData.results} />
         )}
+
+        {/* Compact Profile Information - LAST */}
+        <Card variant="default" withMargin marginSize="medium">
+          <Card.Header>
+            <View style={commonStyles.iconTextRow}>
+              <View style={commonStyles.iconContainer}>
+                <UserIcon size={20} color={Colors.primary} />
+              </View>
+              <Text style={commonStyles.cardTitle}>Profile Information</Text>
+            </View>
+          </Card.Header>
+          
+          <Card.Body>
+            <View style={styles.compactInfoRow}>
+                  <CardIcon size={14} color={Colors.textSecondary} />
+                <Text style={styles.compactInfoLabel}>  SR Number:</Text>
+              <Text style={styles.compactInfoValue}>{user.srNumber}</Text>
+            </View>
+
+            <View style={styles.compactInfoRow}>
+                  <PhoneIcon size={14} color={Colors.textSecondary} />
+                <Text style={styles.compactInfoLabel}>  Mobile:</Text>
+              <Text style={styles.compactInfoValue}>{user.mobileNumber}</Text>
+            </View>
+
+            <View style={styles.compactInfoRow}>
+                  <SchoolIcon size={14} color={Colors.textSecondary} />
+                <Text style={styles.compactInfoLabel}>  University Reg No:</Text>
+              <Text style={styles.compactInfoValue}>{user.universityRegNo}</Text>
+            </View>
+          </Card.Body>
+        </Card>
       </ScrollView>
     </SafeAreaView>
   );

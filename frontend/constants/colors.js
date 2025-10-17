@@ -254,4 +254,3 @@ export const ThemeColors = {
   },
 };
 
-export default Colors;

@@ -1,17 +1,27 @@
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-  useWindowDimensions,
+    ActivityIndicator,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+    useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { fetchTimetableWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
+import {
+    BookIcon,
+    CalendarIcon,
+    ChartIcon,
+    CheckCircleIcon,
+    ClockIcon,
+    InfoIcon,
+    TeacherIcon,
+    TimeIcon
+} from '../components/icons/SvgIcons';
 import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
@@ -154,24 +164,51 @@ export default function TimetableScreen() {
       <Card key={period.number} variant="default" withMargin={true} marginSize="default" style={styles.periodCard}>
         <Card.Body>
           <View style={styles.periodCardHeader}>
-            <Text style={styles.periodLabel}>{period.label}</Text>
-            <Text style={[styles.periodStatus, isFree && styles.freeStatus]}>
-              {isFree ? 'Free' : 'Class'}
+            <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+              <TimeIcon 
+                size={16} 
+                color={isFree ? Colors.textSecondary : Colors.primary} 
+                outline={isFree}
+              />
+              <Text style={[styles.periodLabel, { marginLeft: 4 }]}>{period.label}</Text>
+            </View>
+            <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+              {isFree ? (
+                <CheckCircleIcon size={14} color={Colors.success} />
+              ) : (
+                <BookIcon size={14} color={Colors.primary} />
+              )}
+              <Text style={[styles.periodStatus, isFree && styles.freeStatus, { marginLeft: 4 }]}>
+                {isFree ? 'Free' : 'Class'}
+              </Text>
+            </View>
+          </View>
+          
+          <View style={[commonStyles.iconTextRow, { marginTop: 8, marginBottom: 4 }]}>
+            <View style={commonStyles.iconContainer}>
+              <BookIcon size={16} color={isFree ? Colors.textSecondary : Colors.primary} />
+            </View>
+            <Text style={[styles.periodSubject, isFree && styles.freeSubject]}>
+              {period.data?.name || 'Free Period'}
             </Text>
           </View>
           
-          <Text style={[styles.periodSubject, isFree && styles.freeSubject]}>
-            {period.data?.name || 'Free Period'}
-          </Text>
-          
           {!isFree && (
-            <Text style={styles.periodTeacher}>
-              {period.data?.teacher || 'Teacher not assigned'}
-            </Text>
+            <View style={[commonStyles.iconTextRow, { marginBottom: 8 }]}>
+              <View style={commonStyles.iconContainer}>
+                <TeacherIcon size={14} color={Colors.textSecondary} />
+              </View>
+              <Text style={styles.periodTeacher}>
+                {period.data?.teacher || 'Teacher not assigned'}
+              </Text>
+            </View>
           )}
           
           <View style={styles.periodCardFooter}>
-            <Text style={styles.periodTiming}>{timing}</Text>
+            <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+              <ClockIcon size={12} color={Colors.accent} />
+              <Text style={[styles.periodTiming, { marginLeft: 4 }]}>{timing}</Text>
+            </View>
           </View>
         </Card.Body>
       </Card>
@@ -265,17 +302,30 @@ export default function TimetableScreen() {
         style={[styles.tabButton, activeTab === 'timetable' && styles.activeTabButton]}
         onPress={() => setActiveTab('timetable')}
       >
-        <Text style={[styles.tabButtonText, activeTab === 'timetable' && styles.activeTabButtonText]}>
-          Timetable
-        </Text>
+        <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+          <CalendarIcon 
+            size={16} 
+            color={activeTab === 'timetable' ? Colors.white : Colors.textSecondary}
+            outline={activeTab !== 'timetable'}
+          />
+          <Text style={[styles.tabButtonText, activeTab === 'timetable' && styles.activeTabButtonText, { marginLeft: 6 }]}>
+            Timetable
+          </Text>
+        </View>
       </TouchableOpacity>
       <TouchableOpacity 
         style={[styles.tabButton, activeTab === 'analysis' && styles.activeTabButton]}
         onPress={() => setActiveTab('analysis')}
       >
-        <Text style={[styles.tabButtonText, activeTab === 'analysis' && styles.activeTabButtonText]}>
-          Analysis
-        </Text>
+        <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+          <ChartIcon 
+            size={16} 
+            color={activeTab === 'analysis' ? Colors.white : Colors.textSecondary}
+          />
+          <Text style={[styles.tabButtonText, activeTab === 'analysis' && styles.activeTabButtonText, { marginLeft: 6 }]}>
+            Analysis
+          </Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -333,16 +383,26 @@ export default function TimetableScreen() {
       >
         <Card variant="default" withMargin marginSize="large">
           <Card.Header>
-            <Text style={styles.dayTitle}>Class Analysis</Text>
+            <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+              <View style={commonStyles.iconContainer}>
+                <ChartIcon size={20} color={Colors.primary} />
+              </View>
+              <Text style={styles.dayTitle}>Class Analysis</Text>
+            </View>
           </Card.Header>
           
           <Card.Body>
             {/* Summary Stats */}
             <View style={styles.summaryContainer}>
-              <Text style={styles.summaryText}>
-                {summary.totalSubjects} subjects • {summary.totalWeeklyClasses} classes per week
-              </Text>
-              <Text style={[styles.summaryText, { fontSize: 12, marginTop: 4, fontStyle: 'italic' }]}>
+              <View style={[commonStyles.iconTextRow, { marginBottom: 4 }]}>
+                <View style={commonStyles.iconContainer}>
+                  <InfoIcon size={16} color={Colors.info} />
+                </View>
+                <Text style={styles.summaryText}>
+                  {summary.totalSubjects} subjects • {summary.totalWeeklyClasses} classes per week
+                </Text>
+              </View>
+              <Text style={[styles.summaryText, { fontSize: 12, marginTop: 4, fontStyle: 'italic', marginLeft: 24 }]}>
                 Total classes: {attendance ? 'from attendance records' : 'calculated from timetable'}
               </Text>
             </View>
@@ -359,9 +419,14 @@ export default function TimetableScreen() {
             {/* Table Rows */}
             {subjects.map((subject, index) => (
               <View key={subject} style={[styles.tableRow, index % 2 === 0 && styles.evenRow]}>
-                <Text style={[styles.tableCellText, styles.subjectColumn]} numberOfLines={2}>
-                  {subject}
-                </Text>
+                <View style={[styles.subjectColumn, commonStyles.iconTextRow]}>
+                  <View style={commonStyles.iconContainer}>
+                    <BookIcon size={14} color={Colors.primary} />
+                  </View>
+                  <Text style={[styles.tableCellText, { flex: 1 }]} numberOfLines={2}>
+                    {subject}
+                  </Text>
+                </View>
                 <Text style={[styles.tableCellText, styles.weeklyColumn, styles.numberText]}>
                   {weeklyClasses[subject]}
                 </Text>
@@ -391,7 +456,12 @@ export default function TimetableScreen() {
     <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
       <View style={commonStyles.container}>
         <View style={commonStyles.header}>
-          <Text style={commonStyles.headerTitle}>Timetable</Text>
+          <View style={[commonStyles.iconTextRow, { flex: 1 }]}>
+            <View style={commonStyles.iconContainer}>
+              <CalendarIcon size={24} color={Colors.primary} />
+            </View>
+            <Text style={commonStyles.headerTitle}>Timetable</Text>
+          </View>
           <TouchableOpacity 
             style={styles.refreshButton}
             onPress={handleRetry}

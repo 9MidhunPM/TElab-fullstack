@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    FlatList,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchEndSemResultsWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
+import {
+    BookIcon,
+    CheckCircleIcon,
+    ClockIcon,
+    StarIcon,
+    TrophyIcon,
+    WarningIcon
+} from '../components/icons/SvgIcons';
 import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
@@ -109,21 +117,44 @@ export default function EndSemResultsScreen() {
   };
 
   const renderCourseItem = ({ item: course }) => {
+    const isPassed = course["Pass Status"]?.toLowerCase() === 'passed';
+    const gradeColor = getGradeColor(course.Grade).color;
+    
     return (
       <Card variant="small" withMargin onPress={() => {}}>
         <View style={styles.courseHeader}>
           <View style={styles.courseInfo}>
-            <Text style={styles.courseCode}>{course["Course Code"]}</Text>
+            <View style={[commonStyles.iconTextRow, { marginBottom: 4 }]}>
+              <View style={commonStyles.iconContainer}>
+                <BookIcon size={16} color={Colors.primary} />
+              </View>
+              <Text style={styles.courseCode}>{course["Course Code"]}</Text>
+            </View>
             <Text style={styles.courseName}>{course["Course Name"]}</Text>
-            <Text style={styles.courseDetails}>
-              Slot: {course.Slot} • Credit: {course.Credit}
-            </Text>
+            <View style={[commonStyles.iconTextRow, { marginTop: 4 }]}>
+              <View style={commonStyles.iconContainer}>
+                <ClockIcon size={12} color={Colors.textSecondary} />
+              </View>
+              <Text style={styles.courseDetails}>
+                Slot: {course.Slot} • Credit: {course.Credit}
+              </Text>
+            </View>
           </View>
           <View style={styles.gradeInfo}>
-            <Text style={[styles.grade, getGradeColor(course.Grade)]}>{course.Grade}</Text>
-            <Text style={[styles.passStatus, getPassStatusColor(course["Pass Status"])]}>
-              {course["Pass Status"] || "N/A"}
-            </Text>
+            <View style={[commonStyles.iconTextRow, { alignItems: 'center', marginBottom: 4 }]}>
+              <StarIcon size={18} color={gradeColor} filled={true} />
+              <Text style={[styles.grade, { color: gradeColor, marginLeft: 4 }]}>{course.Grade}</Text>
+            </View>
+            <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+              {isPassed ? (
+                <CheckCircleIcon size={14} color={Colors.success} />
+              ) : (
+                <WarningIcon size={14} color={Colors.danger} />
+              )}
+              <Text style={[styles.passStatus, getPassStatusColor(course["Pass Status"]), { marginLeft: 4 }]}>
+                {course["Pass Status"] || "N/A"}
+              </Text>
+            </View>
           </View>
         </View>
       </Card>
@@ -132,21 +163,15 @@ export default function EndSemResultsScreen() {
 
   const renderSemesterSection = ({ item: semester }) => (
     <View style={styles.semesterSection}>
-      <Card variant="secondary" withMargin marginSize="large" onPress={() => {}}>
-        <Card.Header>
-          <Text style={styles.examTitle}>{semester.exam_title}</Text>
-          <View style={styles.semesterInfo}>
-            <View style={[commonStyles.badge, commonStyles.badgeSuccess]}>
-              <Text style={[commonStyles.badgeText, commonStyles.badgeSuccessText]}>
-                Semester {semester.semester} • {semester.year}
-              </Text>
-            </View>
-            <View style={[commonStyles.badge, { backgroundColor: Colors.accentLight, marginLeft: 8 }]}>
-              <Text style={[commonStyles.badgeText, { color: Colors.accent }]}>{semester.exam_type}</Text>
-            </View>
+      {/* Top Bar for Semester */}
+      <View style={styles.semesterTopBar}>
+        <View style={[commonStyles.iconTextRow, { flex: 1 }]}>
+          <View style={commonStyles.iconContainer}>
+            <TrophyIcon size={20} color={Colors.primary} />
           </View>
-        </Card.Header>
-      </Card>
+          <Text style={styles.semesterTopBarTitle}>{semester.exam_title}</Text>
+        </View>
+      </View>
       
       <FlatList
         data={semester.grades.results}
@@ -227,7 +252,12 @@ export default function EndSemResultsScreen() {
     <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
       <View style={commonStyles.container}>
         <View style={commonStyles.header}>
-          <Text style={commonStyles.headerTitle}>End-Semester Results</Text>
+          <View style={[commonStyles.iconTextRow, { flex: 1 }]}>
+            <View style={commonStyles.iconContainer}>
+              <TrophyIcon size={24} color={Colors.primary} />
+            </View>
+            <Text style={commonStyles.headerTitle}>End-Semester Results</Text>
+          </View>
           <TouchableOpacity 
             style={styles.refreshButton}
             onPress={handleRetry}

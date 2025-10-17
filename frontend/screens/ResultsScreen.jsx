@@ -1,17 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
-  FlatList,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    FlatList,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchResultsWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
+import {
+    BookIcon,
+    CalendarIcon,
+    ChartIcon,
+    ClockIcon,
+    InfoIcon,
+    PercentIcon,
+    StarIcon,
+    TrophyIcon,
+    WarningIcon
+} from '../components/icons/SvgIcons';
 import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
@@ -196,43 +207,80 @@ export default function ResultsScreen() {
         style={[styles.tabButton, activeTab === 'results' && styles.activeTabButton]}
         onPress={() => setActiveTab('results')}
       >
-        <Text style={[styles.tabButtonText, activeTab === 'results' && styles.activeTabButtonText]}>
-          Results
-        </Text>
+        <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+          <TrophyIcon 
+            size={16} 
+            color={activeTab === 'results' ? Colors.white : Colors.textSecondary} 
+          />
+          <Text style={[styles.tabButtonText, activeTab === 'results' && styles.activeTabButtonText, { marginLeft: 6 }]}>
+            Results
+          </Text>
+        </View>
       </TouchableOpacity>
       <TouchableOpacity 
         style={[styles.tabButton, activeTab === 'analysis' && styles.activeTabButton]}
         onPress={() => setActiveTab('analysis')}
       >
-        <Text style={[styles.tabButtonText, activeTab === 'analysis' && styles.activeTabButtonText]}>
-          Analysis
-        </Text>
+        <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+          <ChartIcon 
+            size={16} 
+            color={activeTab === 'analysis' ? Colors.white : Colors.textSecondary} 
+          />
+          <Text style={[styles.tabButtonText, activeTab === 'analysis' && styles.activeTabButtonText, { marginLeft: 6 }]}>
+            Analysis
+          </Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
 
   const renderResultItem = ({ item }) => {
     const percentage = ((parseFloat(item.marksObtained) / parseFloat(item.maximumMarks)) * 100);
+    const isGoodScore = percentage >= 70;
     
     return (
       <Card variant="small" withMargin onPress={() => {}}>
         <View style={styles.resultHeader}>
           <View style={styles.subjectInfo}>
-            <Text style={styles.subjectCode}>{item.subjectCode}</Text>
+            <View style={[commonStyles.iconTextRow, { marginBottom: 4 }]}>
+              <View style={commonStyles.iconContainer}>
+                <BookIcon size={16} color={Colors.primary} />
+              </View>
+              <Text style={styles.subjectCode}>{item.subjectCode}</Text>
+            </View>
             <Text style={styles.subjectName}>{item.subjectName}</Text>
           </View>
           <View style={styles.marksInfo}>
-            <Text style={styles.marks}>
-              {item.marksObtained}/{item.maximumMarks}
-            </Text>
-            <Text style={styles.percentage}>
-              {percentage.toFixed(1)}%
-            </Text>
+            <View style={[commonStyles.iconTextRow, { alignItems: 'center', marginBottom: 4 }]}>
+              <StarIcon 
+                size={16} 
+                color={isGoodScore ? Colors.success : Colors.warning} 
+                filled={isGoodScore}
+              />
+              <Text style={[styles.marks, { marginLeft: 4 }]}>
+                {item.marksObtained}/{item.maximumMarks}
+              </Text>
+            </View>
+            <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+              <PercentIcon 
+                size={14} 
+                color={isGoodScore ? Colors.success : Colors.warning} 
+              />
+              <Text style={[styles.percentage, { marginLeft: 4 }]}>
+                {percentage.toFixed(1)}%
+              </Text>
+            </View>
           </View>
         </View>
         <View style={styles.resultFooter}>
-          <Text style={styles.semester}>{item.semester}</Text>
-          <Text style={styles.exam}>Exam {item.exam}</Text>
+          <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+            <CalendarIcon size={12} color={Colors.textSecondary} outline={true} />
+            <Text style={[styles.semester, { marginLeft: 4 }]}>{item.semester}</Text>
+          </View>
+          <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+            <ClockIcon size={12} color={Colors.textSecondary} />
+            <Text style={[styles.exam, { marginLeft: 4 }]}>Exam {item.exam}</Text>
+          </View>
         </View>
       </Card>
     );
@@ -242,12 +290,22 @@ export default function ResultsScreen() {
     <ScrollView contentContainerStyle={styles.listContainer}>
       <Card variant="default" withMargin marginSize="medium">
         <Card.Header>
-          <Text style={styles.analysisTitle}>Grade Analysis</Text>
+          <View style={[commonStyles.iconTextRow, { alignItems: 'center' }]}>
+            <View style={commonStyles.iconContainer}>
+              <ChartIcon size={20} color={Colors.primary} />
+            </View>
+            <Text style={styles.analysisTitle}>Grade Analysis</Text>
+          </View>
         </Card.Header>
         
         <Card.Body>
           <View style={styles.legendContainer}>
-            <Text style={styles.legendTitle}>Marking Scale:</Text>
+            <View style={[commonStyles.iconTextRow, { marginBottom: 8 }]}>
+              <View style={commonStyles.iconContainer}>
+                <InfoIcon size={16} color={Colors.info} />
+              </View>
+              <Text style={styles.legendTitle}>Marking Scale:</Text>
+            </View>
             <Text style={styles.legendItem}>• Regular: CAT-1 & Min CAT-2: /12.5 each, Assignment: /10, Total: /40</Text>
             <Text style={styles.legendItem}>• 24CSR304: CAT-1 & Min CAT-2: /7.5 each, Assignment: /30, Total: /50</Text>
             <Text style={styles.legendItem}>• Min CAT-2 shows marks needed for 26+ total (red = impossible)</Text>
@@ -259,7 +317,12 @@ export default function ResultsScreen() {
 
       <View style={styles.tableSection}>
         <View style={styles.tableSectionHeader}>
-          <Text style={styles.analysisTitle}>Marks Analysis Table</Text>
+          <View style={[commonStyles.iconTextRow, { alignItems: 'center', flex: 1 }]}>
+            <View style={commonStyles.iconContainer}>
+              <ChartIcon size={18} color={Colors.primary} />
+            </View>
+            <Text style={styles.analysisTitle}>Marks Analysis Table</Text>
+          </View>
           <TouchableOpacity 
             style={styles.refreshTableButton}
             onPress={refreshTable}
@@ -380,11 +443,21 @@ export default function ResultsScreen() {
           {/* Error Messages for Impossible Subjects */}
           {impossibleSubjects.length > 0 && (
             <View style={styles.errorContainer}>
-              <Text style={styles.errorTitle}>⚠️ Cannot Achieve Target</Text>
+              <View style={[commonStyles.iconTextRow, { marginBottom: 8 }]}>
+                <View style={commonStyles.iconContainer}>
+                  <WarningIcon size={20} color={Colors.danger} />
+                </View>
+                <Text style={styles.errorTitle}>Cannot Achieve Target</Text>
+              </View>
               {impossibleSubjects.map((subject, index) => (
-                <Text key={index} style={styles.errorText}>
-                  For subject {subject.subjectCode}, {subject.studentName} cannot obtain the minimum 26 marks with the current assignment marks.
-                </Text>
+                <View key={index} style={[commonStyles.iconTextRow, { marginBottom: 4, alignItems: 'flex-start' }]}>
+                  <View style={commonStyles.iconContainer}>
+                    <InfoIcon size={14} color={Colors.danger} />
+                  </View>
+                  <Text style={[styles.errorText, { flex: 1 }]}>
+                    For subject {subject.subjectCode}, {subject.studentName} cannot obtain the minimum 26 marks with the current assignment marks.
+                  </Text>
+                </View>
               ))}
             </View>
           )}
@@ -467,7 +540,12 @@ export default function ResultsScreen() {
     <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
       <View style={commonStyles.container}>
         <View style={commonStyles.header}>
-          <Text style={commonStyles.headerTitle}>Academic Results</Text>
+          <View style={[commonStyles.iconTextRow, { flex: 1 }]}>
+            <View style={commonStyles.iconContainer}>
+              <TrophyIcon size={24} color={Colors.primary} />
+            </View>
+            <Text style={commonStyles.headerTitle}>Academic Results</Text>
+          </View>
           <TouchableOpacity 
             style={styles.refreshButton}
             onPress={handleRetry}

@@ -353,6 +353,11 @@ const getHardcodedAttendanceMapping = (subject) => {
     return 'SC3';
   }
   
+  // Data structure LAB -> 24CSL306
+  if (subjectLower.includes('data structure') && subjectLower.includes('lab')) {
+    return '24CSL306';
+  }
+  
   // Hardware Lab -> 24CSL307
   if (subjectLower.includes('hardware lab')) {
     return '24CSL307';

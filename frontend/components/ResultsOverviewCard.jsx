@@ -3,6 +3,7 @@ import { Colors } from '../constants/colors';
 import commonStyles from '../styles/commonStyles';
 import styles from '../styles/homeScreenStyles';
 import Card from './Card';
+import { ChartIcon, StarIcon, TrendingDownIcon, TrendingUpIcon, TrophyIcon } from './icons/SvgIcons';
 
 const ResultsOverviewCard = ({ resultsData }) => {
   if (!resultsData || resultsData.length === 0) return null;
@@ -46,20 +47,44 @@ const ResultsOverviewCard = ({ resultsData }) => {
   return (
     <Card variant="default" withMargin marginSize="medium">
       <Card.Header>
-        <Text style={commonStyles.cardTitle}>Results Overview</Text>
+        <View style={commonStyles.iconTextRow}>
+          <View style={commonStyles.iconContainer}>
+            <TrophyIcon size={20} color={Colors.primary} />
+          </View>
+          <Text style={commonStyles.cardTitle}>Results Overview</Text>
+        </View>
       </Card.Header>
       
       <Card.Body>
         <View style={styles.resultsOverviewContainer}>
           {/* Left side - Total performance */}
           <View style={styles.totalPerformanceSection}>
-            <Text style={styles.totalPerformanceLabel}>Overall Performance</Text>
-            <Text style={[styles.totalPerformancePercentage, { color: getTotalPerformanceColor() }]}>
-              {totalPercentage}%
-            </Text>
-            <Text style={styles.totalPerformanceMessage}>
-              {getTotalPerformanceMessage()}
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 4 }}>
+              <View style={{ width: 20, alignItems: 'center', marginRight: 6, marginTop: 2 }}>
+                <ChartIcon size={16} color={Colors.textSecondary} />
+              </View>
+              <Text style={styles.totalPerformanceLabel}>Overall Performance</Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+              <View style={{ width: 28, alignItems: 'center', marginRight: 8, marginTop: 2 }}>
+                {parseFloat(totalPercentage) >= 75 ? (
+                  <TrendingUpIcon size={24} color={getTotalPerformanceColor()} />
+                ) : (
+                  <TrendingDownIcon size={24} color={getTotalPerformanceColor()} />
+                )}
+              </View>
+              <Text style={[styles.totalPerformancePercentage, { color: getTotalPerformanceColor() }]}>
+                {totalPercentage}%
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginTop: 4 }}>
+              <View style={{ width: 20, alignItems: 'center', marginRight: 4, marginTop: 2 }}>
+                <StarIcon size={14} color={Colors.warning} filled />
+              </View>
+              <Text style={styles.totalPerformanceMessage}>
+                {getTotalPerformanceMessage()}
+              </Text>
+            </View>
             <Text style={styles.totalExamsText}>
               {resultsData.length} exam{resultsData.length !== 1 ? 's' : ''} completed
             </Text>

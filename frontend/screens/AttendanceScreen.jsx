@@ -1,19 +1,32 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  Platform,
-  RefreshControl,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    Alert,
+    Platform,
+    RefreshControl,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchAttendanceWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
+import {
+    BookIcon,
+    CalendarIcon,
+    CardIcon,
+    ChartIcon,
+    CheckCircleIcon,
+    ClockIcon,
+    InfoIcon,
+    PercentIcon,
+    SchoolIcon,
+    UserIcon,
+    WarningIcon
+} from '../components/icons/SvgIcons';
 import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
@@ -103,6 +116,38 @@ export default function AttendanceScreen() {
       .map(([code, data]) => ({ code, ...data }));
   };
 
+  // Get subject name from timetable or results data
+  const getSubjectName = (subjectCode) => {
+    // First try to find in timetable
+    if (appData.timetable) {
+      const timetable = appData.timetable;
+      const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+      
+      for (const day of days) {
+        const dayData = timetable[day];
+        if (!dayData) continue;
+        
+        for (let i = 1; i <= 7; i++) {
+          const periodData = dayData[`period-${i}`] || dayData[`period${i}`];
+          if (periodData && periodData.code === subjectCode && periodData.name) {
+            return periodData.name;
+          }
+        }
+      }
+    }
+    
+    // Then try to find in results
+    if (appData.results && Array.isArray(appData.results)) {
+      const result = appData.results.find(r => r.subjectCode === subjectCode);
+      if (result && result.subjectName) {
+        return result.subjectName;
+      }
+    }
+    
+    // Return null if no match found
+    return null;
+  };
+
   const subjects = getSubjects();
 
   const handleAnalyze = () => {
@@ -131,17 +176,23 @@ export default function AttendanceScreen() {
         style={[styles.tabButton, activeTab === 'attendance' && styles.activeTabButton]}
         onPress={() => setActiveTab('attendance')}
       >
-        <Text style={[styles.tabButtonText, activeTab === 'attendance' && styles.activeTabButtonText]}>
-          Attendance
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <PercentIcon size={16} color={activeTab === 'attendance' ? Colors.white : Colors.textSecondary} />
+          <Text style={[styles.tabButtonText, activeTab === 'attendance' && styles.activeTabButtonText, { marginLeft: 6 }]}>
+            Attendance
+          </Text>
+        </View>
       </TouchableOpacity>
       <TouchableOpacity 
         style={[styles.tabButton, activeTab === 'analysis' && styles.activeTabButton]}
         onPress={() => setActiveTab('analysis')}
       >
-        <Text style={[styles.tabButtonText, activeTab === 'analysis' && styles.activeTabButtonText]}>
-          Analysis
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <ChartIcon size={16} color={activeTab === 'analysis' ? Colors.white : Colors.textSecondary} />
+          <Text style={[styles.tabButtonText, activeTab === 'analysis' && styles.activeTabButtonText, { marginLeft: 6 }]}>
+            Analysis
+          </Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -150,15 +201,26 @@ export default function AttendanceScreen() {
     <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}>
       <Card variant="default" withMargin marginSize="medium">
         <Card.Header>
-          <Text style={styles.analysisTitle}>Attendance Projections</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <View style={{ width: 24, alignItems: 'center', marginRight: 8, marginTop: 2 }}>
+              <ChartIcon size={20} color={Colors.primary} />
+            </View>
+            <Text style={styles.analysisTitle}>Attendance Projections</Text>
+          </View>
         </Card.Header>
         <Card.Body>
-          <Text style={styles.dateLabel}>Target Date:</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 }}>
+            <View style={{ width: 20, alignItems: 'center', marginRight: 6, marginTop: 2 }}>
+              <CalendarIcon size={16} color={Colors.textSecondary} outline />
+            </View>
+            <Text style={styles.dateLabel}>Target Date:</Text>
+          </View>
           <TouchableOpacity 
             style={styles.dateInput} 
             onPress={() => setShowDatePicker(true)}
           >
-            <Text style={styles.dateInputText}>
+            <CalendarIcon size={18} color={Colors.primary} outline />
+            <Text style={[styles.dateInputText, { marginLeft: 8 }]}>
               {formatDateToDDMMYY(targetDate)}
             </Text>
           </TouchableOpacity>
@@ -263,64 +325,136 @@ export default function AttendanceScreen() {
   const renderAttendanceContent = () => (
     <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}>
       <Card variant="default" style={styles.summaryCard}>
-        <Text style={styles.summaryTitle}>Attendance Summary</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 16 }}>
+          <View style={{ width: 24, alignItems: 'center', marginRight: 8, marginTop: 2 }}>
+            <UserIcon size={20} color={Colors.primary} />
+          </View>
+          <Text style={styles.summaryTitle}>Attendance Summary</Text>
+        </View>
         
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Name:</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <View style={{ width: 20, alignItems: 'center', marginRight: 6, marginTop: 2 }}>
+              <UserIcon size={14} color={Colors.textSecondary} />
+            </View>
+            <Text style={styles.summaryLabel}>Name:</Text>
+          </View>
           <Text style={styles.summaryValue}>{attendance.name}</Text>
         </View>
         
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Roll No:</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <View style={{ width: 20, alignItems: 'center', marginRight: 6, marginTop: 2 }}>
+              <CardIcon size={14} color={Colors.textSecondary} />
+            </View>
+            <Text style={styles.summaryLabel}>Roll No:</Text>
+          </View>
           <Text style={styles.summaryValue}>{attendance.roll_no}</Text>
         </View>
         
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>University Reg:</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <View style={{ width: 20, alignItems: 'center', marginRight: 6, marginTop: 2 }}>
+              <SchoolIcon size={14} color={Colors.textSecondary} />
+            </View>
+            <Text style={styles.summaryLabel}>University Reg:</Text>
+          </View>
           <Text style={styles.summaryValue}>{attendance.university_reg_no}</Text>
         </View>
         
         <View style={styles.totalPercentageContainer}>
-          <Text style={styles.totalPercentageLabel}>Overall Attendance</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 }}>
+            <View style={{ width: 22, alignItems: 'center', marginRight: 8, marginTop: 2 }}>
+              <PercentIcon size={18} color={Colors.primary} />
+            </View>
+            <Text style={styles.totalPercentageLabel}>Overall Attendance</Text>
+          </View>
           <Text style={styles.totalPercentage}>{attendance.total_percentage}</Text>
-          <Text style={styles.totalHours}>
-            {attendance.total_present_hours} / {attendance.total_hours} hours
-          </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', marginTop: 4 }}>
+            <View style={{ width: 18, alignItems: 'center', marginRight: 6, marginTop: 2 }}>
+              <ClockIcon size={14} color={Colors.textSecondary} />
+            </View>
+            <Text style={styles.totalHours}>
+              {attendance.total_present_hours} / {attendance.total_hours} hours
+            </Text>
+          </View>
         </View>
       </Card>
 
       <View style={styles.subjectsContainer}>
-        <Text style={styles.subjectsTitle}>Subject-wise Attendance</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 12 }}>
+          <View style={{ width: 22, alignItems: 'center', marginRight: 8, marginTop: 2 }}>
+            <BookIcon size={18} color={Colors.textPrimary} />
+          </View>
+          <Text style={styles.subjectsTitle}>Subject-wise Attendance</Text>
+        </View>
         
-        {subjects.map((subject, index) => (
-          <Card 
-            key={subject.code} 
-            variant="small" 
-            withMargin
-            onPress={() => {}}
-          >
-            <View style={styles.subjectHeader}>
-              <Text style={styles.subjectCode}>{subject.code}</Text>
-              <Text style={[
-                styles.subjectPercentage,
-                { color: parseFloat(subject.attendance_percentage) >= 75 ? Colors.success : Colors.danger }
-              ]}>
-                {subject.attendance_percentage}
-              </Text>
-            </View>
-            
-            <View style={styles.subjectDetails}>
-              <Text style={styles.subjectHours}>
-                Present: {subject.present_hours} / {subject.total_hours} hours
-              </Text>
-            </View>
-          </Card>
-        ))}
+        {subjects.map((subject, index) => {
+          const percentage = parseFloat(subject.attendance_percentage);
+          const isGood = percentage >= 75;
+          const subjectName = getSubjectName(subject.code);
+          
+          return (
+            <Card 
+              key={subject.code} 
+              variant="small" 
+              withMargin
+              onPress={() => {}}
+            >
+              <View style={styles.subjectHeader}>
+                <View style={{ flexDirection: 'row', alignItems: 'flex-start', flex: 1 }}>
+                  <View style={{ width: 20, alignItems: 'center', marginRight: 8, marginTop: 2 }}>
+                    <BookIcon size={16} color={isGood ? Colors.success : Colors.danger} />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.subjectCode}>{subject.code}</Text>
+                    {subjectName && (
+                      <Text style={styles.subjectName} numberOfLines={2}>
+                        {subjectName}
+                      </Text>
+                    )}
+                  </View>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                  <View style={{ width: 20, alignItems: 'center', marginRight: 6, marginTop: 2 }}>
+                    {isGood ? (
+                      <CheckCircleIcon size={16} color={Colors.success} />
+                    ) : (
+                      <WarningIcon size={16} color={Colors.danger} />
+                    )}
+                  </View>
+                  <Text style={[
+                    styles.subjectPercentage,
+                    { color: isGood ? Colors.success : Colors.danger }
+                  ]}>
+                    {subject.attendance_percentage}
+                  </Text>
+                </View>
+              </View>
+              
+              <View style={styles.subjectDetails}>
+                <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                  <View style={{ width: 18, alignItems: 'center', marginRight: 6, marginTop: 2 }}>
+                    <CalendarIcon size={14} color={Colors.textSecondary} outline />
+                  </View>
+                  <Text style={styles.subjectHours}>
+                    Present: {subject.present_hours} / {subject.total_hours} hours
+                  </Text>
+                </View>
+              </View>
+            </Card>
+          );
+        })}
       </View>
 
       {attendance.note && (
         <Card variant="warning" style={styles.noteContainer}>
-          <Text style={styles.noteText}>{attendance.note}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <View style={{ width: 22, alignItems: 'center', marginRight: 8, marginTop: 2 }}>
+              <InfoIcon size={18} color={Colors.warning} />
+            </View>
+            <Text style={[styles.noteText, { flex: 1 }]}>{attendance.note}</Text>
+          </View>
         </Card>
       )}
       

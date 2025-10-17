@@ -127,6 +127,14 @@ const attendanceScreenStyles = StyleSheet.create({
     flex: 1,
   },
   
+  subjectName: {
+    fontSize: Typography.fontSize.sm,
+    fontWeight: Typography.fontWeight.medium,
+    color: Colors.textSecondary,
+    marginTop: Spacing.xs,
+    lineHeight: Typography.lineHeight.tight,
+  },
+  
   subjectPercentage: {
     fontSize: Typography.fontSize.lg,
     fontWeight: Typography.fontWeight.bold,
@@ -212,6 +220,8 @@ const attendanceScreenStyles = StyleSheet.create({
   },
 
   dateInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: Colors.borderLight,
     borderRadius: BorderRadius.sm,

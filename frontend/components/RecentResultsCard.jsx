@@ -1,7 +1,9 @@
 import { Text, View } from 'react-native';
+import { Colors } from '../constants/colors';
 import commonStyles from '../styles/commonStyles';
 import styles from '../styles/homeScreenStyles';
 import Card from './Card';
+import { StarIcon } from './icons/SvgIcons';
 
 const RecentResultsCard = ({ resultsData }) => {
   if (!resultsData || resultsData.length === 0) return null;
@@ -26,7 +28,12 @@ const RecentResultsCard = ({ resultsData }) => {
   return (
     <Card variant="default" withMargin marginSize="medium">
       <Card.Header>
-        <Text style={commonStyles.cardTitle}>Recent Results</Text>
+        <View style={commonStyles.iconTextRow}>
+          <View style={commonStyles.iconContainer}>
+            <StarIcon size={20} color={Colors.primary} filled />
+          </View>
+          <Text style={commonStyles.cardTitle}>Recent Results</Text>
+        </View>
       </Card.Header>
       
       <Card.Body>

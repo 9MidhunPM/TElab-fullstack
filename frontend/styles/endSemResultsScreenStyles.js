@@ -53,6 +53,26 @@ const endSemResultsScreenStyles = StyleSheet.create({
     marginBottom: Spacing.xl,
   },
   
+  semesterTopBar: {
+    backgroundColor: Colors.cardBackground,
+    borderRadius: BorderRadius.md,
+    padding: Spacing.base,
+    marginBottom: Spacing.sm,
+    marginHorizontal: Spacing.base,
+    ...Shadows.small,
+    borderLeftWidth: 4,
+    borderLeftColor: Colors.primary,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  
+  semesterTopBarTitle: {
+    fontSize: Typography.fontSize.lg,
+    fontWeight: Typography.fontWeight.bold,
+    color: Colors.textPrimary,
+    flex: 1,
+  },
+  
   semesterHeader: {
     backgroundColor: Colors.cardBackground,
     borderRadius: BorderRadius.md,
@@ -71,8 +91,8 @@ const endSemResultsScreenStyles = StyleSheet.create({
   
   semesterInfo: {
     flexDirection: 'row',
-    gap: Spacing.sm,
     flexWrap: 'wrap',
+    alignItems: 'center',
   },
   
   semesterBadge: {

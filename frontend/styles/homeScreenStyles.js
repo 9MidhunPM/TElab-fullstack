@@ -37,6 +37,31 @@ const homeScreenStyles = StyleSheet.create({
     backgroundColor: Colors.backgroundLight,
   },
   
+  devButton: {
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    borderRadius: BorderRadius.md,
+    backgroundColor: Colors.backgroundLight,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  
+  devButtonActive: {
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
+  },
+  
+  devButtonText: {
+    fontSize: Typography.fontSize.xs,
+    fontWeight: Typography.fontWeight.bold,
+    color: Colors.textSecondary,
+    letterSpacing: 0.5,
+  },
+  
+  devButtonTextActive: {
+    color: Colors.white,
+  },
+  
   logoutIconButton: {
     padding: Spacing.sm,
     borderRadius: BorderRadius.md,
@@ -271,7 +296,10 @@ const homeScreenStyles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     paddingVertical: Spacing.md,
     paddingHorizontal: Spacing.lg,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
     marginTop: Spacing.md,
   },
 

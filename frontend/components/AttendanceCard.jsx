@@ -1,7 +1,9 @@
 import { Text, View } from 'react-native';
+import { Colors } from '../constants/colors';
 import commonStyles from '../styles/commonStyles';
 import styles from '../styles/homeScreenStyles';
 import Card from './Card';
+import { CalendarIcon, CheckCircleIcon, PercentIcon, WarningIcon } from './icons/SvgIcons';
 
 const AttendanceCard = ({ attendanceSummary }) => {
   if (!attendanceSummary) return null;
@@ -9,36 +11,61 @@ const AttendanceCard = ({ attendanceSummary }) => {
   return (
     <Card variant="default" withMargin marginSize="medium">
       <Card.Header>
-        <Text style={commonStyles.cardTitle}>Attendance Overview</Text>
+        <View style={commonStyles.iconTextRow}>
+          <View style={commonStyles.iconContainer}>
+            <CalendarIcon size={20} color={Colors.primary} />
+          </View>
+          <Text style={commonStyles.cardTitle}>Attendance Summary</Text>
+        </View>
       </Card.Header>
       
       <Card.Body>
         <View style={styles.attendanceSummaryContainer}>
           {/* Left side - Total attendance */}
           <View style={styles.attendanceTotalSection}>
-            <Text style={styles.attendanceTotalLabel}>Overall Attendance</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 4 }}>
+              <View style={{ width: 20, alignItems: 'center', marginRight: 6, marginTop: 2 }}>
+                <PercentIcon size={16} color={Colors.textSecondary} />
+              </View>
+              <Text style={styles.attendanceTotalLabel}>Overall Attendance</Text>
+            </View>
             <Text style={styles.attendanceTotalPercentage}>
               {attendanceSummary.totalPercentage}
             </Text>
-            <Text style={styles.attendanceTotalHours}>
-              {attendanceSummary.totalPresentHours} / {attendanceSummary.totalHours} hours
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+              <View style={{ width: 18, alignItems: 'center', marginRight: 6, marginTop: 2 }}>
+                <CalendarIcon size={14} color={Colors.textSecondary} outline />
+              </View>
+              <Text style={styles.attendanceTotalHours}>
+                {attendanceSummary.totalPresentHours} / {attendanceSummary.totalHours} hours
+              </Text>
+            </View>
           </View>
 
           {/* Right side - Lowest attendance or full attendance message */}
           <View style={styles.attendanceDetailsSection}>
             {attendanceSummary.hasFullAttendance ? (
               <View style={styles.fullAttendanceContainer}>
-                <Text style={styles.fullAttendanceText}>🎉 Perfect Attendance!</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 4 }}>
+                  <View style={{ width: 22, alignItems: 'center', marginRight: 8, marginTop: 2 }}>
+                    <CheckCircleIcon size={18} color={Colors.success} />
+                  </View>
+                  <Text style={styles.fullAttendanceText}>Perfect Attendance!</Text>
+                </View>
                 <Text style={styles.fullAttendanceSubtext}>
                   You have 100% attendance in all {attendanceSummary.totalSubjects} subjects. Great job!
                 </Text>
               </View>
             ) : (
               <View style={styles.lowestAttendanceContainer}>
-                <Text style={styles.lowestAttendanceTitle}>
-                  {attendanceSummary.lowestAttendance.length > 0 ? 'Needs Attention' : 'Attendance Status'}
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 }}>
+                  <View style={{ width: 20, alignItems: 'center', marginRight: 6, marginTop: 2 }}>
+                    <WarningIcon size={16} color={Colors.warning} />
+                  </View>
+                  <Text style={styles.lowestAttendanceTitle}>
+                    {attendanceSummary.lowestAttendance.length > 0 ? 'Needs Attention' : 'Attendance Status'}
+                  </Text>
+                </View>
                 {attendanceSummary.lowestAttendance.length > 0 ? (
                   attendanceSummary.lowestAttendance.map((subject, index) => (
                     <View key={subject.code} style={styles.lowestAttendanceItem}>

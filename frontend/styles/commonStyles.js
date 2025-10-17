@@ -406,6 +406,21 @@ const commonStyles = StyleSheet.create({
   badgeDangerText: {
     color: Colors.danger,
   },
+
+  // Icon alignment helpers
+  iconContainer: {
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginRight: 8,
+    marginTop: 2,
+  },
+
+  iconTextRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
 });
 
 export default commonStyles;
