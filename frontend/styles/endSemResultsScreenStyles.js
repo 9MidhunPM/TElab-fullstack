@@ -1,10 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { BorderRadius, Colors, Shadows, Spacing, Typography } from './commonStyles';
+import { BorderRadius, Spacing, Typography, getShadows } from './commonStyles';
 
 /**
- * Styles specific to EndSemResultsScreen component
+ * Generate styles specific to EndSemResultsScreen component
+ * @param {Object} Colors - The active theme colors
+ * @returns {Object} StyleSheet object with themed styles
  */
-const endSemResultsScreenStyles = StyleSheet.create({
+export const getEndSemResultsScreenStyles = (Colors) => {
+  const Shadows = getShadows(Colors);
+  return StyleSheet.create({
   refreshButton: {
     paddingHorizontal: Spacing.base,
     paddingVertical: Spacing.sm,
@@ -182,5 +186,6 @@ const endSemResultsScreenStyles = StyleSheet.create({
     textTransform: 'uppercase',
   },
 });
+};
 
-export default endSemResultsScreenStyles;
+// Note: No default export - use getEndSemResultsScreenStyles(Colors) from useTheme hook instead

@@ -1,10 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { BorderRadius, Colors, Shadows, Spacing, Typography } from './commonStyles';
+import { BorderRadius, Spacing, Typography, getShadows } from './commonStyles';
 
 /**
- * Styles specific to ResultsScreen component
+ * Generate styles specific to ResultsScreen component
+ * @param {Object} Colors - The active theme colors
+ * @returns {Object} StyleSheet object with themed styles
  */
-const resultsScreenStyles = StyleSheet.create({
+export const getResultsScreenStyles = (Colors) => {
+  const Shadows = getShadows(Colors);
+  return StyleSheet.create({
   refreshButton: {
     paddingHorizontal: Spacing.base,
     paddingVertical: Spacing.sm,
@@ -468,5 +472,6 @@ const resultsScreenStyles = StyleSheet.create({
     lineHeight: Typography.lineHeight.base,
   },
 });
+};
 
-export default resultsScreenStyles;
+// Note: No default export - use getResultsScreenStyles(Colors) from useTheme hook instead

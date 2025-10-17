@@ -1,10 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { BorderRadius, Colors, Shadows, Spacing, Typography } from './commonStyles';
+import { BorderRadius, Spacing, Typography, getShadows } from './commonStyles';
 
 /**
- * Styles specific to AttendanceScreen component
+ * Generate styles specific to AttendanceScreen component
+ * @param {Object} Colors - The active theme colors
+ * @returns {Object} StyleSheet object with themed styles
  */
-const attendanceScreenStyles = StyleSheet.create({
+export const getAttendanceScreenStyles = (Colors) => {
+  const Shadows = getShadows(Colors);
+  return StyleSheet.create({
   // Custom header without bottom border
   header: {
     flexDirection: 'row',
@@ -387,5 +391,6 @@ const attendanceScreenStyles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+};
 
-export default attendanceScreenStyles;
+// Note: No default export - use getAttendanceScreenStyles(Colors) from useTheme hook instead

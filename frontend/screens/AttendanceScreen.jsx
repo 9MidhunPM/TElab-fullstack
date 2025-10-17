@@ -1,37 +1,35 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    Platform,
-    RefreshControl,
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Alert,
+  Platform,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchAttendanceWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
 import {
-    BookIcon,
-    CalendarIcon,
-    CardIcon,
-    ChartIcon,
-    CheckCircleIcon,
-    ClockIcon,
-    InfoIcon,
-    PercentIcon,
-    SchoolIcon,
-    UserIcon,
-    WarningIcon
+  BookIcon,
+  CalendarIcon,
+  CardIcon,
+  ChartIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  InfoIcon,
+  PercentIcon,
+  SchoolIcon,
+  UserIcon,
+  WarningIcon
 } from '../components/icons/SvgIcons';
-import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
-import styles from '../styles/attendanceScreenStyles';
-import commonStyles from '../styles/commonStyles';
+import { useTheme } from '../hooks/useTheme';
 import { formatDateToDDMMYY, getComprehensiveAnalysis } from '../utils/attendanceAnalysis';
 
 export default function AttendanceScreen() {
@@ -43,6 +41,7 @@ export default function AttendanceScreen() {
   const [analysisData, setAnalysisData] = useState(null);
   const { token } = useAuth();
   const { appData, dataLoadingStatus, updateData, isDataAvailable, hasDataError, getDataError } = useAppData();
+  const { Colors, commonStyles, attendanceScreenStyles: styles } = useTheme();
 
   // Get attendance data from context
   const attendance = appData.attendance;

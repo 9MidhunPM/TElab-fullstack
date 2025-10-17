@@ -1,13 +1,18 @@
-import { Text, View } from 'react-native';
-import { Colors } from '../constants/colors';
-import commonStyles from '../styles/commonStyles';
+﻿import { Text, View } from 'react-native';
+import { useTheme } from '../hooks/useTheme';
 import Card from './Card';
+import {
+  BookIcon,
+  CalendarIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  SchoolIcon,
+  TeacherIcon,
+} from './icons/SvgIcons';
 
-/**
- * NextClassCard Component
- * Shows current class and next upcoming class based on timetable
- */
 const NextClassCard = ({ nextClassInfo }) => {
+  const { Colors, commonStyles } = useTheme();
+  
   if (!nextClassInfo) return null;
 
   const { 
@@ -18,38 +23,230 @@ const NextClassCard = ({ nextClassInfo }) => {
     currentTime 
   } = nextClassInfo;
 
-  const renderClassInfo = (classInfo, label, isFullWidth = false) => {
+  const renderClassInfo = (classInfo, isOngoing = false) => {
     if (!classInfo) return null;
 
     const isFree = !classInfo.subject || classInfo.subject.toLowerCase().includes('free');
 
-    if (isFullWidth) {
-      return (
-        <View style={styles.classInfoSection}>
-          <View style={styles.fullWidthHeader}>
-            <Text style={[styles.classLabel, styles.classLabelLarge]}>{label}</Text>
-            <Text style={[styles.classTime, styles.classTimeLarge]}>{classInfo.timing}</Text>
+    return (
+      <View style={{
+        backgroundColor: isOngoing ? Colors.timetablePrimary + '15' : Colors.cardBackground,
+        borderRadius: 16,
+        padding: 16,
+        borderWidth: isOngoing ? 2 : 1,
+        borderColor: isOngoing ? Colors.timetablePrimary : Colors.border,
+      }}>
+        {isOngoing && (
+          <View style={{
+            position: 'absolute',
+            top: 12,
+            right: 12,
+            backgroundColor: Colors.success,
+            paddingHorizontal: 10,
+            paddingVertical: 4,
+            borderRadius: 12,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 4,
+          }}>
+            <View style={{
+              width: 6,
+              height: 6,
+              borderRadius: 3,
+              backgroundColor: Colors.white,
+            }} />
+            <Text style={{ 
+              fontSize: 11, 
+              color: Colors.white, 
+              fontWeight: '700',
+              letterSpacing: 0.5,
+            }}>
+              LIVE
+            </Text>
           </View>
-          <Text style={[styles.className, isFree && styles.freeClass, styles.classNameLarge]}>
-            {classInfo.subject || 'Free Period'}
+        )}
+
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: Colors.primary + '15',
+          alignSelf: 'flex-start',
+          paddingHorizontal: 12,
+          paddingVertical: 6,
+          borderRadius: 8,
+          marginBottom: 12,
+        }}>
+          <ClockIcon size={14} color={Colors.primary} />
+          <Text style={{ 
+            fontSize: 13, 
+            color: Colors.primary, 
+            fontWeight: '700',
+            marginLeft: 6,
+          }}>
+            {classInfo.timing}
           </Text>
-          {!isFree && classInfo.teacher && (
-            <Text style={[styles.classTeacher, styles.classTeacherLarge]}>{classInfo.teacher}</Text>
-          )}
+        </View>
+
+        <View style={{ 
+          flexDirection: 'row', 
+          alignItems: 'center',
+          marginBottom: 8,
+        }}>
+          <View style={{
+            width: 40,
+            height: 40,
+            borderRadius: 12,
+            backgroundColor: isFree ? Colors.textTertiary + '20' : Colors.primary + '20',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: 12,
+          }}>
+            <BookIcon 
+              size={20} 
+              color={isFree ? Colors.textTertiary : Colors.primary} 
+            />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={{ 
+              fontSize: 18, 
+              fontWeight: '700', 
+              color: isFree ? Colors.textTertiary : Colors.textPrimary,
+              fontStyle: isFree ? 'italic' : 'normal',
+              lineHeight: 24,
+            }}>
+              {classInfo.subject || 'Free Period'}
+            </Text>
+            {!isFree && (
+              <Text style={{ 
+                fontSize: 12, 
+                color: Colors.textSecondary,
+                fontWeight: '500',
+                marginTop: 2,
+              }}>
+                {isOngoing ? 'Currently in session' : 'Coming up next'}
+              </Text>
+            )}
+          </View>
+        </View>
+
+        {!isFree && classInfo.teacher && (
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginTop: 8,
+            paddingTop: 12,
+            borderTopWidth: 1,
+            borderTopColor: Colors.border,
+          }}>
+            <View style={{
+              width: 32,
+              height: 32,
+              borderRadius: 16,
+              backgroundColor: Colors.textSecondary + '15',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: 10,
+            }}>
+              <TeacherIcon size={16} color={Colors.textSecondary} />
+            </View>
+            <View>
+              <Text style={{ 
+                fontSize: 11, 
+                color: Colors.textTertiary,
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: 0.5,
+              }}>
+                Instructor
+              </Text>
+              <Text style={{ 
+                fontSize: 14, 
+                color: Colors.textSecondary,
+                fontWeight: '600',
+                marginTop: 2,
+              }}>
+                {classInfo.teacher}
+              </Text>
+            </View>
+          </View>
+        )}
+      </View>
+    );
+  };
+
+  const renderEmptyState = () => {
+    if (showTomorrowSchedule) {
+      return (
+        <View style={{
+          alignItems: 'center',
+          paddingVertical: 32,
+          paddingHorizontal: 20,
+        }}>
+          <View style={{
+            width: 64,
+            height: 64,
+            borderRadius: 32,
+            backgroundColor: Colors.primary + '15',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 16,
+          }}>
+            <CalendarIcon size={32} color={Colors.primary} outline />
+          </View>
+          <Text style={{ 
+            fontSize: 18, 
+            color: Colors.textPrimary, 
+            fontWeight: '700',
+            marginBottom: 8,
+            textAlign: 'center',
+          }}>
+            Day Complete! 
+          </Text>
+          <Text style={{ 
+            fontSize: 14, 
+            color: Colors.textSecondary,
+            textAlign: 'center',
+            lineHeight: 20,
+          }}>
+            No more classes today.{'\n'}Tomorrow's schedule will be available soon.
+          </Text>
         </View>
       );
     }
 
     return (
-      <View style={styles.classInfoSection}>
-        <Text style={styles.classLabel}>{label}</Text>
-        <Text style={[styles.className, isFree && styles.freeClass]}>
-          {classInfo.subject || 'Free Period'}
+      <View style={{
+        alignItems: 'center',
+        paddingVertical: 32,
+        paddingHorizontal: 20,
+      }}>
+        <View style={{
+          width: 64,
+          height: 64,
+          borderRadius: 32,
+          backgroundColor: Colors.success + '15',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 16,
+        }}>
+          <CheckCircleIcon size={32} color={Colors.success} />
+        </View>
+        <Text style={{ 
+          fontSize: 18, 
+          color: Colors.textPrimary, 
+          fontWeight: '700',
+          marginBottom: 8,
+          textAlign: 'center',
+        }}>
+          All Clear! 
         </Text>
-        <Text style={styles.classTime}>{classInfo.timing}</Text>
-        {!isFree && classInfo.teacher && (
-          <Text style={styles.classTeacher}>{classInfo.teacher}</Text>
-        )}
+        <Text style={{ 
+          fontSize: 14, 
+          color: Colors.textSecondary,
+          textAlign: 'center',
+        }}>
+          No upcoming classes scheduled
+        </Text>
       </View>
     );
   };
@@ -57,216 +254,48 @@ const NextClassCard = ({ nextClassInfo }) => {
   return (
     <Card variant="default" withMargin marginSize="medium">
       <Card.Header>
-        <View style={styles.headerContainer}>
-          <Text style={commonStyles.cardTitle}>
-            {showTomorrowSchedule ? "Tomorrow's Schedule" : "Current Schedule"}
-          </Text>
-          <Text style={styles.currentTime}>{currentTime}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{
+              width: 36,
+              height: 36,
+              borderRadius: 10,
+              backgroundColor: Colors.primary + '15',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: 10,
+            }}>
+              <SchoolIcon size={20} color={Colors.primary} />
+            </View>
+            <View>
+              <Text style={commonStyles.cardTitle}>
+                {isClassOngoing ? ' Current Class' : showTomorrowSchedule ? "Tomorrow's Classes" : ' Next Class'}
+              </Text>
+              <Text style={{ 
+                fontSize: 12, 
+                color: Colors.textTertiary,
+                fontWeight: '500',
+                marginTop: 2,
+              }}>
+                {currentTime}
+              </Text>
+            </View>
+          </View>
         </View>
       </Card.Header>
       
       <Card.Body>
-        {showTomorrowSchedule ? (
-          <View style={styles.tomorrowContainer}>
-            <Text style={styles.tomorrowText}>No more classes today</Text>
-            <Text style={styles.tomorrowSubtext}>Tomorrow's schedule will be available</Text>
-          </View>
+        {showTomorrowSchedule || (!isClassOngoing && !nextClass) ? (
+          renderEmptyState()
         ) : (
-          <View style={[styles.scheduleContainer, !isClassOngoing && nextClass && styles.fullWidthContainer]}>
-            {isClassOngoing && currentClass && (
-              <View style={styles.currentClassContainer}>
-                {renderClassInfo(currentClass, "Current Class")}
-                <View style={styles.ongoingIndicator}>
-                  <Text style={styles.ongoingText}>ONGOING</Text>
-                </View>
-              </View>
-            )}
-            
-            {nextClass && (
-              <View style={[
-                styles.nextClassContainer, 
-                isClassOngoing && styles.withCurrentClass,
-                !isClassOngoing && styles.fullWidthNextClass
-              ]}>
-                {renderClassInfo(nextClass, isClassOngoing ? "Next Class" : "Next Class", !isClassOngoing)}
-              </View>
-            )}
-            
-            {!isClassOngoing && !nextClass && (
-              <View style={styles.noClassContainer}>
-                <Text style={styles.noClassText}>No upcoming classes</Text>
-              </View>
-            )}
-          </View>
+          <>
+            {isClassOngoing && currentClass && renderClassInfo(currentClass, true)}
+            {!isClassOngoing && nextClass && renderClassInfo(nextClass, false)}
+          </>
         )}
       </Card.Body>
     </Card>
   );
-};
-
-const styles = {
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
-
-  currentTime: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    fontWeight: '600',
-    marginTop: 2,
-  },
-
-  scheduleContainer: {
-    flexDirection: 'row',
-  },
-
-  fullWidthContainer: {
-    flexDirection: 'column',
-  },
-
-  currentClassContainer: {
-    flex: 1,
-    paddingRight: 16,
-    borderRightWidth: 1,
-    borderRightColor: Colors.border,
-    position: 'relative',
-  },
-
-  nextClassContainer: {
-    flex: 1,
-    paddingLeft: 12,
-  },
-
-  withCurrentClass: {
-    paddingLeft: 12,
-  },
-
-  fullWidthNextClass: {
-    paddingLeft: 0,
-    flex: 1,
-  },
-
-  classInfoSection: {
-    flex: 1,
-  },
-
-  classLabel: {
-    fontSize: 12,
-    color: Colors.textSecondary,
-    fontWeight: '600',
-    marginBottom: 4,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-
-  className: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: Colors.textPrimary,
-    marginBottom: 2,
-  },
-
-  freeClass: {
-    color: Colors.textTertiary,
-    fontStyle: 'italic',
-  },
-
-  classTime: {
-    fontSize: 13,
-    color: Colors.primary,
-    fontWeight: '600',
-    marginBottom: 2,
-  },
-
-  classTeacher: {
-    fontSize: 12,
-    color: Colors.textSecondary,
-    fontStyle: 'italic',
-  },
-
-  ongoingIndicator: {
-    position: 'absolute',
-    top: 0,
-    right: 8,
-    backgroundColor: Colors.timetablePrimary,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-    elevation: 2,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-
-  ongoingText: {
-    fontSize: 10,
-    color: Colors.white,
-    fontWeight: '700',
-    letterSpacing: 0.8,
-  },
-
-  noClassContainer: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: 20,
-  },
-
-  noClassText: {
-    fontSize: 16,
-    color: Colors.textSecondary,
-    fontStyle: 'italic',
-  },
-
-  tomorrowContainer: {
-    alignItems: 'center',
-    paddingVertical: 20,
-  },
-
-  tomorrowText: {
-    fontSize: 16,
-    color: Colors.textPrimary,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-
-  tomorrowSubtext: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-  },
-
-  // Full width header layout
-  fullWidthHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-
-  // Large text styles for full-width next class
-  classLabelLarge: {
-    fontSize: 14,
-    textAlign: 'left',
-  },
-
-  classNameLarge: {
-    fontSize: 20,
-    textAlign: 'left',
-    marginBottom: 4,
-  },
-
-  classTimeLarge: {
-    fontSize: 16,
-    textAlign: 'right',
-  },
-
-  classTeacherLarge: {
-    fontSize: 14,
-    textAlign: 'left',
-  },
 };
 
 export default NextClassCard;

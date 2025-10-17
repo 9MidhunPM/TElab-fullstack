@@ -1,33 +1,31 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator,
-    FlatList,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchResultsWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
 import {
-    BookIcon,
-    CalendarIcon,
-    ChartIcon,
-    ClockIcon,
-    InfoIcon,
-    PercentIcon,
-    StarIcon,
-    TrophyIcon,
-    WarningIcon
+  BookIcon,
+  CalendarIcon,
+  ChartIcon,
+  ClockIcon,
+  InfoIcon,
+  PercentIcon,
+  StarIcon,
+  TrophyIcon,
+  WarningIcon
 } from '../components/icons/SvgIcons';
-import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
-import commonStyles from '../styles/commonStyles';
-import styles from '../styles/resultsScreenStyles';
+import { useTheme } from '../hooks/useTheme';
 import { getResultsAnalysis } from '../utils/resultsAnalysis';
 
 export default function ResultsScreen() {
@@ -39,6 +37,7 @@ export default function ResultsScreen() {
   const [impossibleSubjects, setImpossibleSubjects] = useState([]);
   const { token } = useAuth();
   const { appData, dataLoadingStatus, updateData, isDataAvailable, hasDataError, getDataError } = useAppData();
+  const { Colors, commonStyles, resultsScreenStyles: styles } = useTheme();
 
   // Get results data from context
   const results = appData.results;

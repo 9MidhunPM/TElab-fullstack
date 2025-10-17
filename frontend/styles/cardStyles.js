@@ -1,11 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { BorderRadius, Colors, Shadows, Spacing } from './commonStyles';
+import { Colors as StaticColors } from '../constants/colors';
+import { BorderRadius, Spacing, getShadows } from './commonStyles';
 
 /**
  * Styles for the reusable Card component
  * Provides various card variants for different use cases
  */
-const cardStyles = StyleSheet.create({
+export const getCardStyles = (Colors) => {
+  const Shadows = getShadows(Colors);
+  return StyleSheet.create({
   // Base card style
   card: {
     backgroundColor: Colors.cardBackground,
@@ -146,6 +149,7 @@ const cardStyles = StyleSheet.create({
     opacity: 0.7,
     transform: [{ scale: 0.98 }],
   },
-});
+  });
+};
 
-export default cardStyles;
+export default getCardStyles(StaticColors);

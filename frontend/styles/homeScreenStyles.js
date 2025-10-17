@@ -1,10 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { BorderRadius, Colors, Shadows, Spacing, Typography } from './commonStyles';
+import { BorderRadius, Spacing, Typography, getShadows } from './commonStyles';
 
 /**
- * Styles specific to HomeScreen component
+ * Generate styles specific to HomeScreen component
+ * @param {Object} Colors - The active theme colors
+ * @returns {Object} StyleSheet object with themed styles
  */
-const homeScreenStyles = StyleSheet.create({
+export const getHomeScreenStyles = (Colors) => {
+  const Shadows = getShadows(Colors);
+  return StyleSheet.create({
   contentContainer: {
     padding: Spacing.lg,
     paddingTop: Spacing.xxxl,
@@ -559,5 +563,6 @@ const homeScreenStyles = StyleSheet.create({
     fontStyle: 'italic',
   },
 });
+};
 
-export default homeScreenStyles;
+// Note: No default export - use getHomeScreenStyles(Colors) from useTheme hook instead

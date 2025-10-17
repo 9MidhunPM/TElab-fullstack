@@ -14,11 +14,9 @@ import {
 import Markdown from 'react-native-markdown-display';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowBackIcon, CalendarIcon, SendIcon, TrophyIcon } from '../components/icons/SvgIcons';
-import { Colors } from '../constants/colors';
+
 import { useAppData } from '../contexts/DataContext';
-import styles from '../styles/aiScreenStyles';
-import commonStyles from '../styles/commonStyles';
-import { markdownStyles } from '../styles/markdownStyles';
+import { useTheme } from '../hooks/useTheme';
 import { sendAIRequest } from '../utils/aiApi';
 
 /**
@@ -32,6 +30,7 @@ export default function AIScreen({ navigation }) {
   const [response, setResponse] = useState('');
   
   const { appData } = useAppData();
+  const { Colors, commonStyles, aiScreenStyles: styles, markdownStyles } = useTheme();
 
   // Animation values
   const slideAnim = useRef(new Animated.Value(300)).current;

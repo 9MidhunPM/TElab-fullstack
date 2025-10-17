@@ -2,14 +2,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { ActivityIndicator, AppRegistry, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, AppRegistry, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import AIFloatingButton from './components/AIFloatingButton';
 import TabIcon from './components/TabIcon';
-import { Colors } from './constants/colors';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { DataProvider } from './contexts/DataContext';
+import { useTheme } from './hooks/useTheme';
 import AIScreen from './screens/AIScreen';
 import LoginScreen from './screens/LoginScreen';
 import { tabsConfig } from './tabs';
@@ -19,6 +19,8 @@ const Tab = createBottomTabNavigator();
 
 // TabsNavigator component that renders all tabs dynamically
 function TabsNavigator({ navigation }) {
+  const { Colors } = useTheme();
+  
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }} edges={['bottom']}>
       <Tab.Navigator
@@ -80,12 +82,13 @@ function TabsNavigator({ navigation }) {
 // AuthNavigator component that handles conditional rendering
 function AuthNavigator() {
   const { isAuthenticated, isLoading } = useAuth();
+  const { Colors } = useTheme();
 
   // Show loading spinner while checking authentication state
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.safeAreaFull} edges={['top']}>
-        <View style={styles.loadingContainer}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }} edges={['top']}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size="large" color={Colors.spinner} />
         </View>
       </SafeAreaView>
@@ -130,18 +133,6 @@ function App() {
     </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  safeAreaFull: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 // Register the app component
 AppRegistry.registerComponent('main', () => App);

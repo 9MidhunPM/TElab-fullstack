@@ -2,86 +2,89 @@
  * Markdown styles for AI response rendering
  */
 
-import { Colors } from '../styles/commonStyles';
+import { BorderRadius, Spacing, Typography } from './commonStyles';
 
-export const markdownStyles = {
+// Function to generate markdown styles based on theme colors
+export const getMarkdownStyles = (Colors) => ({
   body: {
-    fontSize: 15,
+    fontSize: Typography.fontSize.base,
     color: Colors.text,
-    lineHeight: 24,
+    lineHeight: Typography.lineHeight.relaxed,
   },
   heading1: {
-    fontSize: 22,
-    fontWeight: '700',
+    fontSize: Typography.fontSize.xxl,
+    fontWeight: Typography.fontWeight.bold,
     color: Colors.primary,
-    marginTop: 12,
-    marginBottom: 8,
+    marginTop: Spacing.md,
+    marginBottom: Spacing.sm,
   },
   heading2: {
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: Typography.fontSize.xl,
+    fontWeight: Typography.fontWeight.bold,
     color: Colors.text,
-    marginTop: 10,
-    marginBottom: 6,
+    marginTop: Spacing.sm,
+    marginBottom: Spacing.xs,
   },
   heading3: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.lg,
+    fontWeight: Typography.fontWeight.semibold,
     color: Colors.text,
-    marginTop: 8,
-    marginBottom: 4,
+    marginTop: Spacing.sm,
+    marginBottom: Spacing.xs,
   },
   strong: {
-    fontWeight: '700',
+    fontWeight: Typography.fontWeight.bold,
     color: Colors.primary,
   },
   em: {
     fontStyle: 'italic',
   },
   bullet_list: {
-    marginTop: 8,
-    marginBottom: 8,
+    marginTop: Spacing.sm,
+    marginBottom: Spacing.sm,
   },
   ordered_list: {
-    marginTop: 8,
-    marginBottom: 8,
+    marginTop: Spacing.sm,
+    marginBottom: Spacing.sm,
   },
   list_item: {
-    marginBottom: 6,
+    marginBottom: Spacing.xs,
     flexDirection: 'row',
   },
   bullet_list_icon: {
     color: Colors.primary,
-    fontSize: 16,
-    marginRight: 8,
+    fontSize: Typography.fontSize.base,
+    marginRight: Spacing.sm,
   },
   paragraph: {
-    marginBottom: 12,
+    marginBottom: Spacing.md,
   },
   code_inline: {
     backgroundColor: Colors.backgroundLight,
-    paddingHorizontal: 6,
+    paddingHorizontal: Spacing.xs,
     paddingVertical: 2,
-    borderRadius: 4,
+    borderRadius: BorderRadius.xs,
     fontFamily: 'monospace',
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: Colors.textPrimary,
   },
   code_block: {
     backgroundColor: Colors.backgroundLight,
-    padding: 12,
-    borderRadius: 8,
+    padding: Spacing.md,
+    borderRadius: BorderRadius.sm,
     fontFamily: 'monospace',
-    fontSize: 14,
-    marginVertical: 8,
+    fontSize: Typography.fontSize.sm,
+    marginVertical: Spacing.sm,
     color: Colors.textPrimary,
   },
   blockquote: {
     backgroundColor: Colors.backgroundLight,
     borderLeftWidth: 4,
     borderLeftColor: Colors.primary,
-    paddingLeft: 12,
-    paddingVertical: 8,
-    marginVertical: 8,
+    paddingLeft: Spacing.md,
+    paddingVertical: Spacing.sm,
+    marginVertical: Spacing.sm,
   },
-};
+});
+
+// Note: No default export - use getMarkdownStyles(Colors) from useTheme hook instead

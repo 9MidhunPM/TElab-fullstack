@@ -1,36 +1,20 @@
-import { Alert, TouchableOpacity } from 'react-native';
-import { Colors } from '../constants/colors';
+import { TouchableOpacity } from 'react-native';
+import { toggleThemeMode } from '../constants/colors';
+import { useTheme } from '../hooks/useTheme';
 import { MoonIcon, SunIcon } from './icons/SvgIcons';
 
 export default function ThemeToggleButton({ size = 24, onPress }) {
-  // Check current theme based on Colors.background
-  const isDarkMode = Colors.background === '#000000';
+  const { Colors, isDarkMode } = useTheme();
 
   const handlePress = () => {
-    Alert.alert(
-      'Switch Theme',
-      `Switch to ${isDarkMode ? 'Light' : 'Dark'} Mode?\n\nNote: You'll need to restart the app for changes to take effect.`,
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Switch Theme',
-          onPress: () => {
-            Alert.alert(
-              'Manual Theme Switch Required',
-              'To switch themes:\n\n1. Open constants/colors.js\n2. Find line 196\n3. Change "export const Colors = DarkColors" to "export const Colors = LightColors" (or vice versa)\n4. Save the file\n5. Reload the app',
-              [{ text: 'OK' }]
-            );
-          },
-        },
-      ]
-    );
+    // Toggle the theme
+    toggleThemeMode();
+    
+    if (onPress) onPress();
   };
 
   return (
-    <TouchableOpacity onPress={onPress || handlePress}>
+    <TouchableOpacity onPress={handlePress}>
       {isDarkMode ? (
         <SunIcon size={size} color={Colors.warning} />
       ) : (

@@ -1,11 +1,11 @@
 import { Text, View } from 'react-native';
-import { Colors } from '../constants/colors';
-import commonStyles from '../styles/commonStyles';
-import styles from '../styles/homeScreenStyles';
+import { useTheme } from '../hooks/useTheme';
 import Card from './Card';
 import { CalendarIcon, CheckCircleIcon, PercentIcon, WarningIcon } from './icons/SvgIcons';
 
 const AttendanceCard = ({ attendanceSummary }) => {
+  const { Colors, commonStyles, homeScreenStyles: styles } = useTheme();
+  
   if (!attendanceSummary) return null;
 
   return (

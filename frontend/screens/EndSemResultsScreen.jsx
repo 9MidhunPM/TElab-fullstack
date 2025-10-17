@@ -1,34 +1,33 @@
 import { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    FlatList,
-    Text,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchEndSemResultsWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
 import {
-    BookIcon,
-    CheckCircleIcon,
-    ClockIcon,
-    StarIcon,
-    TrophyIcon,
-    WarningIcon
+  BookIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  StarIcon,
+  TrophyIcon,
+  WarningIcon
 } from '../components/icons/SvgIcons';
-import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
-import commonStyles from '../styles/commonStyles';
-import styles from '../styles/endSemResultsScreenStyles';
+import { useTheme } from '../hooks/useTheme';
 
 export default function EndSemResultsScreen() {
   const [filteredSemesters, setFilteredSemesters] = useState([]);
   const [error, setError] = useState(null);
   const { token } = useAuth();
   const { appData, dataLoadingStatus, updateData, isDataAvailable, hasDataError, getDataError } = useAppData();
+  const { Colors, commonStyles, endSemResultsScreenStyles: styles } = useTheme();
 
   // Get end sem results data from context
   const endSemResults = appData.endSemResults;

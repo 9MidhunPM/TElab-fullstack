@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View,
-    useWindowDimensions,
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabBar, TabView } from 'react-native-tab-view';
@@ -13,20 +13,18 @@ import { fetchTimetableWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
 import {
-    BookIcon,
-    CalendarIcon,
-    ChartIcon,
-    CheckCircleIcon,
-    ClockIcon,
-    InfoIcon,
-    TeacherIcon,
-    TimeIcon
+  BookIcon,
+  CalendarIcon,
+  ChartIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  InfoIcon,
+  TeacherIcon,
+  TimeIcon
 } from '../components/icons/SvgIcons';
-import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
-import commonStyles from '../styles/commonStyles';
-import styles from '../styles/timetableScreenStyles';
+import { useTheme } from '../hooks/useTheme';
 import { getSubjectClassesFromAttendance, getSubjectClassesPerWeek, getSubjectClassesUpToDate, getTimetableSummary } from '../utils/timetableAnalysis';
 
 
@@ -37,6 +35,7 @@ export default function TimetableScreen() {
   const layout = useWindowDimensions();
   const { token } = useAuth();
   const { appData, dataLoadingStatus, updateData, isDataAvailable, hasDataError, getDataError } = useAppData();
+  const { Colors, commonStyles, timetableScreenStyles: styles } = useTheme();
 
   // Get timetable data from context
   const timetable = appData.timetable;

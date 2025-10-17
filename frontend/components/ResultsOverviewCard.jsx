@@ -1,11 +1,11 @@
 import { Text, View } from 'react-native';
-import { Colors } from '../constants/colors';
-import commonStyles from '../styles/commonStyles';
-import styles from '../styles/homeScreenStyles';
+import { useTheme } from '../hooks/useTheme';
 import Card from './Card';
 import { ChartIcon, StarIcon, TrendingDownIcon, TrendingUpIcon, TrophyIcon } from './icons/SvgIcons';
 
 const ResultsOverviewCard = ({ resultsData }) => {
+  const { Colors, commonStyles, homeScreenStyles: styles } = useTheme();
+  
   if (!resultsData || resultsData.length === 0) return null;
 
   // Calculate total exam percentage

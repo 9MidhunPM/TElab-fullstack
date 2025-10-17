@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Animated, Pressable, View } from 'react-native';
-import cardStyles from '../styles/cardStyles';
+import { useTheme } from '../hooks/useTheme';
 
 /**
  * Reusable Card Component
@@ -33,6 +33,7 @@ const Card = ({
   ...rest
 }) => {
   const scaleAnim = useRef(new Animated.Value(1)).current;
+  const { cardStyles } = useTheme();
 
   const handlePressIn = () => {
     Animated.spring(scaleAnim, {
@@ -164,28 +165,37 @@ const Card = ({
 /**
  * Card.Header - Semantic component for card header
  */
-Card.Header = ({ children, style }) => (
-  <View style={[cardStyles.cardHeader, style]}>
-    {children}
-  </View>
-);
+Card.Header = ({ children, style }) => {
+  const { cardStyles } = useTheme();
+  return (
+    <View style={[cardStyles.cardHeader, style]}>
+      {children}
+    </View>
+  );
+};
 
 /**
  * Card.Body - Semantic component for card body
  */
-Card.Body = ({ children, style }) => (
-  <View style={[cardStyles.cardBody, style]}>
-    {children}
-  </View>
-);
+Card.Body = ({ children, style }) => {
+  const { cardStyles } = useTheme();
+  return (
+    <View style={[cardStyles.cardBody, style]}>
+      {children}
+    </View>
+  );
+};
 
 /**
  * Card.Footer - Semantic component for card footer
  */
-Card.Footer = ({ children, style }) => (
-  <View style={[cardStyles.cardFooter, style]}>
-    {children}
-  </View>
-);
+Card.Footer = ({ children, style }) => {
+  const { cardStyles } = useTheme();
+  return (
+    <View style={[cardStyles.cardFooter, style]}>
+      {children}
+    </View>
+  );
+};
 
 export default Card;

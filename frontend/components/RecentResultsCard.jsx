@@ -1,11 +1,11 @@
 import { Text, View } from 'react-native';
-import { Colors } from '../constants/colors';
-import commonStyles from '../styles/commonStyles';
-import styles from '../styles/homeScreenStyles';
+import { useTheme } from '../hooks/useTheme';
 import Card from './Card';
 import { StarIcon } from './icons/SvgIcons';
 
 const RecentResultsCard = ({ resultsData }) => {
+  const { Colors, commonStyles, homeScreenStyles: styles } = useTheme();
+  
   if (!resultsData || resultsData.length === 0) return null;
 
   // Get the most recent 3 results based on exam and semester

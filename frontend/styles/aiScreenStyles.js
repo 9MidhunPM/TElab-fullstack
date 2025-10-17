@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from './commonStyles';
+import { Colors as StaticColors } from '../constants/colors';
 
-const styles = StyleSheet.create({
+export const getAIScreenStyles = (Colors) => StyleSheet.create({
   animatedContainer: {
     flex: 1,
   },
@@ -190,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default getAIScreenStyles(StaticColors);

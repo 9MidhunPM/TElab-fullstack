@@ -220,16 +220,61 @@ export const DarkColors = {
 // 🎨 ACTIVE COLOR THEME
 // ============================================
 /**
- * TO SWITCH BETWEEN LIGHT AND DARK MODE:
- * Simply change the line below from LightColors to DarkColors (or vice versa)
- * 
- * export const Colors = LightColors;  // <-- For Light Mode
- * export const Colors = DarkColors;   // <-- For Dark Mode
+ * THEME MODE SETTING
+ * Change this to 'LIGHT' or 'DARK' to switch themes
  */
+let THEME_MODE = 'DARK'; // Options: 'LIGHT' or 'DARK'
 
-// 👇 CHANGE THIS LINE TO SWITCH THEMES 👇
-export const Colors = DarkColors;  // Change to DarkColors for dark mode
-// export const Colors = DarkColors;  // Uncomment this and comment above for dark mode
+// Listeners for theme changes
+const themeChangeListeners = [];
+
+/**
+ * Subscribe to theme changes
+ */
+export const subscribeToThemeChanges = (listener) => {
+  themeChangeListeners.push(listener);
+  return () => {
+    const index = themeChangeListeners.indexOf(listener);
+    if (index > -1) {
+      themeChangeListeners.splice(index, 1);
+    }
+  };
+};
+
+/**
+ * Notify all listeners about theme change
+ */
+const notifyThemeChange = () => {
+  themeChangeListeners.forEach(listener => listener());
+};
+
+/**
+ * Function to toggle between light and dark mode
+ * Call this function to switch themes programmatically
+ */
+export const toggleThemeMode = () => {
+  THEME_MODE = THEME_MODE === 'DARK' ? 'LIGHT' : 'DARK';
+  // Update Colors object with new theme
+  Object.assign(Colors, THEME_MODE === 'DARK' ? DarkColors : LightColors);
+  // Notify all listeners
+  notifyThemeChange();
+  return THEME_MODE;
+};
+
+/**
+ * Get current theme mode
+ */
+export const getThemeMode = () => THEME_MODE;
+
+/**
+ * Get current theme colors based on THEME_MODE
+ */
+export const getColors = () => {
+  return THEME_MODE === 'DARK' ? DarkColors : LightColors;
+};
+
+// Export Colors as a mutable object that gets updated when theme changes
+export const Colors = { ...(THEME_MODE === 'DARK' ? DarkColors : LightColors) };
 
 /**
  * Legacy color mappings for backward compatibility

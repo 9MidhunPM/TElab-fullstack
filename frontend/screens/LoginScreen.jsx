@@ -11,9 +11,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '../components/Card';
-import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
-import commonStyles from '../styles/commonStyles';
+import { useTheme } from '../hooks/useTheme';
 import styles from '../styles/loginScreenStyles';
 
 export default function LoginScreen() {
@@ -21,6 +20,7 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
+  const { Colors, commonStyles } = useTheme();
 
   const handleLogin = async () => {
     if (!username.trim() || !password.trim()) {

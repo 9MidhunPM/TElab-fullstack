@@ -1,12 +1,17 @@
 import { TouchableOpacity, View } from 'react-native';
-import { Colors } from '../constants/colors';
+import { useTheme } from '../hooks/useTheme';
 import { ChatIcon } from './icons/SvgIcons';
 
 export default function AIFloatingButton({ onPress }) {
+  const { Colors } = useTheme();
+  
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.button}
+        style={[styles.button, { 
+          backgroundColor: Colors.primary,
+          shadowColor: Colors.shadowBlack,
+        }]}
         onPress={onPress}
         activeOpacity={0.8}
       >
@@ -27,11 +32,9 @@ const styles = {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: Colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 8,
-    shadowColor: Colors.shadowBlack,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4,

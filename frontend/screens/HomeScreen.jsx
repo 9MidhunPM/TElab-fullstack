@@ -17,16 +17,15 @@ import ResultsOverviewCard from '../components/ResultsOverviewCard';
 import ThemeToggleButton from '../components/ThemeToggleButton';
 import { CardIcon, PhoneIcon, SchoolIcon, UserIcon } from '../components/icons/SvgIcons';
 import { getLoadOrderByPreset, LOADING_CONFIG } from '../config/dataLoadingConfig';
-import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
-import commonStyles from '../styles/commonStyles';
-import styles from '../styles/homeScreenStyles';
+import { useTheme } from '../hooks/useTheme';
 import { getNextClassInfo } from '../utils/nextClassAnalysis';
 
 export default function HomeScreen() {
   const { user, logout, isLoading, token } = useAuth();
   const { appData, dataLoadingStatus, updateData, clearAllData, isDataAvailable, hasDataError } = useAppData();
+  const { Colors, commonStyles, homeScreenStyles: styles } = useTheme();
   
   // State for managing data loading
   const [isLoadingData, setIsLoadingData] = useState(false);
@@ -285,7 +284,7 @@ export default function HomeScreen() {
         {nextClassInfo && !isLoadingData && (
           <NextClassCard nextClassInfo={nextClassInfo} />
         )}
-
+        
         {/* Attendance Summary Card */}
         {attendanceSummary && !isLoadingData && (
           <AttendanceCard attendanceSummary={attendanceSummary} />
