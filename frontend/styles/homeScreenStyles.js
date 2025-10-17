@@ -25,6 +25,18 @@ const homeScreenStyles = StyleSheet.create({
     flex: 1,
   },
   
+  headerIconsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+  },
+  
+  iconButton: {
+    padding: Spacing.sm,
+    borderRadius: BorderRadius.md,
+    backgroundColor: Colors.backgroundLight,
+  },
+  
   logoutIconButton: {
     padding: Spacing.sm,
     borderRadius: BorderRadius.md,

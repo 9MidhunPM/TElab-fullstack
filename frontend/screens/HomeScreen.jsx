@@ -14,6 +14,7 @@ import LogoutIcon from '../components/LogoutIcon';
 import NextClassCard from '../components/NextClassCard';
 import RecentResultsCard from '../components/RecentResultsCard';
 import ResultsOverviewCard from '../components/ResultsOverviewCard';
+import ThemeToggleButton from '../components/ThemeToggleButton';
 import { getLoadOrderByPreset, LOADING_CONFIG } from '../config/dataLoadingConfig';
 import { Colors } from '../constants/colors';
 import { useAuth } from '../contexts/AuthContext';
@@ -205,24 +206,30 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={commonStyles.safeArea} edges={['top']}>
-      {/* Header with Welcome text and Logout button */}
+      {/* Header with Welcome text, Theme Toggle, and Logout button */}
       <View style={styles.header}>
         <View style={styles.welcomeSection}>
           <Text style={styles.welcomeText}>Welcome!</Text>
           <Text style={styles.nameText}>{user.name}</Text>
         </View>
         
-        <TouchableOpacity 
-          style={styles.logoutIconButton}
-          onPress={handleLogout}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <ActivityIndicator color={Colors.danger} size="small" />
-          ) : (
-            <LogoutIcon size={24} color={Colors.danger} />
-          )}
-        </TouchableOpacity>
+        <View style={styles.headerIconsContainer}>
+          <View style={styles.iconButton}>
+            <ThemeToggleButton size={24} />
+          </View>
+          
+          <TouchableOpacity 
+            style={styles.logoutIconButton}
+            onPress={handleLogout}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator color={Colors.danger} size="small" />
+            ) : (
+              <LogoutIcon size={24} color={Colors.danger} />
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView style={commonStyles.container} contentContainerStyle={styles.contentContainer}>
