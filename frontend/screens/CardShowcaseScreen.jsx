@@ -1,7 +1,8 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '../components/Card';
-import { Colors, Spacing, Typography } from '../styles/commonStyles';
+import { useTheme } from '../hooks/useTheme';
+import { Spacing, Typography } from '../styles/commonStyles';
 
 /**
  * Card Component Showcase
@@ -12,8 +13,10 @@ import { Colors, Spacing, Typography } from '../styles/commonStyles';
  * To view: Import this screen into your navigation or app router.
  */
 export default function CardShowcaseScreen() {
+  const { Colors } = useTheme();
+  
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: Colors.background }]}>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.pageTitle}>Card Component Showcase</Text>
         <Text style={styles.pageSubtitle}>

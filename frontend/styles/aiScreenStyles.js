@@ -1,6 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { Colors as StaticColors } from '../constants/colors';
+import { BorderRadius, Shadows, Spacing, Typography } from './commonStyles';
 
+/**
+ * Generate styles specific to AIScreen component
+ * @param {Object} Colors - The active theme colors
+ * @returns {Object} StyleSheet object with themed styles
+ */
 export const getAIScreenStyles = (Colors) => StyleSheet.create({
   animatedContainer: {
     flex: 1,
@@ -8,8 +13,8 @@ export const getAIScreenStyles = (Colors) => StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: Spacing.base,
+    paddingVertical: Spacing.md,
     backgroundColor: Colors.cardBackground,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
@@ -20,17 +25,17 @@ export const getAIScreenStyles = (Colors) => StyleSheet.create({
     shadowRadius: 2,
   },
   backButton: {
-    padding: 8,
-    borderRadius: 8,
+    padding: Spacing.sm,
+    borderRadius: BorderRadius.sm,
     backgroundColor: Colors.cardBackground,
   },
   headerTitle: {
     flex: 1,
-    fontSize: 20,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.xl,
+    fontWeight: Typography.fontWeight.semibold,
     color: Colors.text,
     textAlign: 'center',
-    marginHorizontal: 16,
+    marginHorizontal: Spacing.base,
   },
   headerSpacer: {
     width: 40,
@@ -40,10 +45,10 @@ export const getAIScreenStyles = (Colors) => StyleSheet.create({
   toggleContainer: {
     flexDirection: 'row',
     backgroundColor: Colors.cardBackground,
-    marginHorizontal: 16,
-    marginVertical: 12,
+    marginHorizontal: Spacing.base,
+    marginVertical: Spacing.md,
     padding: 4,
-    borderRadius: 12,
+    borderRadius: BorderRadius.md,
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -55,17 +60,17 @@ export const getAIScreenStyles = (Colors) => StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.base,
+    borderRadius: BorderRadius.sm,
     gap: 8,
   },
   toggleButtonActive: {
     backgroundColor: Colors.primary,
   },
   toggleButtonText: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.base,
+    fontWeight: Typography.fontWeight.semibold,
     color: Colors.primary,
   },
   toggleButtonTextActive: {
@@ -77,57 +82,53 @@ export const getAIScreenStyles = (Colors) => StyleSheet.create({
     flex: 1,
   },
   responseScrollContent: {
-    padding: 16,
-    paddingBottom: 24,
+    padding: Spacing.base,
+    paddingBottom: Spacing.lg,
   },
   emptyStateContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 60,
-    paddingHorizontal: 32,
+    paddingHorizontal: Spacing.xxl,
   },
   emptyStateText: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.lg,
+    fontWeight: Typography.fontWeight.semibold,
     color: Colors.text,
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: Spacing.sm,
   },
   emptyStateSubtext: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: Colors.textSecondary,
     textAlign: 'center',
   },
   loadingContainer: {
     alignItems: 'center',
     paddingVertical: 40,
-    gap: 12,
+    gap: Spacing.md,
   },
   loadingText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     color: Colors.textSecondary,
   },
   responseContainer: {
-    marginBottom: 16,
+    marginBottom: Spacing.base,
   },
   responseTitle: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: Typography.fontSize.lg,
+    fontWeight: Typography.fontWeight.bold,
     color: Colors.primary,
-    marginBottom: 12,
+    marginBottom: Spacing.md,
   },
   responseBox: {
     backgroundColor: Colors.cardBackground,
-    borderRadius: 12,
+    borderRadius: BorderRadius.md,
     borderWidth: 1,
     borderColor: Colors.border,
-    padding: 20,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
+    padding: Spacing.xl,
+    ...Shadows.medium,
   },
 
   // Fixed Bottom Input Area
@@ -135,9 +136,9 @@ export const getAIScreenStyles = (Colors) => StyleSheet.create({
     backgroundColor: Colors.cardBackground,
     borderTopWidth: 1,
     borderTopColor: Colors.border,
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 20,
+    paddingHorizontal: Spacing.base,
+    paddingTop: Spacing.md,
+    paddingBottom: Spacing.xl,
     elevation: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },
@@ -147,7 +148,7 @@ export const getAIScreenStyles = (Colors) => StyleSheet.create({
   inputRow: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    gap: 8,
+    gap: Spacing.sm,
   },
   iconButton: {
     width: 44,
@@ -162,12 +163,12 @@ export const getAIScreenStyles = (Colors) => StyleSheet.create({
   textInput: {
     flex: 1,
     backgroundColor: Colors.cardBackground,
-    borderRadius: 20,
+    borderRadius: BorderRadius.xl,
     borderWidth: 1,
     borderColor: Colors.border,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 15,
+    paddingHorizontal: Spacing.base,
+    paddingVertical: Spacing.md,
+    fontSize: Typography.fontSize.base,
     color: Colors.text,
     maxHeight: 100,
   },
@@ -190,4 +191,4 @@ export const getAIScreenStyles = (Colors) => StyleSheet.create({
   },
 });
 
-export default getAIScreenStyles(StaticColors);
+// Note: No default export - use getAIScreenStyles(Colors) from useTheme hook instead

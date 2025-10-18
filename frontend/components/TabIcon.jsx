@@ -95,7 +95,7 @@ export function TrophyIcon({ size = 24, color = '#000', focused = false }) {
         strokeLinejoin="round"
       />
       <Path
-        d="M8 12h8a2 2 0 0 0 2-2V4H6v6a2 2 0 0 0 2 2z"
+        d="M6 4h12v6c0 3.31-2.69 6-6 6s-6-2.69-6-6V4z"
         stroke={color}
         strokeWidth={2}
         strokeLinecap="round"
