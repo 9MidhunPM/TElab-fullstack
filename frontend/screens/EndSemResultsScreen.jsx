@@ -1,22 +1,22 @@
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    FlatList,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchEndSemResultsWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
 import {
-  BookIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  StarIcon,
-  TrophyIcon,
-  WarningIcon
+    BookIcon,
+    CheckCircleIcon,
+    ClockIcon,
+    StarIcon,
+    TrophyIcon,
+    WarningIcon
 } from '../components/icons/SvgIcons';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';
@@ -107,7 +107,6 @@ export default function EndSemResultsScreen() {
       semester.grades.results.length > 0
     );
     
-    console.log(`Filtered to ${nonEmptySemesters.length} semesters with results`);
     setFilteredSemesters(nonEmptySemesters);
   };
 

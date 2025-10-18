@@ -2,11 +2,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
 import { ActivityIndicator, AppRegistry, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import AIFloatingButton from './components/AIFloatingButton';
 import TabIcon from './components/TabIcon';
+import { loadThemePreference } from './constants/colors';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { DataProvider } from './contexts/DataContext';
 import { useTheme } from './hooks/useTheme';
@@ -120,6 +122,20 @@ function AuthNavigator() {
 
 // Main App component
 function App() {
+  // Load theme preference on app startup
+  useEffect(() => {
+    const initializeTheme = async () => {
+      try {
+        await loadThemePreference();
+        console.log('[App] Theme preference loaded successfully');
+      } catch (error) {
+        console.error('[App] Failed to load theme preference:', error);
+      }
+    };
+    
+    initializeTheme();
+  }, []);
+
   return (
     <SafeAreaProvider>
       <AuthProvider>

@@ -1,31 +1,31 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  Platform,
-  RefreshControl,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    Alert,
+    Platform,
+    RefreshControl,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchAttendanceWithToken } from '../api';
 import Card from '../components/Card';
 import RefreshIcon from '../components/RefreshIcon';
 import {
-  BookIcon,
-  CalendarIcon,
-  CardIcon,
-  ChartIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  InfoIcon,
-  PercentIcon,
-  SchoolIcon,
-  UserIcon,
-  WarningIcon
+    BookIcon,
+    CalendarIcon,
+    CardIcon,
+    ChartIcon,
+    CheckCircleIcon,
+    ClockIcon,
+    InfoIcon,
+    PercentIcon,
+    SchoolIcon,
+    UserIcon,
+    WarningIcon
 } from '../components/icons/SvgIcons';
 import { useAuth } from '../contexts/AuthContext';
 import { useAppData } from '../contexts/DataContext';

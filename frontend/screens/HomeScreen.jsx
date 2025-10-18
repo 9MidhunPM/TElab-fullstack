@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Alert,
+    RefreshControl,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AttendanceCard from '../components/AttendanceCard';
@@ -24,32 +25,51 @@ import { getNextClassInfo } from '../utils/nextClassAnalysis';
 
 export default function HomeScreen() {
   const { user, logout, isLoading, token } = useAuth();
-  const { appData, dataLoadingStatus, updateData, clearAllData, isDataAvailable, hasDataError } = useAppData();
+  const { appData, dataLoadingStatus, updateData, clearAllData, isDataAvailable, hasDataError, forceRefresh, cacheStatus, isCacheLoading, cacheLoadComplete } = useAppData();
   const { Colors, commonStyles, homeScreenStyles: styles } = useTheme();
   
   // State for managing data loading
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState({ current: 0, total: 0, currentTask: '' });
   const [dataLoadError, setDataLoadError] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   
   // Ref to track if component is mounted
   const isMountedRef = useRef(true);
+  
+  // Ref to track if we're forcing a refresh (bypasses cache checks)
+  const isForceRefreshRef = useRef(false);
   
   // Get the API load order from configuration
   // You can change the preset here: 'default', 'academic', 'daily', 'fast'
   const API_LOAD_ORDER = getLoadOrderByPreset('default');
 
   // Load all data sequentially when component mounts and user is authenticated
+  // Wait for cache to finish loading first to avoid race condition
   useEffect(() => {
-    if (user && token && !isLoading) {
+    // Ensure mounted ref is true when effect runs
+    isMountedRef.current = true;
+    
+    console.log('[HomeScreen] useEffect triggered:', { 
+      user: !!user, 
+      token: !!token, 
+      isLoading, 
+      isCacheLoading, 
+      cacheLoadComplete,
+      isMounted: isMountedRef.current
+    });
+    
+    if (user && token && !isLoading && cacheLoadComplete) {
+      console.log('[HomeScreen] 🚀 Cache ready, starting data fetch...');
       loadAllDataSequentially();
     }
     
     // Cleanup function to mark component as unmounted
     return () => {
+      console.log('[HomeScreen] 🧹 Cleanup - marking as unmounted');
       isMountedRef.current = false;
     };
-  }, [user, token, isLoading]);
+  }, [user, token, isLoading, cacheLoadComplete]);
 
   // Clear data when user logs out
   useEffect(() => {
@@ -59,7 +79,15 @@ export default function HomeScreen() {
   }, [user, token, clearAllData]);
 
   const loadAllDataSequentially = async () => {
-    if (!token || isLoadingData) return;
+    if (!token || isLoadingData) {
+      console.log('[HomeScreen] ⛔ Skipping load:', { hasToken: !!token, isLoadingData });
+      return;
+    }
+    
+    console.log('[HomeScreen] 📋 Starting sequential load...', { 
+      totalItems: API_LOAD_ORDER.length,
+      items: API_LOAD_ORDER.map(c => c.name)
+    });
     
     setIsLoadingData(true);
     setDataLoadError(null);
@@ -68,11 +96,30 @@ export default function HomeScreen() {
     try {
       for (let i = 0; i < API_LOAD_ORDER.length; i++) {
         // Check if component is still mounted
-        if (!isMountedRef.current) return;
+        if (!isMountedRef.current) {
+          console.log('[HomeScreen] ⛔ Component unmounted, stopping load');
+          return;
+        }
         
         const apiConfig = API_LOAD_ORDER[i];
+        console.log(`[HomeScreen] 🔄 Processing item ${i + 1}/${API_LOAD_ORDER.length}: ${apiConfig.name}`, {
+          loadingStatus: dataLoadingStatus[apiConfig.name],
+          isAvailable: isDataAvailable(apiConfig.name),
+          hasData: !!appData[apiConfig.name],
+          isForceRefresh: isForceRefreshRef.current
+        });
         
-        // Update progress
+        // Skip loading if data is already available AND status is success AND not forcing refresh
+        // Check each endpoint independently now that they have separate caches
+        if (!isForceRefreshRef.current && 
+            (apiConfig.name === 'results' || apiConfig.name === 'endSemResults') && 
+            isDataAvailable(apiConfig.name) && 
+            dataLoadingStatus[apiConfig.name] === 'success') {
+          console.log(`[HomeScreen] ⏭️ Skipping ${apiConfig.displayName} - already cached`);
+          continue;
+        }
+        
+        // Update progress BEFORE starting the call
         setLoadingProgress({
           current: i + 1,
           total: API_LOAD_ORDER.length,
@@ -80,7 +127,13 @@ export default function HomeScreen() {
         });
         
         try {
+          console.log(`[HomeScreen] 📡 Loading ${apiConfig.displayName} from API...`);
+          const startTime = Date.now();
+          
           const data = await apiConfig.apiFunction(token);
+          
+          const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+          console.log(`[HomeScreen] ✅ Loaded ${apiConfig.displayName} in ${duration}s`);
           
           // Only update state if component is still mounted
           if (isMountedRef.current) {
@@ -91,22 +144,28 @@ export default function HomeScreen() {
           await new Promise(resolve => setTimeout(resolve, LOADING_CONFIG.delayBetweenCalls));
           
         } catch (error) {
-          console.error(`Error loading ${apiConfig.displayName}:`, error);
+          console.error(`[HomeScreen] ❌ Error loading ${apiConfig.displayName}:`, error.message);
           
           // Store the error but continue with other endpoints
           if (isMountedRef.current) {
             updateData(apiConfig.name, { error: error.message }, 'error');
           }
+          
+          // Continue to next endpoint despite error
+          console.log(`[HomeScreen] ⏩ Continuing to next endpoint despite error...`);
         }
       }
       
+      console.log('[HomeScreen] 🎉 All data loaded successfully!');
+      
     } catch (error) {
-      console.error('Critical error during data loading:', error);
+      console.error('[HomeScreen] 💥 Critical error during data loading:', error);
       if (isMountedRef.current) {
         setDataLoadError(error.message);
       }
     } finally {
       if (isMountedRef.current) {
+        console.log('[HomeScreen] 🏁 Load complete, cleaning up...');
         setIsLoadingData(false);
         setLoadingProgress({ current: 0, total: 0, currentTask: '' });
       }
@@ -115,6 +174,33 @@ export default function HomeScreen() {
 
   const handleRetryDataLoad = () => {
     loadAllDataSequentially();
+  };
+
+  // Handle pull-to-refresh (invalidates all caches and reloads)
+  const handleRefresh = async () => {
+    if (isRefreshing || isLoadingData) return;
+    
+    console.log('[HomeScreen] 🔄 Pull-to-refresh triggered - force loading all data');
+    setIsRefreshing(true);
+    
+    // Set force refresh flag to bypass cache checks
+    isForceRefreshRef.current = true;
+    
+    try {
+      // Clear ALL data including cached data
+      await clearAllData();
+      
+      // Reload all data fresh from API (will bypass cache checks due to ref)
+      await loadAllDataSequentially();
+      
+      console.log('[HomeScreen] 🎉 Refresh complete');
+    } catch (error) {
+      console.error('[HomeScreen] ❌ Error during refresh:', error);
+    } finally {
+      // Reset force refresh flag
+      isForceRefreshRef.current = false;
+      setIsRefreshing(false);
+    }
   };
 
   // Helper function to process attendance data
@@ -232,7 +318,20 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <ScrollView style={commonStyles.container} contentContainerStyle={styles.contentContainer}>
+      <ScrollView 
+        style={commonStyles.container} 
+        contentContainerStyle={styles.contentContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            colors={[Colors.primary]}
+            tintColor={Colors.primary}
+            title="Pull to refresh"
+            titleColor={Colors.textSecondary}
+          />
+        }
+      >
         {/* Data Loading Progress */}
         {isLoadingData && (
           <Card variant="default" withMargin marginSize="medium">
@@ -331,6 +430,22 @@ export default function HomeScreen() {
             </View>
           </Card.Body>
         </Card>
+
+        {/* Cache Status Footer - Simple text at bottom */}
+        {(cacheStatus.attendance?.isCached || cacheStatus.timetable?.isCached || cacheStatus.results?.isCached) && !isLoadingData && (
+          <View style={styles.cacheFooter}>
+            <Text style={styles.cacheFooterText}>
+              💾 Cached Data • {' '}
+              {cacheStatus.attendance?.isFresh && cacheStatus.timetable?.isFresh && cacheStatus.results?.isFresh
+                ? '🟢 All data up to date'
+                : '🟡 Pull down to refresh'
+              }
+            </Text>
+            <Text style={styles.cacheFooterSubtext}>
+              Timetable {cacheStatus.timetable?.isFresh ? '🟢' : '🟡'} • Attendance {cacheStatus.attendance?.isFresh ? '🟢' : '🟡'} • Results {cacheStatus.results?.isFresh ? '🟢' : '🟡'}
+            </Text>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

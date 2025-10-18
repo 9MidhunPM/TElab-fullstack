@@ -251,13 +251,40 @@ const notifyThemeChange = () => {
 /**
  * Function to toggle between light and dark mode
  * Call this function to switch themes programmatically
+ * Automatically saves preference to AsyncStorage
  */
-export const toggleThemeMode = () => {
+export const toggleThemeMode = async () => {
   THEME_MODE = THEME_MODE === 'DARK' ? 'LIGHT' : 'DARK';
   // Update Colors object with new theme
   Object.assign(Colors, THEME_MODE === 'DARK' ? DarkColors : LightColors);
+  // Save to AsyncStorage
+  try {
+    const CacheManager = require('../utils/cacheManager').default;
+    await CacheManager.saveTheme(THEME_MODE);
+  } catch (error) {
+    console.error('[Colors] Error saving theme preference:', error);
+  }
   // Notify all listeners
   notifyThemeChange();
+  return THEME_MODE;
+};
+
+/**
+ * Load theme preference from AsyncStorage
+ * Call this on app startup
+ */
+export const loadThemePreference = async () => {
+  try {
+    const CacheManager = require('../utils/cacheManager').default;
+    const cached = await CacheManager.getTheme();
+    if (cached && (cached.data === 'DARK' || cached.data === 'LIGHT')) {
+      THEME_MODE = cached.data;
+      Object.assign(Colors, THEME_MODE === 'DARK' ? DarkColors : LightColors);
+      console.log('[Colors] Loaded theme preference:', THEME_MODE);
+    }
+  } catch (error) {
+    console.error('[Colors] Error loading theme preference:', error);
+  }
   return THEME_MODE;
 };
 

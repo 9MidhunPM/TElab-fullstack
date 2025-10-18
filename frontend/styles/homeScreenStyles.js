@@ -562,6 +562,29 @@ export const getHomeScreenStyles = (Colors) => {
     textAlign: 'center',
     fontStyle: 'italic',
   },
+
+  // Cache Status Footer Styles - Simple text at bottom
+  cacheFooter: {
+    paddingVertical: Spacing.xl,
+    paddingHorizontal: Spacing.lg,
+    alignItems: 'center',
+    marginTop: Spacing.md,
+  },
+
+  cacheFooterText: {
+    fontSize: Typography.fontSize.xs,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+    marginBottom: Spacing.xs,
+    opacity: 0.7,
+  },
+
+  cacheFooterSubtext: {
+    fontSize: 10,
+    color: Colors.textLight,
+    textAlign: 'center',
+    opacity: 0.6,
+  },
 });
 };
 

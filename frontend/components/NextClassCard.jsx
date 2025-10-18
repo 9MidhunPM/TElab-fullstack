@@ -255,7 +255,7 @@ const NextClassCard = ({ nextClassInfo }) => {
     <Card variant="default" withMargin marginSize="medium">
       <Card.Header>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
             <View style={{
               width: 36,
               height: 36,
@@ -267,20 +267,17 @@ const NextClassCard = ({ nextClassInfo }) => {
             }}>
               <SchoolIcon size={20} color={Colors.primary} />
             </View>
-            <View>
-              <Text style={commonStyles.cardTitle}>
-                {isClassOngoing ? ' Current Class' : showTomorrowSchedule ? "Tomorrow's Classes" : ' Next Class'}
-              </Text>
-              <Text style={{ 
-                fontSize: 12, 
-                color: Colors.textTertiary,
-                fontWeight: '500',
-                marginTop: 2,
-              }}>
-                {currentTime}
-              </Text>
-            </View>
+            <Text style={[commonStyles.cardTitle, { lineHeight: 36 }]}>
+              {isClassOngoing ? 'Current Class' : showTomorrowSchedule ? "Tomorrow's Classes" : 'Next Class'}
+            </Text>
           </View>
+          <Text style={{ 
+            fontSize: 12, 
+            color: Colors.textTertiary,
+            fontWeight: '500',
+          }}>
+            {currentTime}
+          </Text>
         </View>
       </Card.Header>
       
